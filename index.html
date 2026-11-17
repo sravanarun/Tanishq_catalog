@@ -24,9 +24,10 @@
     }
 
     * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+    
     body { background: var(--bg); color: var(--text-main); margin: 0; padding: 12px 14px 85px 14px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+    body.no-scroll { overflow: hidden; touch-action: none; }
 
-    /* Header & Top Bar */
     .header { width: 100%; max-width: 1200px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
     .header h2 { margin: 0; font-size: 1.35rem; color: var(--text-main); font-weight: 700; letter-spacing: -0.5px; }
     
@@ -37,7 +38,6 @@
     .btn { background: var(--panel-bg); color: var(--text-main); border: 1px solid var(--border); padding: 9px 14px; border-radius: 6px; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; }
     .btn-accent { background: var(--accent); color: #fff; border-color: var(--accent); }
 
-    /* Stats Bar */
     .stats-bar { width: 100%; max-width: 1200px; display: flex; justify-content: space-between; align-items: center; background: var(--panel-bg); padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); margin-bottom: 10px; font-size: 0.82rem; color: var(--text-muted); flex-wrap: wrap; gap: 8px; }
     .stats-bar b { color: var(--text-main); }
 
@@ -51,7 +51,15 @@
     .drawer-header h3 { margin: 0; font-size: 1.05rem; color: var(--text-main); }
     .drawer-close { background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer; padding: 0; }
     
-    .drawer-body { padding: 15px 20px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+    .drawer-body { padding: 15px 20px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 10px; overscroll-behavior: contain; }
+    
+    .num-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; padding: 8px; background: var(--panel-bg); border-radius: 6px; border: 1px solid var(--border); }
+    .num-lbl { font-size: 0.75rem; font-weight: 700; color: var(--text-main); }
+    .num-inputs { display: flex; gap: 6px; align-items: center; }
+    .num-inputs select, .num-inputs input { border: 1px solid var(--border); padding: 6px; border-radius: 4px; font-size: 0.75rem; outline: none; }
+    .num-inputs select { width: 90px; }
+    .num-inputs input { flex: 1; min-width: 0; }
+    
     .filter-group { border: 1px solid var(--border); border-radius: 6px; background: #fff; overflow: hidden; }
     .fg-header { padding: 10px 14px; font-size: 0.8rem; font-weight: 700; color: var(--text-main); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
     .fg-header .count { color: var(--accent); font-size: 0.75rem; }
@@ -64,7 +72,7 @@
     .drawer-footer { padding: 12px 20px; border-top: 1px solid var(--border); background: #fff; display: flex; gap: 10px; }
     .drawer-footer button { flex: 1; padding: 10px; border-radius: 6px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: var(--panel-bg); color: var(--text-main); }
 
-    /* Main Responsive Layout */
+    /* Main Layout */
     .main-card { width: 100%; max-width: 1200px; background: var(--panel-bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; gap: 20px; align-items: flex-start; }
     
     .left-col { width: 500px; min-width: 500px; position: sticky; top: 15px; display: flex; flex-direction: column; gap: 10px; }
@@ -98,12 +106,12 @@
     /* Gliding Tray */
     .tray { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 10px; display: flex; flex-direction: column; }
     .tray-title { font-size: 0.75rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px; }
-    .tray-scroll { max-height: 155px; overflow-y: auto; }
+    .tray-scroll { max-height: 155px; overflow-y: auto; overscroll-behavior: contain; }
     .tray-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; text-align: left; }
     .tray-table th { color: var(--text-muted); padding: 5px 6px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: #fff; font-size: 0.68rem; z-index: 2; }
     .tray-table td { padding: 5px 6px; border-bottom: 1px solid #f9f9f9; color: var(--text-main); }
 
-    /* Bottom Sticky Actions */
+    /* Bottom Actions */
     .actions-bar { position: sticky; bottom: 0; left: 0; width: 100%; max-width: 1200px; background: rgba(245, 243, 239, 0.95); backdrop-filter: blur(8px); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; margin-top: 10px; box-shadow: 0 -8px 25px rgba(0,0,0,0.08); z-index: 500; }
     .btn-nav { background: #fff; color: var(--text-main); border: 1px solid var(--border); padding: 10px 18px; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 0.85rem; }
     .btn-nav:disabled { opacity: 0.3; cursor: not-allowed; }
@@ -113,10 +121,9 @@
     .btn-confirm { background: var(--success); color: white; border: none; padding: 10px 24px; border-radius: 6px; font-weight: 700; font-size: 0.85rem; cursor: pointer; }
     .btn-confirmed { background: var(--danger); color: white; border: none; padding: 10px 24px; border-radius: 6px; font-weight: 700; font-size: 0.85rem; cursor: pointer; }
 
-    /* Detailed Lightbox Window */
+    /* Lightbox Modal */
     .lightbox-modal { display: none; position: fixed; inset: 0; width: 100vw; height: 100vh; background: rgba(20, 18, 16, 0.95); z-index: 100000; align-items: center; justify-content: center; flex-direction: column; padding: 16px; backdrop-filter: blur(12px); user-select: none; }
     .lightbox-modal.active { display: flex; }
-    
     .lightbox-header { width: 100%; max-width: 900px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 10px; flex-wrap: wrap; }
     .lightbox-meta { display: flex; align-items: center; gap: 8px; color: #fff; flex-wrap: wrap; }
     .lightbox-badge { font-size: 1.3rem; font-weight: 800; color: var(--primary-blue); font-family: monospace; }
@@ -130,6 +137,9 @@
     
     .lightbox-actions-bar { margin-top: 12px; width: 100%; max-width: 900px; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 10px 16px; backdrop-filter: blur(8px); }
 
+    /* Loader */
+    #pageLoader { position: fixed; inset: 0; background: var(--bg); z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
     /* Export Modal */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(44, 42, 38, 0.6); z-index: 200000; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
     .modal-overlay.active { display: flex; }
@@ -139,28 +149,14 @@
     .pdf-checks { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: #fff; border: 1px solid var(--border); padding: 12px; border-radius: 8px; margin-bottom: 15px; }
     .pdf-checks label { font-size: 0.76rem; color: var(--text-main); display: flex; align-items: center; gap: 6px; cursor: pointer; }
 
-    /* Full Page Loader */
-    #pageLoader { position: fixed; inset: 0; background: var(--bg); z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-
-    /* --- MOBILE OPTIMIZATION (Android Native Fit) --- */
     @media (max-width: 980px) {
       body { padding: 8px 8px 75px 8px; }
-      
-      /* Reset container padding and boundaries for native mobile feel */
       .main-card { flex-direction: column; align-items: center; gap: 14px; padding: 12px; border: none; background: transparent; }
-      
-      /* Remove sticky left-col to allow smooth natural scrolling on Android */
       .left-col { width: 100%; min-width: 0; max-width: 100%; position: relative; top: 0; } 
-      
-      /* Force edge-to-edge native image sizing (aspect-ratio 1:1) */
       .image-viewer { width: 100%; height: auto; aspect-ratio: 1 / 1; border-radius: 8px; border: 1px solid var(--border); }
-      
       .details-panel { width: 100%; background: #fff; padding: 12px; border-radius: 8px; border: 1px solid var(--border); }
-      
-      /* Adjust grids to prevent horizontal stretching from long AG texts */
       .specs-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
-      .spec-box:nth-child(2) { grid-column: span 2; } /* Make AG Group span full width */
-      
+      .spec-box:nth-child(2) { grid-column: span 2; }
       .btn-nav, .btn-confirm, .btn-skip, .btn-confirmed { padding: 10px 12px; font-size: 0.8rem; }
       .lightbox-body { height: calc(100vh - 180px); border: none; border-radius: 8px; }
       .lightbox-actions-bar { padding: 8px; }
@@ -215,10 +211,10 @@
       <div class="specs-grid">
         <div class="spec-box"><div class="spec-lbl">Category</div><div class="spec-val" id="spCat">-</div></div>
         <div class="spec-box"><div class="spec-lbl">AG Group</div><div class="spec-val" id="spAg">-</div></div>
+        <div class="spec-box"><div class="spec-lbl">MC (%)</div><div class="spec-val" id="spMc" style="color:var(--danger);">-</div></div>
         <div class="spec-box"><div class="spec-lbl">Cluster</div><div class="spec-val" id="spCluster">-</div></div>
         <div class="spec-box"><div class="spec-lbl">Stone Details</div><div class="spec-val" id="spStone" title="">-</div></div>
-        <div class="spec-box"><div class="spec-lbl">Findings</div><div class="spec-val" id="spFind">-</div></div>
-        <div class="spec-box"><div class="spec-lbl">Attribute</div><div class="spec-val" id="spAttr" title="">-</div></div>
+        <div class="spec-box"><div class="spec-lbl">Findings / Attr</div><div class="spec-val" id="spFind">-</div></div>
       </div>
 
       <input type="text" class="remarks-input" id="dispRemark" placeholder="✎ Add Recognised Remark (Saves to Excel)..." oninput="saveRemark(this.value)">
@@ -227,7 +223,7 @@
         <div class="tray-title">Filtered Variants (<span id="trayCount">0</span>)</div>
         <div class="tray-scroll">
           <table class="tray-table">
-            <thead><tr><th>Variant</th><th>Size</th><th>Karat</th><th>Prolif</th><th>Wt (g)</th></tr></thead>
+            <thead><tr><th>Variant</th><th>Size</th><th>Karat</th><th>Wt (g)</th><th>Value (₹)</th></tr></thead>
             <tbody id="trayBody"></tbody>
           </table>
         </div>
@@ -244,7 +240,7 @@
     <button class="btn-nav" id="btnNext" onclick="nav(1)">Next →</button>
   </div>
 
-  <!-- Detailed Floating Lightbox (South 1 Replica) -->
+  <!-- Detailed Floating Lightbox -->
   <div class="lightbox-modal" id="lightboxModal" onclick="closeLightbox(event)">
     <div class="lightbox-header">
       <div class="lightbox-meta">
@@ -259,7 +255,7 @@
     <div class="lightbox-body" id="lbBody">
       <div class="img-loader" id="lbLoader"><div class="spinner"></div><span>Loading full-size preview...</span></div>
       <img id="lbImg" src="" onload="this.style.opacity='1'; document.getElementById('lbLoader').style.display='none';" onerror="handleImgErr(this, 'lbLoader', 'lbFallback')">
-      <div class="img-fallback" id="lbFallback" style="display:none;">
+      <div class="img-fallback" id="lbFallback" style="display:none; flex-direction:column; align-items:center; justify-content:center; width:100%; height:100%;">
         <div style="font-size: 3rem;">🖼️</div><div style="font-weight: 700; color: #334155;">No Catalog Image Found</div>
       </div>
     </div>
@@ -278,7 +274,9 @@
   <div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()"></div>
   <div class="filter-drawer" id="filterDrawer">
     <div class="drawer-header"><h3>Advanced Filters</h3><button class="drawer-close" onclick="toggleDrawer()">×</button></div>
-    <div class="drawer-body" id="drawerBody"></div>
+    <div class="drawer-body" id="drawerBody">
+      <!-- Injected by JS -->
+    </div>
     <div class="drawer-footer">
       <button onclick="resetFilters()">Reset All</button>
       <button style="background:var(--accent); color:#fff; border-color:var(--accent);" onclick="toggleDrawer()">Apply Filters</button>
@@ -317,7 +315,6 @@
     let currentIndex = 0;
     let isLightboxOpen = false;
 
-    // Standardized Mapping
     const filters = {
       Category: { sel: new Set() }, Theme: { sel: new Set() }, Cluster: { sel: new Set() },
       AG: { sel: new Set() }, Size: { sel: new Set() }, Karat: { sel: new Set() },
@@ -327,9 +324,12 @@
 
     window.onload = async () => {
       try {
-        let res = await fetch('data.xlsx');
-        if (!res.ok) res = await fetch('data.xls');
-        if (!res.ok) throw new Error("File missing");
+        let res;
+        // Auto-fetch cascading structure to handle any file name you outputted
+        try { res = await fetch('data_ready.xlsx'); } catch(e) {}
+        if (!res || !res.ok) { try { res = await fetch('data.xlsx'); } catch(e) {} }
+        if (!res || !res.ok) { try { res = await fetch('data.xls'); } catch(e) {} }
+        if (!res || !res.ok) throw new Error("File missing");
         
         const ab = await res.arrayBuffer();
         const wb = XLSX.read(ab, { type: 'array' });
@@ -349,6 +349,10 @@
           Attribute: String(r['Attribute'] || '').trim(),
           StoneDetails: String(r['Stone details'] || '').trim(),
           Weight: parseFloat(r['Weight']) || 0,
+          Value: parseFloat(r['Value']) || 0,
+          MCStr: String(r['MC (%)'] || '').trim(),
+          MCNum: parseFloat(r['MC (%)']) || 0,
+          ImageSource: String(r['Image_Source'] || 'Internal').trim(),
           Original: r 
         })).filter(r => r.Variant !== '');
 
@@ -356,18 +360,69 @@
         applyFilters();
         document.getElementById('pageLoader').style.display = 'none';
       } catch (e) {
-        alert("Failed to load catalog. Ensure data.xlsx exists in repository.");
+        alert("Failed to load catalog. Ensure data_ready.xlsx or data.xlsx exists in repository.");
       }
     };
 
     function toggleDrawer() {
       document.getElementById('filterDrawer').classList.toggle('active');
       document.getElementById('drawerOverlay').classList.toggle('active');
+      document.body.classList.toggle('no-scroll');
+    }
+
+    function toggleNumUI(key) {
+      const op = document.getElementById(`op-${key}`).value;
+      const v1 = document.getElementById(`v1-${key}`);
+      const v2 = document.getElementById(`v2-${key}`);
+      v1.style.display = op === 'any' ? 'none' : 'block';
+      v2.style.display = op === 'between' ? 'block' : 'none';
+      debounceFilter();
     }
 
     function buildDrawer() {
       const b = document.getElementById('drawerBody');
-      b.innerHTML = Object.keys(filters).map(k => `
+      
+      let html = `
+        <div class="filter-group" style="margin-bottom:10px; border-color:var(--accent);">
+          <div class="fg-header" onclick="toggleAcc('Num')">
+            <span style="color:var(--accent);">Numerical Rules</span>
+          </div>
+          <div class="fg-body" id="body-Num" style="padding-top:10px;">
+            <div class="num-row">
+              <div class="num-lbl">Weight (WT)</div>
+              <div class="num-inputs">
+                <select id="op-wt" onchange="toggleNumUI('wt')">
+                  <option value="any">Any</option><option value="eq">=</option><option value="gt">&gt;</option><option value="gte">&gt;=</option><option value="lt">&lt;</option><option value="lte">&lt;=</option><option value="between">Between</option>
+                </select>
+                <input type="number" id="v1-wt" step="0.01" style="display:none;" oninput="debounceFilter()" placeholder="Val">
+                <input type="number" id="v2-wt" step="0.01" style="display:none;" oninput="debounceFilter()" placeholder="Max">
+              </div>
+            </div>
+            <div class="num-row">
+              <div class="num-lbl">Value (₹)</div>
+              <div class="num-inputs">
+                <select id="op-val" onchange="toggleNumUI('val')">
+                  <option value="any">Any</option><option value="eq">=</option><option value="gt">&gt;</option><option value="gte">&gt;=</option><option value="lt">&lt;</option><option value="lte">&lt;=</option><option value="between">Between</option>
+                </select>
+                <input type="number" id="v1-val" style="display:none;" oninput="debounceFilter()" placeholder="₹">
+                <input type="number" id="v2-val" style="display:none;" oninput="debounceFilter()" placeholder="Max ₹">
+              </div>
+            </div>
+            <div class="num-row">
+              <div class="num-lbl">Making Charge (MC %)</div>
+              <div class="num-inputs">
+                <select id="op-mc" onchange="toggleNumUI('mc')">
+                  <option value="any">Any</option><option value="eq">=</option><option value="gt">&gt;</option><option value="gte">&gt;=</option><option value="lt">&lt;</option><option value="lte">&lt;=</option><option value="between">Between</option>
+                </select>
+                <input type="number" id="v1-mc" step="0.1" style="display:none;" oninput="debounceFilter()" placeholder="%">
+                <input type="number" id="v2-mc" step="0.1" style="display:none;" oninput="debounceFilter()" placeholder="Max %">
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      html += Object.keys(filters).map(k => `
         <div class="filter-group">
           <div class="fg-header" onclick="toggleAcc('${k}')">
             <span>${k === 'StoneDetails' ? 'Stone Details' : k}</span>
@@ -380,6 +435,8 @@
           </div>
         </div>
       `).join('');
+
+      b.innerHTML = html;
     }
 
     function toggleAcc(k) { document.getElementById(`body-${k}`).classList.toggle('open'); }
@@ -388,17 +445,42 @@
       document.querySelectorAll(`#list-${k} .fg-item`).forEach(el => el.style.display = el.innerText.toLowerCase().includes(s) ? 'flex' : 'none');
     }
 
+    function checkNum(val, op, v1, v2) {
+      if (op === 'any' || isNaN(v1) || v1 === '') return true;
+      v1 = parseFloat(v1);
+      if (op === 'eq') return val === v1;
+      if (op === 'gt') return val > v1;
+      if (op === 'gte') return val >= v1;
+      if (op === 'lt') return val < v1;
+      if (op === 'lte') return val <= v1;
+      if (op === 'between') {
+        if (isNaN(v2) || v2 === '') return true;
+        v2 = parseFloat(v2);
+        return val >= Math.min(v1, v2) && val <= Math.max(v1, v2);
+      }
+      return true;
+    }
+
     let fTimer;
     function debounceFilter() { clearTimeout(fTimer); fTimer = setTimeout(applyFilters, 200); }
 
     function applyFilters() {
       const q = document.getElementById('searchBox').value.toLowerCase();
       
+      const opWt = document.getElementById('op-wt').value, v1Wt = document.getElementById('v1-wt').value, v2Wt = document.getElementById('v2-wt').value;
+      const opVal = document.getElementById('op-val').value, v1Val = document.getElementById('v1-val').value, v2Val = document.getElementById('v2-val').value;
+      const opMc = document.getElementById('op-mc').value, v1Mc = document.getElementById('v1-mc').value, v2Mc = document.getElementById('v2-mc').value;
+
       let validRows = rawData.filter(r => {
         if (q && !`${r.Variant} ${r.Design} ${r.AG} ${r.Category}`.toLowerCase().includes(q)) return false;
         for (const k of Object.keys(filters)) {
           if (filters[k].sel.size > 0 && !filters[k].sel.has(r[k])) return false;
         }
+        
+        if (!checkNum(r.Weight, opWt, v1Wt, v2Wt)) return false;
+        if (!checkNum(r.Value, opVal, v1Val, v2Val)) return false;
+        if (!checkNum(r.MCNum, opMc, v1Mc, v2Mc)) return false;
+
         return true;
       });
 
@@ -436,7 +518,19 @@
 
     function handleChk(k, v, isChk) { isChk ? filters[k].sel.add(v) : filters[k].sel.delete(v); applyFilters(); }
     function selAllAcc(k) { document.querySelectorAll(`#list-${k} input`).forEach(i => { if(!i.checked){ i.checked=true; filters[k].sel.add(i.nextElementSibling.innerText.split(' (')[0]); }}); applyFilters(); }
-    function resetFilters() { document.getElementById('searchBox').value = ''; Object.keys(filters).forEach(k => filters[k].sel.clear()); applyFilters(); }
+    
+    function resetFilters() { 
+      document.getElementById('searchBox').value = ''; 
+      Object.keys(filters).forEach(k => filters[k].sel.clear()); 
+      
+      ['wt','val','mc'].forEach(k => {
+        document.getElementById(`op-${k}`).value = 'any';
+        document.getElementById(`v1-${k}`).value = '';
+        document.getElementById(`v2-${k}`).value = '';
+        toggleNumUI(k);
+      });
+      applyFilters(); 
+    }
 
     function updateUI() {
       const tVars = filteredGroups.reduce((s, g) => s + g.rows.length, 0);
@@ -464,25 +558,27 @@
       document.getElementById('spCluster').innerText = f.Cluster || '-';
       document.getElementById('spStone').innerText = f.StoneDetails || '-';
       document.getElementById('spStone').title = f.StoneDetails || '-';
-      document.getElementById('spFind').innerText = f.Findings || '-';
-      document.getElementById('spAttr').innerText = f.Attribute || '-';
-      document.getElementById('spAttr').title = f.Attribute || '-';
+      document.getElementById('spMc').innerText = f.MCStr || '-';
+      
+      const combinedFindAttr = [f.Findings, f.Attribute].filter(Boolean).join(' / ');
+      document.getElementById('spFind').innerText = combinedFindAttr || '-';
       document.getElementById('dispRemark').value = remarksMap[g.design] || '';
 
       document.getElementById('trayCount').innerText = g.rows.length;
       document.getElementById('trayBody').innerHTML = g.rows.map(r => `
         <tr><td style="font-family:monospace; color:var(--accent); font-weight:700;">${r.Variant}</td>
-        <td>${r.Size}</td><td>${r.Karat}</td><td>${r.Prolif}</td><td><b>${r.Weight.toFixed(3)}</b></td></tr>
+        <td>${r.Size}</td><td>${r.Karat}K</td><td><b>${r.Weight.toFixed(3)}</b></td><td>₹${r.Value.toLocaleString('en-IN')}</td></tr>
       `).join('');
 
-      loadDesignImage('mainImg', 'mainLoader', 'mainFallback', g.design);
+      // INTELLIGENT CASCADING IMAGE LOADER using the new Image_Source column
+      loadDesignImage('mainImg', 'mainLoader', 'mainFallback', g.design, f.Variant, f.ImageSource);
 
       if (isLightboxOpen) {
         document.getElementById('lbDesignCode').innerText = g.design;
         document.getElementById('lbCategoryTag').innerText = `${f.Category || '-'} • ${f.Karat}K`;
         document.getElementById('lbWtTag').innerText = wtStr;
         document.getElementById('lbIndexTag').innerText = `${currentIndex + 1} of ${filteredGroups.length}`;
-        loadDesignImage('lbImg', 'lbLoader', 'lbFallback', g.design);
+        loadDesignImage('lbImg', 'lbLoader', 'lbFallback', g.design, f.Variant, f.ImageSource);
       }
 
       updateSelBtn();
@@ -502,7 +598,7 @@
       document.getElementById('dispWtRange').innerText = "WT: -";
     }
 
-    function loadDesignImage(imgId, loaderId, fallbackId, designCode) {
+    function loadDesignImage(imgId, loaderId, fallbackId, designCode, variantCode, imageSource) {
       const img = document.getElementById(imgId);
       const loader = document.getElementById(loaderId);
       const fallback = document.getElementById(fallbackId);
@@ -512,17 +608,34 @@
       if(fallback) fallback.style.display = 'none';
       loader.style.display = 'flex';
       
-      img.dataset.retried = '0';
-      const base = `https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=${designCode}`;
-      img.dataset.base = base;
-      img.src = `${base}.jpg`;
+      img.dataset.design = designCode;
+      
+      // Route based on Python prep script's findings
+      if (imageSource === 'Public') {
+        img.dataset.step = '0';
+        img.src = `https://www.tanishq.co.in/dw/image/v2/BKCK_PRD/on/demandware.static/-/Sites-Tanishq-product-catalog/default/dwd7f6c7c5/images/hi-res/${variantCode.toUpperCase()}_1.jpg?sw=1000&sh=1000`;
+      } else {
+        // Skip public attempt if we already know it fails, preventing lag
+        img.dataset.step = '1';
+        img.src = `https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=${designCode}.jpg`;
+      }
     }
 
     function handleImgErr(img, loaderId, fallbackId) {
-      if (img.dataset.retried !== '1') {
-        img.dataset.retried = '1';
-        img.src = `${img.dataset.base}.JPG`;
+      const step = parseInt(img.dataset.step || '0');
+      const design = img.dataset.design;
+      const jwBase = `https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=${design}`;
+
+      if (step === 0) {
+        // Public CDN failed (unexpectedly) -> Fallback to lowercase internal
+        img.dataset.step = '1';
+        img.src = `${jwBase}.jpg`;
+      } else if (step === 1) {
+        // Internal lowercase failed -> Try uppercase internal
+        img.dataset.step = '2';
+        img.src = `${jwBase}.JPG`;
       } else {
+        // All failed -> Show Fallback UI
         document.getElementById(loaderId).style.display = 'none';
         img.style.display = 'none';
         if(fallbackId && document.getElementById(fallbackId)) {
@@ -565,6 +678,7 @@
     function openLightbox() {
       if(filteredGroups.length === 0) return;
       isLightboxOpen = true;
+      document.body.classList.add('no-scroll');
       document.getElementById('lightboxModal').classList.add('active');
       updateUI();
     }
@@ -572,6 +686,7 @@
     function closeLightbox(e) {
       if (e.target.id === 'lightboxModal' || e.target.classList.contains('lightbox-close-btn')) {
         isLightboxOpen = false;
+        document.body.classList.remove('no-scroll');
         document.getElementById('lightboxModal').classList.remove('active');
       }
     }
@@ -589,7 +704,11 @@
       if (e.key === 'ArrowRight') nav(1);
       if (e.key === 'ArrowLeft') nav(-1);
       if (e.key === ' ' || e.code === 'Space') { e.preventDefault(); toggleSelect(); }
-      if (e.key === 'Escape') { isLightboxOpen = false; document.getElementById('lightboxModal').classList.remove('active'); }
+      if (e.key === 'Escape') { 
+        isLightboxOpen = false; 
+        document.body.classList.remove('no-scroll');
+        document.getElementById('lightboxModal').classList.remove('active'); 
+      }
     });
 
     function openExport() {
@@ -644,6 +763,7 @@
         pdf.setFillColor(255, 255, 255);
         pdf.roundedRect(x, y, cardW, cardH, 3, 3, 'FD');
 
+        // Bypassing CDN for PDF export to prevent canvas security crashes. Directly use jewbridge.
         const url = `https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=${d}`;
         try {
           const b64 = await fetchImg64(`${url}.jpg`);
