@@ -18,35 +18,33 @@
       --text-muted: #736E65;   
       --border: #D6D2C9;       
       --accent: #827560;       
-      --accent-hover: #665B49;
       --success: #546B50;      
       --danger: #965B5B;       
-      --primary-blue: #38bdf8; /* Accent color for dark lightbox */
+      --primary-blue: #38bdf8; 
     }
 
     * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background: var(--bg); color: var(--text-main); margin: 0; padding: 12px 14px 80px 14px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+    body { background: var(--bg); color: var(--text-main); margin: 0; padding: 12px 14px 85px 14px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
 
     /* Header & Top Bar */
-    .header { width: 100%; max-width: 1150px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .header { width: 100%; max-width: 1200px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
     .header h2 { margin: 0; font-size: 1.35rem; color: var(--text-main); font-weight: 700; letter-spacing: -0.5px; }
     
-    .top-controls { width: 100%; max-width: 1150px; display: flex; gap: 10px; margin-bottom: 12px; }
-    .search-input { flex: 1; background: var(--panel-bg); border: 1px solid var(--border); color: var(--text-main); padding: 9px 14px; border-radius: 6px; font-size: 0.85rem; outline: none; transition: 0.2s; }
-    .search-input:focus { border-color: var(--accent); background: #fff; }
+    .top-controls { width: 100%; max-width: 1200px; display: flex; gap: 8px; margin-bottom: 10px; }
+    .search-input { flex: 1; background: #fff; border: 1px solid var(--border); color: var(--text-main); padding: 9px 12px; border-radius: 6px; font-size: 0.85rem; outline: none; transition: 0.2s; }
+    .search-input:focus { border-color: var(--accent); }
     
-    .btn { background: var(--panel-bg); color: var(--text-main); border: 1px solid var(--border); padding: 9px 14px; border-radius: 6px; font-size: 0.82rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; }
-    .btn:hover { border-color: var(--accent); background: #EAE6DF; }
+    .btn { background: var(--panel-bg); color: var(--text-main); border: 1px solid var(--border); padding: 9px 14px; border-radius: 6px; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; }
     .btn-accent { background: var(--accent); color: #fff; border-color: var(--accent); }
 
     /* Stats Bar */
-    .stats-bar { width: 100%; max-width: 1150px; display: flex; justify-content: space-between; align-items: center; background: var(--panel-bg); padding: 8px 14px; border-radius: 6px; border: 1px solid var(--border); margin-bottom: 12px; font-size: 0.82rem; color: var(--text-muted); flex-wrap: wrap; gap: 8px; }
+    .stats-bar { width: 100%; max-width: 1200px; display: flex; justify-content: space-between; align-items: center; background: var(--panel-bg); padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); margin-bottom: 10px; font-size: 0.82rem; color: var(--text-muted); flex-wrap: wrap; gap: 8px; }
     .stats-bar b { color: var(--text-main); }
 
     /* Filter Drawer */
-    .drawer-overlay { display: none; position: fixed; inset: 0; background: rgba(44, 42, 38, 0.4); z-index: 9999; backdrop-filter: blur(2px); }
+    .drawer-overlay { display: none; position: fixed; inset: 0; background: rgba(44, 42, 38, 0.5); z-index: 9999; backdrop-filter: blur(2px); }
     .drawer-overlay.active { display: block; }
-    .filter-drawer { position: fixed; top: 0; right: -380px; width: 340px; max-width: 90vw; height: 100vh; background: var(--panel-bg); box-shadow: -5px 0 25px rgba(0,0,0,0.1); z-index: 10000; transition: right 0.3s ease; display: flex; flex-direction: column; }
+    .filter-drawer { position: fixed; top: 0; right: -380px; width: 340px; max-width: 90vw; height: 100vh; background: var(--panel-bg); box-shadow: -5px 0 25px rgba(0,0,0,0.2); z-index: 10000; transition: right 0.3s ease; display: flex; flex-direction: column; }
     .filter-drawer.active { right: 0; }
     
     .drawer-header { padding: 14px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #fff; }
@@ -57,60 +55,57 @@
     .filter-group { border: 1px solid var(--border); border-radius: 6px; background: #fff; overflow: hidden; }
     .fg-header { padding: 10px 14px; font-size: 0.8rem; font-weight: 700; color: var(--text-main); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
     .fg-header .count { color: var(--accent); font-size: 0.75rem; }
-    .fg-body { display: none; padding: 0 14px 14px 14px; border-top: 1px solid var(--border); max-height: 200px; overflow-y: auto; }
+    .fg-body { display: none; padding: 0 14px 14px 14px; border-top: 1px solid var(--border); max-height: 220px; overflow-y: auto; }
     .fg-body.open { display: block; }
-    
     .fg-search { width: 100%; padding: 6px 10px; border: 1px solid var(--border); border-radius: 4px; font-size: 0.75rem; margin-top: 10px; margin-bottom: 8px; outline: none; }
     .fg-item { display: flex; align-items: center; gap: 8px; padding: 5px 0; font-size: 0.8rem; color: var(--text-main); cursor: pointer; }
-    .fg-item input { accent-color: var(--accent); cursor: pointer; }
+    .fg-item input { accent-color: var(--accent); }
     
     .drawer-footer { padding: 12px 20px; border-top: 1px solid var(--border); background: #fff; display: flex; gap: 10px; }
     .drawer-footer button { flex: 1; padding: 10px; border-radius: 6px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: var(--panel-bg); color: var(--text-main); }
 
-    /* Main South1 Responsive Layout */
-    .main-card { width: 100%; max-width: 1150px; background: var(--panel-bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; gap: 20px; align-items: flex-start; }
+    /* Main Responsive Layout */
+    .main-card { width: 100%; max-width: 1200px; background: var(--panel-bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; gap: 20px; align-items: flex-start; }
     
-    /* Left Column (Sticky Image Desktop) */
-    .left-col { width: 450px; min-width: 450px; position: sticky; top: 15px; display: flex; flex-direction: column; gap: 10px; }
+    .left-col { width: 500px; min-width: 500px; position: sticky; top: 15px; display: flex; flex-direction: column; gap: 10px; }
     
-    .image-viewer { width: 100%; height: 450px; background: var(--card-bg); border-radius: var(--radius); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; cursor: crosshair; }
+    .image-viewer { width: 100%; height: 500px; background: var(--card-bg); border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; cursor: zoom-in; }
     .image-viewer img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; opacity: 0; transition: opacity 0.2s ease-in-out; }
-    .zoom-hint { position: absolute; bottom: 10px; right: 10px; background: rgba(44, 42, 38, 0.75); color: #fff; padding: 4px 8px; border-radius: 4px; font-size: 0.68rem; pointer-events: none; border: 1px solid var(--border); backdrop-filter: blur(4px); }
+    .zoom-hint { position: absolute; bottom: 10px; right: 10px; background: rgba(44, 42, 38, 0.75); color: #fff; padding: 4px 8px; border-radius: 4px; font-size: 0.68rem; pointer-events: none; backdrop-filter: blur(4px); }
     
-    /* Internal Image Loader matched to South1 */
     .img-loader { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: var(--accent); font-size: 0.85rem; font-weight: 700; background: var(--card-bg); z-index: 5; }
-    .spinner { width: 40px; height: 40px; border: 4px solid #e2e8f0; border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
+    .spinner { width: 36px; height: 36px; border: 3px solid #e2e8f0; border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
-    .img-fallback { color: var(--text-muted); font-size: 0.85rem; text-align: center; display: none; padding: 20px; z-index: 6; }
+    .img-fallback { color: var(--text-muted); font-size: 0.85rem; text-align: center; display: none; padding: 20px; z-index: 6; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; background: var(--card-bg); }
 
     /* Right Details Panel */
     .details-panel { flex: 1; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
     .d-header { display: flex; justify-content: space-between; align-items: flex-start; }
-    .d-title { font-size: 1.6rem; font-weight: 800; color: var(--text-main); font-family: monospace; margin-bottom: 2px; }
+    .d-title { font-size: 1.6rem; font-weight: 800; color: var(--text-main); font-family: monospace; margin-bottom: 4px; }
     .wt-range-badge { font-size: 0.82rem; font-weight: 700; color: var(--accent); background: #fff; padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border); display: inline-block; margin-bottom: 6px; }
     .d-meta { font-size: 0.85rem; color: var(--text-muted); }
     
-    .badge-sel { background: var(--success); color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; border: 1px solid #435c40; display: none; }
+    .badge-sel { background: var(--success); color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; display: none; }
     
     .specs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
     .spec-box { background: #fff; padding: 7px 9px; border-radius: 6px; border: 1px solid var(--border); }
     .spec-lbl { font-size: 0.62rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
-    .spec-val { font-size: 0.85rem; font-weight: 600; color: var(--text-main); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .spec-val { font-size: 0.85rem; font-weight: 600; color: var(--text-main); margin-top: 2px; word-wrap: break-word; white-space: normal; }
 
     .remarks-input { width: 100%; background: #fff; border: 1px dashed var(--accent); padding: 10px; border-radius: 6px; font-size: 0.8rem; color: var(--text-main); outline: none; }
     .remarks-input:focus { border-style: solid; }
 
-    /* South1 Gliding Tray (Scrolls internally) */
-    .tray { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 10px; flex: 1; display: flex; flex-direction: column; }
+    /* Gliding Tray */
+    .tray { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 10px; display: flex; flex-direction: column; }
     .tray-title { font-size: 0.75rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px; }
     .tray-scroll { max-height: 155px; overflow-y: auto; }
     .tray-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; text-align: left; }
-    .tray-table th { color: var(--text-muted); padding: 5px 6px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: #fff; font-size: 0.68rem; }
+    .tray-table th { color: var(--text-muted); padding: 5px 6px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: #fff; font-size: 0.68rem; z-index: 2; }
     .tray-table td { padding: 5px 6px; border-bottom: 1px solid #f9f9f9; color: var(--text-main); }
 
-    /* Bottom Actions */
-    .actions-bar { position: sticky; bottom: 0; left: 0; width: 100%; max-width: 1150px; background: rgba(245, 243, 239, 0.95); backdrop-filter: blur(8px); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; margin-top: 10px; box-shadow: 0 -8px 25px rgba(0,0,0,0.08); z-index: 500; }
-    .btn-nav { background: #fff; color: var(--text-main); border: 1px solid var(--border); padding: 10px 18px; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 0.85rem; transition: 0.2s; }
+    /* Bottom Sticky Actions */
+    .actions-bar { position: sticky; bottom: 0; left: 0; width: 100%; max-width: 1200px; background: rgba(245, 243, 239, 0.95); backdrop-filter: blur(8px); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; margin-top: 10px; box-shadow: 0 -8px 25px rgba(0,0,0,0.08); z-index: 500; }
+    .btn-nav { background: #fff; color: var(--text-main); border: 1px solid var(--border); padding: 10px 18px; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 0.85rem; }
     .btn-nav:disabled { opacity: 0.3; cursor: not-allowed; }
     
     .btn-action-group { display: flex; gap: 8px; }
@@ -118,22 +113,22 @@
     .btn-confirm { background: var(--success); color: white; border: none; padding: 10px 24px; border-radius: 6px; font-weight: 700; font-size: 0.85rem; cursor: pointer; }
     .btn-confirmed { background: var(--danger); color: white; border: none; padding: 10px 24px; border-radius: 6px; font-weight: 700; font-size: 0.85rem; cursor: pointer; }
 
-    /* --- Detailed Lightbox Window (South1 Replica) --- */
-    .lightbox-modal { display: none; position: fixed; inset: 0; width: 100vw; height: 100vh; background: rgba(4, 7, 15, 0.94); z-index: 100000; align-items: center; justify-content: center; flex-direction: column; padding: 16px; backdrop-filter: blur(12px); user-select: none; }
+    /* Detailed Lightbox Window */
+    .lightbox-modal { display: none; position: fixed; inset: 0; width: 100vw; height: 100vh; background: rgba(20, 18, 16, 0.95); z-index: 100000; align-items: center; justify-content: center; flex-direction: column; padding: 16px; backdrop-filter: blur(12px); user-select: none; }
     .lightbox-modal.active { display: flex; }
     
     .lightbox-header { width: 100%; max-width: 900px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 10px; flex-wrap: wrap; }
     .lightbox-meta { display: flex; align-items: center; gap: 8px; color: #fff; flex-wrap: wrap; }
     .lightbox-badge { font-size: 1.3rem; font-weight: 800; color: var(--primary-blue); font-family: monospace; }
-    .lightbox-tag { font-size: 0.8rem; color: #94a3b8; background: #131c2e; padding: 4px 8px; border-radius: 4px; border: 1px solid #22324e; }
-    .lightbox-tag-wt { font-size: 0.82rem; font-weight: 700; color: #38bdf8; background: #0c213d; border-color: #0284c7; }
+    .lightbox-tag { font-size: 0.8rem; color: #EAE6DF; background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2); }
+    .lightbox-tag-wt { font-size: 0.82rem; font-weight: 700; color: #38bdf8; border-color: #0284c7; background: rgba(56, 189, 248, 0.1); }
     
-    .lightbox-close-btn { background: #1e293b; color: #fff; border: 1px solid #334155; width: 38px; height: 38px; border-radius: 50%; font-size: 1.2rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .lightbox-close-btn { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); width: 38px; height: 38px; border-radius: 50%; font-size: 1.2rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     
-    .lightbox-body { width: 100%; max-width: 900px; height: calc(100vh - 160px); max-height: 800px; background: #ffffff; border-radius: 14px; overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative; border: 2px solid #334155; }
+    .lightbox-body { width: 100%; max-width: 900px; height: calc(100vh - 160px); max-height: 800px; background: #ffffff; border-radius: 14px; overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative; }
     .lightbox-body img { width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity 0.2s; }
     
-    .lightbox-actions-bar { margin-top: 12px; width: 100%; max-width: 900px; display: flex; justify-content: space-between; align-items: center; background: rgba(15, 23, 42, 0.95); border: 1px solid #334155; border-radius: 10px; padding: 10px 16px; backdrop-filter: blur(8px); }
+    .lightbox-actions-bar { margin-top: 12px; width: 100%; max-width: 900px; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 10px 16px; backdrop-filter: blur(8px); }
 
     /* Export Modal */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(44, 42, 38, 0.6); z-index: 200000; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
@@ -141,34 +136,42 @@
     .modal-card { background: var(--panel-bg); border: 1px solid var(--border); border-radius: 12px; padding: 22px; width: 90%; max-width: 480px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
     .modal-card h3 { margin: 0 0 6px 0; color: var(--text-main); font-size: 1.15rem; }
     .exp-btn { display: flex; justify-content: space-between; align-items: center; background: #fff; border: 1px solid var(--border); padding: 12px 14px; border-radius: 8px; margin-bottom: 12px; cursor: pointer; transition: 0.2s; }
-    .exp-btn:hover { border-color: var(--accent); }
     .pdf-checks { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: #fff; border: 1px solid var(--border); padding: 12px; border-radius: 8px; margin-bottom: 15px; }
     .pdf-checks label { font-size: 0.76rem; color: var(--text-main); display: flex; align-items: center; gap: 6px; cursor: pointer; }
 
-    /* Loader Overlay */
+    /* Full Page Loader */
     #pageLoader { position: fixed; inset: 0; background: var(--bg); z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 
-    /* --- MOBILE OPTIMIZATION (Android Fit) --- */
+    /* --- MOBILE OPTIMIZATION (Android Native Fit) --- */
     @media (max-width: 980px) {
-      body { padding: 10px 10px 80px 10px; }
-      .main-card { flex-direction: column; align-items: center; gap: 16px; padding: 14px; }
+      body { padding: 8px 8px 75px 8px; }
       
-      /* Removes hard-coded heights to fix overflow */
-      .left-col { width: 100%; min-width: 0; max-width: 450px; position: relative; top: 0; } 
-      .image-viewer { width: 100%; height: auto; aspect-ratio: 1 / 1; min-width: 0; }
+      /* Reset container padding and boundaries for native mobile feel */
+      .main-card { flex-direction: column; align-items: center; gap: 14px; padding: 12px; border: none; background: transparent; }
       
+      /* Remove sticky left-col to allow smooth natural scrolling on Android */
+      .left-col { width: 100%; min-width: 0; max-width: 100%; position: relative; top: 0; } 
+      
+      /* Force edge-to-edge native image sizing (aspect-ratio 1:1) */
+      .image-viewer { width: 100%; height: auto; aspect-ratio: 1 / 1; border-radius: 8px; border: 1px solid var(--border); }
+      
+      .details-panel { width: 100%; background: #fff; padding: 12px; border-radius: 8px; border: 1px solid var(--border); }
+      
+      /* Adjust grids to prevent horizontal stretching from long AG texts */
       .specs-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
-      .btn-nav, .btn-confirm, .btn-skip, .btn-confirmed { padding: 10px 14px; font-size: 0.82rem; }
-      .lightbox-body { height: calc(100vh - 200px); }
+      .spec-box:nth-child(2) { grid-column: span 2; } /* Make AG Group span full width */
+      
+      .btn-nav, .btn-confirm, .btn-skip, .btn-confirmed { padding: 10px 12px; font-size: 0.8rem; }
+      .lightbox-body { height: calc(100vh - 180px); border: none; border-radius: 8px; }
+      .lightbox-actions-bar { padding: 8px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Full Page Initial Load -->
   <div id="pageLoader">
     <div class="spinner"></div>
-    <div style="font-weight: 600; color: var(--text-main);">Loading Catalog Database</div>
+    <div style="font-weight: 600; color: var(--text-main);">Loading Database...</div>
   </div>
 
   <div class="header">
@@ -190,9 +193,12 @@
     <div class="left-col">
       <div class="image-viewer" onclick="openLightbox()">
         <div class="img-loader" id="mainLoader"><div class="spinner"></div><span>Loading image...</span></div>
-        <img id="mainImg" src="" onload="this.style.opacity='1'; document.getElementById('mainLoader').style.display='none';" onerror="handleImgErr(this, 'mainLoader')">
-        <div class="img-fallback" id="mainFallback">Image not found on catalog server</div>
-        <div class="zoom-hint">🔍 Tap to open floating window</div>
+        <img id="mainImg" src="" onload="this.style.opacity='1'; document.getElementById('mainLoader').style.display='none';" onerror="handleImgErr(this, 'mainLoader', 'mainFallback')">
+        <div class="img-fallback" id="mainFallback">
+          <div style="font-size: 2.2rem; margin-bottom: 6px;">🖼️</div>
+          <div style="font-weight: 700; color: var(--text-muted);">No Catalog Image</div>
+        </div>
+        <div class="zoom-hint">🔍 Tap to open window</div>
       </div>
     </div>
 
@@ -203,7 +209,7 @@
           <div class="wt-range-badge" id="dispWtRange">WT: -</div>
           <div class="d-meta" id="dispMeta">---</div>
         </div>
-        <div class="badge-sel" id="dispSelBadge">CONFIRMED</div>
+        <div class="badge-sel" id="dispSelBadge">✓ CONFIRMED</div>
       </div>
 
       <div class="specs-grid">
@@ -253,7 +259,7 @@
     <div class="lightbox-body" id="lbBody">
       <div class="img-loader" id="lbLoader"><div class="spinner"></div><span>Loading full-size preview...</span></div>
       <img id="lbImg" src="" onload="this.style.opacity='1'; document.getElementById('lbLoader').style.display='none';" onerror="handleImgErr(this, 'lbLoader', 'lbFallback')">
-      <div class="img-fallback" id="lbFallback" style="display:none; flex-direction:column; align-items:center; justify-content:center; width:100%; height:100%;">
+      <div class="img-fallback" id="lbFallback" style="display:none;">
         <div style="font-size: 3rem;">🖼️</div><div style="font-weight: 700; color: #334155;">No Catalog Image Found</div>
       </div>
     </div>
@@ -261,7 +267,7 @@
     <div class="lightbox-actions-bar">
       <button class="btn-nav" id="lbPrevBtn" onclick="nav(-1)">← Prev</button>
       <div class="btn-action-group">
-        <button class="btn-skip" style="background:#334155; color:#fff; border:none;" onclick="nav(1)">Skip</button>
+        <button class="btn-skip" style="background:rgba(255,255,255,0.1); color:#fff; border:none;" onclick="nav(1)">Skip</button>
         <button class="btn-confirm" id="lbConfirmBtn" onclick="toggleSelect()">✔ Confirm Selection</button>
       </div>
       <button class="btn-nav" id="lbNextBtn" onclick="nav(1)">Next →</button>
@@ -311,21 +317,14 @@
     let currentIndex = 0;
     let isLightboxOpen = false;
 
-    // Strict Data Standardization Dictionary
+    // Standardized Mapping
     const filters = {
-      Category: { sel: new Set() },
-      Theme: { sel: new Set() },
-      Cluster: { sel: new Set() },
-      AG: { sel: new Set() },
-      Size: { sel: new Set() },
-      Karat: { sel: new Set() },
-      Prolif: { sel: new Set() },
-      Findings: { sel: new Set() },
-      Attribute: { sel: new Set() },
+      Category: { sel: new Set() }, Theme: { sel: new Set() }, Cluster: { sel: new Set() },
+      AG: { sel: new Set() }, Size: { sel: new Set() }, Karat: { sel: new Set() },
+      Prolif: { sel: new Set() }, Findings: { sel: new Set() }, Attribute: { sel: new Set() },
       StoneDetails: { sel: new Set() }
     };
 
-    // 1. Fetch & Initialize
     window.onload = async () => {
       try {
         let res = await fetch('data.xlsx');
@@ -350,7 +349,6 @@
           Attribute: String(r['Attribute'] || '').trim(),
           StoneDetails: String(r['Stone details'] || '').trim(),
           Weight: parseFloat(r['Weight']) || 0,
-          Value: parseFloat(r['Value']) || 0,
           Original: r 
         })).filter(r => r.Variant !== '');
 
@@ -362,7 +360,6 @@
       }
     };
 
-    // 2. Drawer Build
     function toggleDrawer() {
       document.getElementById('filterDrawer').classList.toggle('active');
       document.getElementById('drawerOverlay').classList.toggle('active');
@@ -391,7 +388,6 @@
       document.querySelectorAll(`#list-${k} .fg-item`).forEach(el => el.style.display = el.innerText.toLowerCase().includes(s) ? 'flex' : 'none');
     }
 
-    // 3. Filter Engine
     let fTimer;
     function debounceFilter() { clearTimeout(fTimer); fTimer = setTimeout(applyFilters, 200); }
 
@@ -442,7 +438,6 @@
     function selAllAcc(k) { document.querySelectorAll(`#list-${k} input`).forEach(i => { if(!i.checked){ i.checked=true; filters[k].sel.add(i.nextElementSibling.innerText.split(' (')[0]); }}); applyFilters(); }
     function resetFilters() { document.getElementById('searchBox').value = ''; Object.keys(filters).forEach(k => filters[k].sel.clear()); applyFilters(); }
 
-    // 4. Update Main & Lightbox UIs
     function updateUI() {
       const tVars = filteredGroups.reduce((s, g) => s + g.rows.length, 0);
       document.getElementById('stat-designs').innerText = filteredGroups.length;
@@ -461,7 +456,6 @@
       const maxWt = Math.max(...wts).toFixed(3);
       const wtStr = minWt === maxWt ? `WT: ${minWt}g` : `WT: ${minWt} - ${maxWt}g`;
 
-      // Update Main Text Details
       document.getElementById('dispDesign').innerText = g.design;
       document.getElementById('dispWtRange').innerText = wtStr;
       document.getElementById('dispMeta').innerText = `${f.Category || '-'} | Theme: ${f.Theme || '-'}`;
@@ -475,17 +469,14 @@
       document.getElementById('spAttr').title = f.Attribute || '-';
       document.getElementById('dispRemark').value = remarksMap[g.design] || '';
 
-      // Update Gliding Tray
       document.getElementById('trayCount').innerText = g.rows.length;
       document.getElementById('trayBody').innerHTML = g.rows.map(r => `
         <tr><td style="font-family:monospace; color:var(--accent); font-weight:700;">${r.Variant}</td>
         <td>${r.Size}</td><td>${r.Karat}</td><td>${r.Prolif}</td><td><b>${r.Weight.toFixed(3)}</b></td></tr>
       `).join('');
 
-      // Trigger Main Image Load
       loadDesignImage('mainImg', 'mainLoader', 'mainFallback', g.design);
 
-      // Trigger Lightbox Sync if open
       if (isLightboxOpen) {
         document.getElementById('lbDesignCode').innerText = g.design;
         document.getElementById('lbCategoryTag').innerText = `${f.Category || '-'} • ${f.Karat}K`;
@@ -511,7 +502,6 @@
       document.getElementById('dispWtRange').innerText = "WT: -";
     }
 
-    // Image Fetching Logic with Loader Control
     function loadDesignImage(imgId, loaderId, fallbackId, designCode) {
       const img = document.getElementById(imgId);
       const loader = document.getElementById(loaderId);
@@ -541,7 +531,6 @@
       }
     }
 
-    // 5. Actions, Navigation & Swiping
     function nav(dir) {
       const n = currentIndex + dir;
       if (n >= 0 && n < filteredGroups.length) { currentIndex = n; updateUI(); }
@@ -573,7 +562,6 @@
 
     function updateCart() { document.getElementById('cart-count').innerText = selectedDesigns.size; }
 
-    // Lightbox Controls
     function openLightbox() {
       if(filteredGroups.length === 0) return;
       isLightboxOpen = true;
@@ -588,7 +576,6 @@
       }
     }
 
-    // South 1 Swipe Navigation
     let touchX = 0;
     document.getElementById('lbBody').addEventListener('touchstart', e => touchX = e.changedTouches[0].screenX, {passive:true});
     document.getElementById('lbBody').addEventListener('touchend', e => {
@@ -605,7 +592,6 @@
       if (e.key === 'Escape') { isLightboxOpen = false; document.getElementById('lightboxModal').classList.remove('active'); }
     });
 
-    // 6. Export Modal
     function openExport() {
       if (selectedDesigns.size === 0) return alert("Select at least one design to export.");
       document.getElementById('exportModal').classList.add('active');
