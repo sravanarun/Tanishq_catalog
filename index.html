@@ -11,9 +11,9 @@
   <style>
     /* Warm Alabaster & Taupe Theme */
     :root {
-      --bg: #EAE6DF;           /* Warm bone/alabaster background */
-      --panel-bg: #F5F3EF;     /* Slightly lighter linen for panels */
-      --card-bg: #FFFFFF;      /* Pure white for image background */
+      --bg: #EAE6DF;           
+      --panel-bg: #F5F3EF;     
+      --card-bg: #FFFFFF;      
       --text-main: #2C2A26;    
       --text-muted: #736E65;   
       --border: #D6D2C9;       
@@ -21,27 +21,26 @@
       --accent-hover: #665B49;
       --success: #546B50;      
       --danger: #965B5B;       
-      --radius: 10px;
+      --primary-blue: #38bdf8; /* Accent color for dark lightbox */
     }
 
     * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background: var(--bg); color: var(--text-main); margin: 0; padding: 12px 14px 80px 14px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
 
     /* Header & Top Bar */
-    .header { width: 100%; max-width: 1100px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
-    .header h2 { margin: 0; font-size: 1.3rem; color: var(--text-main); font-weight: 700; letter-spacing: -0.5px; }
+    .header { width: 100%; max-width: 1150px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .header h2 { margin: 0; font-size: 1.35rem; color: var(--text-main); font-weight: 700; letter-spacing: -0.5px; }
     
-    .top-controls { width: 100%; max-width: 1100px; display: flex; gap: 10px; margin-bottom: 15px; }
-    .search-input { flex: 1; background: var(--panel-bg); border: 1px solid var(--border); color: var(--text-main); padding: 10px 14px; border-radius: 8px; font-size: 0.9rem; outline: none; transition: 0.2s; }
+    .top-controls { width: 100%; max-width: 1150px; display: flex; gap: 10px; margin-bottom: 12px; }
+    .search-input { flex: 1; background: var(--panel-bg); border: 1px solid var(--border); color: var(--text-main); padding: 9px 14px; border-radius: 6px; font-size: 0.85rem; outline: none; transition: 0.2s; }
     .search-input:focus { border-color: var(--accent); background: #fff; }
     
-    .btn { background: var(--panel-bg); color: var(--text-main); border: 1px solid var(--border); padding: 10px 16px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 6px; }
+    .btn { background: var(--panel-bg); color: var(--text-main); border: 1px solid var(--border); padding: 9px 14px; border-radius: 6px; font-size: 0.82rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; }
     .btn:hover { border-color: var(--accent); background: #EAE6DF; }
     .btn-accent { background: var(--accent); color: #fff; border-color: var(--accent); }
-    .btn-accent:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
 
     /* Stats Bar */
-    .stats-bar { width: 100%; max-width: 1100px; display: flex; justify-content: space-between; align-items: center; background: var(--panel-bg); padding: 10px 16px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 15px; font-size: 0.85rem; color: var(--text-muted); flex-wrap: wrap; gap: 8px; }
+    .stats-bar { width: 100%; max-width: 1150px; display: flex; justify-content: space-between; align-items: center; background: var(--panel-bg); padding: 8px 14px; border-radius: 6px; border: 1px solid var(--border); margin-bottom: 12px; font-size: 0.82rem; color: var(--text-muted); flex-wrap: wrap; gap: 8px; }
     .stats-bar b { color: var(--text-main); }
 
     /* Filter Drawer */
@@ -50,110 +49,126 @@
     .filter-drawer { position: fixed; top: 0; right: -380px; width: 340px; max-width: 90vw; height: 100vh; background: var(--panel-bg); box-shadow: -5px 0 25px rgba(0,0,0,0.1); z-index: 10000; transition: right 0.3s ease; display: flex; flex-direction: column; }
     .filter-drawer.active { right: 0; }
     
-    .drawer-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #fff; }
-    .drawer-header h3 { margin: 0; font-size: 1.1rem; color: var(--text-main); }
+    .drawer-header { padding: 14px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #fff; }
+    .drawer-header h3 { margin: 0; font-size: 1.05rem; color: var(--text-main); }
     .drawer-close { background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer; padding: 0; }
     
-    .drawer-body { padding: 15px 20px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 15px; }
-    .filter-group { border: 1px solid var(--border); border-radius: 8px; background: #fff; overflow: hidden; }
-    .fg-header { padding: 12px 15px; font-size: 0.85rem; font-weight: 700; color: var(--text-main); background: #fff; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
-    .fg-header:hover { background: #fcfcfc; }
+    .drawer-body { padding: 15px 20px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+    .filter-group { border: 1px solid var(--border); border-radius: 6px; background: #fff; overflow: hidden; }
+    .fg-header { padding: 10px 14px; font-size: 0.8rem; font-weight: 700; color: var(--text-main); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
     .fg-header .count { color: var(--accent); font-size: 0.75rem; }
-    .fg-body { display: none; padding: 0 15px 15px 15px; border-top: 1px solid var(--border); max-height: 200px; overflow-y: auto; }
+    .fg-body { display: none; padding: 0 14px 14px 14px; border-top: 1px solid var(--border); max-height: 200px; overflow-y: auto; }
     .fg-body.open { display: block; }
     
     .fg-search { width: 100%; padding: 6px 10px; border: 1px solid var(--border); border-radius: 4px; font-size: 0.75rem; margin-top: 10px; margin-bottom: 8px; outline: none; }
     .fg-item { display: flex; align-items: center; gap: 8px; padding: 5px 0; font-size: 0.8rem; color: var(--text-main); cursor: pointer; }
-    .fg-item input { accent-color: var(--accent); width: 14px; height: 14px; cursor: pointer; margin: 0; }
+    .fg-item input { accent-color: var(--accent); cursor: pointer; }
     
-    .drawer-footer { padding: 15px 20px; border-top: 1px solid var(--border); background: #fff; display: flex; gap: 10px; }
+    .drawer-footer { padding: 12px 20px; border-top: 1px solid var(--border); background: #fff; display: flex; gap: 10px; }
     .drawer-footer button { flex: 1; padding: 10px; border-radius: 6px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: var(--panel-bg); color: var(--text-main); }
 
-    /* Main Layout */
-    .main-card { width: 100%; max-width: 1100px; background: var(--panel-bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; gap: 20px; align-items: flex-start; }
+    /* Main South1 Responsive Layout */
+    .main-card { width: 100%; max-width: 1150px; background: var(--panel-bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; gap: 20px; align-items: flex-start; }
     
-    /* Left Column (Sticky) */
+    /* Left Column (Sticky Image Desktop) */
     .left-col { width: 450px; min-width: 450px; position: sticky; top: 15px; display: flex; flex-direction: column; gap: 10px; }
     
-    .image-viewer { width: 100%; height: 450px; background: var(--card-bg); border-radius: var(--radius); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; cursor: pointer; }
-    .image-viewer img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
-    .zoom-hint { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); background: rgba(44, 42, 38, 0.8); color: #fff; padding: 5px 12px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; pointer-events: none; border: 1px solid var(--border); backdrop-filter: blur(4px); }
+    .image-viewer { width: 100%; height: 450px; background: var(--card-bg); border-radius: var(--radius); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; cursor: crosshair; }
+    .image-viewer img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; opacity: 0; transition: opacity 0.2s ease-in-out; }
+    .zoom-hint { position: absolute; bottom: 10px; right: 10px; background: rgba(44, 42, 38, 0.75); color: #fff; padding: 4px 8px; border-radius: 4px; font-size: 0.68rem; pointer-events: none; border: 1px solid var(--border); backdrop-filter: blur(4px); }
     
+    /* Internal Image Loader matched to South1 */
+    .img-loader { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: var(--accent); font-size: 0.85rem; font-weight: 700; background: var(--card-bg); z-index: 5; }
+    .spinner { width: 40px; height: 40px; border: 4px solid #e2e8f0; border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .img-fallback { color: var(--text-muted); font-size: 0.85rem; text-align: center; display: none; padding: 20px; z-index: 6; }
+
     /* Right Details Panel */
     .details-panel { flex: 1; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
     .d-header { display: flex; justify-content: space-between; align-items: flex-start; }
-    .d-title { font-size: 1.8rem; font-weight: 800; color: var(--text-main); font-family: monospace; letter-spacing: -0.5px; margin-bottom: 2px; }
-    .wt-range-badge { font-size: 0.85rem; font-weight: 700; color: var(--accent); background: #fff; padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border); display: inline-block; margin-bottom: 6px; }
+    .d-title { font-size: 1.6rem; font-weight: 800; color: var(--text-main); font-family: monospace; margin-bottom: 2px; }
+    .wt-range-badge { font-size: 0.82rem; font-weight: 700; color: var(--accent); background: #fff; padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border); display: inline-block; margin-bottom: 6px; }
     .d-meta { font-size: 0.85rem; color: var(--text-muted); }
     
-    .badge-sel { background: var(--accent); color: white; padding: 5px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; display: none; }
+    .badge-sel { background: var(--success); color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; border: 1px solid #435c40; display: none; }
     
     .specs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-    .spec-box { background: #fff; padding: 8px 10px; border-radius: 6px; border: 1px solid var(--border); }
-    .spec-lbl { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
+    .spec-box { background: #fff; padding: 7px 9px; border-radius: 6px; border: 1px solid var(--border); }
+    .spec-lbl { font-size: 0.62rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
     .spec-val { font-size: 0.85rem; font-weight: 600; color: var(--text-main); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    .remarks-input { width: 100%; background: #fff; border: 1px dashed var(--accent); padding: 12px; border-radius: 6px; font-size: 0.85rem; color: var(--text-main); outline: none; transition: 0.2s; }
-    .remarks-input::placeholder { color: #A8A196; font-style: italic; }
-    .remarks-input:focus { border-style: solid; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+    .remarks-input { width: 100%; background: #fff; border: 1px dashed var(--accent); padding: 10px; border-radius: 6px; font-size: 0.8rem; color: var(--text-main); outline: none; }
+    .remarks-input:focus { border-style: solid; }
 
+    /* South1 Gliding Tray (Scrolls internally) */
     .tray { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 10px; flex: 1; display: flex; flex-direction: column; }
-    .tray-title { font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 8px; }
+    .tray-title { font-size: 0.75rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px; }
+    .tray-scroll { max-height: 155px; overflow-y: auto; }
     .tray-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; text-align: left; }
-    .tray-table th { color: var(--text-muted); padding: 6px; border-bottom: 1px solid var(--border); }
-    .tray-table td { padding: 6px; border-bottom: 1px solid #f9f9f9; color: var(--text-main); }
+    .tray-table th { color: var(--text-muted); padding: 5px 6px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: #fff; font-size: 0.68rem; }
+    .tray-table td { padding: 5px 6px; border-bottom: 1px solid #f9f9f9; color: var(--text-main); }
 
-    /* Bottom Nav Bar */
-    .actions-bar { position: sticky; bottom: 0; left: 0; width: 100%; max-width: 1100px; background: rgba(245, 243, 239, 0.95); backdrop-filter: blur(8px); border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; margin-top: 15px; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); z-index: 500; }
-    .btn-nav { background: #fff; color: var(--text-main); border: 1px solid var(--border); padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.9rem; transition: 0.2s; }
-    .btn-nav:hover:not(:disabled) { border-color: var(--accent); }
-    .btn-nav:disabled { opacity: 0.4; cursor: not-allowed; }
+    /* Bottom Actions */
+    .actions-bar { position: sticky; bottom: 0; left: 0; width: 100%; max-width: 1150px; background: rgba(245, 243, 239, 0.95); backdrop-filter: blur(8px); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; margin-top: 10px; box-shadow: 0 -8px 25px rgba(0,0,0,0.08); z-index: 500; }
+    .btn-nav { background: #fff; color: var(--text-main); border: 1px solid var(--border); padding: 10px 18px; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 0.85rem; transition: 0.2s; }
+    .btn-nav:disabled { opacity: 0.3; cursor: not-allowed; }
     
-    .btn-action-group { display: flex; gap: 10px; }
-    .btn-skip { background: #fff; color: var(--text-muted); border: 1px solid var(--border); padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; }
-    .btn-confirm { background: var(--success); color: white; border: none; padding: 10px 24px; border-radius: 8px; font-weight: 700; font-size: 0.9rem; cursor: pointer; }
-    .btn-confirmed { background: var(--danger); color: white; border: none; padding: 10px 24px; border-radius: 8px; font-weight: 700; font-size: 0.9rem; cursor: pointer; }
+    .btn-action-group { display: flex; gap: 8px; }
+    .btn-skip { background: #fff; color: var(--text-muted); border: 1px solid var(--border); padding: 10px 18px; border-radius: 6px; font-weight: 700; font-size: 0.85rem; cursor: pointer; }
+    .btn-confirm { background: var(--success); color: white; border: none; padding: 10px 24px; border-radius: 6px; font-weight: 700; font-size: 0.85rem; cursor: pointer; }
+    .btn-confirmed { background: var(--danger); color: white; border: none; padding: 10px 24px; border-radius: 6px; font-weight: 700; font-size: 0.85rem; cursor: pointer; }
 
-    /* Lightbox Modal (South 1 floating style) */
-    .lightbox-modal { display: none; position: fixed; inset: 0; background: rgba(20, 18, 16, 0.95); z-index: 100000; align-items: center; justify-content: center; backdrop-filter: blur(8px); user-select: none; }
+    /* --- Detailed Lightbox Window (South1 Replica) --- */
+    .lightbox-modal { display: none; position: fixed; inset: 0; width: 100vw; height: 100vh; background: rgba(4, 7, 15, 0.94); z-index: 100000; align-items: center; justify-content: center; flex-direction: column; padding: 16px; backdrop-filter: blur(12px); user-select: none; }
     .lightbox-modal.active { display: flex; }
-    .lb-body { width: 100%; max-width: 900px; height: 85vh; background: #fff; border-radius: 14px; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-    .lb-body img { width: 100%; height: 100%; object-fit: contain; }
-    .lb-close { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5); color: #fff; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 1.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; }
-    .lb-nav-hint { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.6); color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; pointer-events: none; }
+    
+    .lightbox-header { width: 100%; max-width: 900px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 10px; flex-wrap: wrap; }
+    .lightbox-meta { display: flex; align-items: center; gap: 8px; color: #fff; flex-wrap: wrap; }
+    .lightbox-badge { font-size: 1.3rem; font-weight: 800; color: var(--primary-blue); font-family: monospace; }
+    .lightbox-tag { font-size: 0.8rem; color: #94a3b8; background: #131c2e; padding: 4px 8px; border-radius: 4px; border: 1px solid #22324e; }
+    .lightbox-tag-wt { font-size: 0.82rem; font-weight: 700; color: #38bdf8; background: #0c213d; border-color: #0284c7; }
+    
+    .lightbox-close-btn { background: #1e293b; color: #fff; border: 1px solid #334155; width: 38px; height: 38px; border-radius: 50%; font-size: 1.2rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    
+    .lightbox-body { width: 100%; max-width: 900px; height: calc(100vh - 160px); max-height: 800px; background: #ffffff; border-radius: 14px; overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative; border: 2px solid #334155; }
+    .lightbox-body img { width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity 0.2s; }
+    
+    .lightbox-actions-bar { margin-top: 12px; width: 100%; max-width: 900px; display: flex; justify-content: space-between; align-items: center; background: rgba(15, 23, 42, 0.95); border: 1px solid #334155; border-radius: 10px; padding: 10px 16px; backdrop-filter: blur(8px); }
 
     /* Export Modal */
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(44, 42, 38, 0.6); z-index: 20000; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(44, 42, 38, 0.6); z-index: 200000; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
     .modal-overlay.active { display: flex; }
-    .modal-card { background: var(--panel-bg); border: 1px solid var(--border); border-radius: 12px; padding: 25px; width: 90%; max-width: 450px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
-    .modal-card h3 { margin: 0 0 10px 0; color: var(--text-main); font-size: 1.3rem; }
-    .exp-btn { display: flex; justify-content: space-between; align-items: center; background: #fff; border: 1px solid var(--border); padding: 14px 16px; border-radius: 8px; margin-bottom: 12px; cursor: pointer; transition: 0.2s; }
-    .exp-btn:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-    
+    .modal-card { background: var(--panel-bg); border: 1px solid var(--border); border-radius: 12px; padding: 22px; width: 90%; max-width: 480px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+    .modal-card h3 { margin: 0 0 6px 0; color: var(--text-main); font-size: 1.15rem; }
+    .exp-btn { display: flex; justify-content: space-between; align-items: center; background: #fff; border: 1px solid var(--border); padding: 12px 14px; border-radius: 8px; margin-bottom: 12px; cursor: pointer; transition: 0.2s; }
+    .exp-btn:hover { border-color: var(--accent); }
     .pdf-checks { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: #fff; border: 1px solid var(--border); padding: 12px; border-radius: 8px; margin-bottom: 15px; }
-    .pdf-checks label { font-size: 0.8rem; color: var(--text-main); display: flex; align-items: center; gap: 6px; cursor: pointer; }
+    .pdf-checks label { font-size: 0.76rem; color: var(--text-main); display: flex; align-items: center; gap: 6px; cursor: pointer; }
 
-    /* Loader */
-    #loader { position: fixed; inset: 0; background: var(--bg); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    .spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 15px; }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    /* Loader Overlay */
+    #pageLoader { position: fixed; inset: 0; background: var(--bg); z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 
-    /* Mobile Adaptations */
-    @media (max-width: 900px) {
-      .main-card { flex-direction: column; align-items: center; padding: 12px; }
-      .left-col { width: 100%; max-width: 450px; position: relative; top: 0; } /* Removes sticky on mobile to allow natural scrolling */
-      .specs-grid { grid-template-columns: repeat(2, 1fr); }
-      .details-panel { width: 100%; }
-      .btn-nav { padding: 10px 14px; }
+    /* --- MOBILE OPTIMIZATION (Android Fit) --- */
+    @media (max-width: 980px) {
+      body { padding: 10px 10px 80px 10px; }
+      .main-card { flex-direction: column; align-items: center; gap: 16px; padding: 14px; }
+      
+      /* Removes hard-coded heights to fix overflow */
+      .left-col { width: 100%; min-width: 0; max-width: 450px; position: relative; top: 0; } 
+      .image-viewer { width: 100%; height: auto; aspect-ratio: 1 / 1; min-width: 0; }
+      
+      .specs-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+      .btn-nav, .btn-confirm, .btn-skip, .btn-confirmed { padding: 10px 14px; font-size: 0.82rem; }
+      .lightbox-body { height: calc(100vh - 200px); }
     }
   </style>
 </head>
 <body>
 
-  <div id="loader">
+  <!-- Full Page Initial Load -->
+  <div id="pageLoader">
     <div class="spinner"></div>
-    <div style="font-weight: 600; color: var(--text-main);">Loading Catalog</div>
-    <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 5px;">Fetching data from server...</div>
+    <div style="font-weight: 600; color: var(--text-main);">Loading Catalog Database</div>
   </div>
 
   <div class="header">
@@ -162,7 +177,7 @@
   </div>
 
   <div class="top-controls">
-    <input type="text" class="search-input" id="searchBox" placeholder="Search Design, Variant, Category..." oninput="debounceFilter()">
+    <input type="text" class="search-input" id="searchBox" placeholder="Search SKU, Design, Category..." oninput="debounceFilter()">
     <button class="btn" onclick="toggleDrawer()">⧸⧸⧸ Filters (<span id="active-filter-count">0</span>)</button>
   </div>
 
@@ -174,7 +189,9 @@
   <div class="main-card">
     <div class="left-col">
       <div class="image-viewer" onclick="openLightbox()">
-        <img id="mainImg" src="" onerror="handleImgErr(this)">
+        <div class="img-loader" id="mainLoader"><div class="spinner"></div><span>Loading image...</span></div>
+        <img id="mainImg" src="" onload="this.style.opacity='1'; document.getElementById('mainLoader').style.display='none';" onerror="handleImgErr(this, 'mainLoader')">
+        <div class="img-fallback" id="mainFallback">Image not found on catalog server</div>
         <div class="zoom-hint">🔍 Tap to open floating window</div>
       </div>
     </div>
@@ -186,7 +203,7 @@
           <div class="wt-range-badge" id="dispWtRange">WT: -</div>
           <div class="d-meta" id="dispMeta">---</div>
         </div>
-        <div class="badge-sel" id="dispSelBadge">✓ SELECTED</div>
+        <div class="badge-sel" id="dispSelBadge">CONFIRMED</div>
       </div>
 
       <div class="specs-grid">
@@ -202,10 +219,12 @@
 
       <div class="tray">
         <div class="tray-title">Filtered Variants (<span id="trayCount">0</span>)</div>
-        <table class="tray-table">
-          <thead><tr><th>Variant</th><th>Size</th><th>Karat</th><th>Prolif</th><th>Wt (g)</th></tr></thead>
-          <tbody id="trayBody"></tbody>
-        </table>
+        <div class="tray-scroll">
+          <table class="tray-table">
+            <thead><tr><th>Variant</th><th>Size</th><th>Karat</th><th>Prolif</th><th>Wt (g)</th></tr></thead>
+            <tbody id="trayBody"></tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
@@ -214,27 +233,45 @@
     <button class="btn-nav" id="btnPrev" onclick="nav(-1)">← Prev</button>
     <div class="btn-action-group">
       <button class="btn-skip" onclick="nav(1)">Skip</button>
-      <button class="btn-confirm" id="btnConfirm" onclick="toggleSelect()">✔ Select</button>
+      <button class="btn-confirm" id="btnConfirm" onclick="toggleSelect()">✔ Confirm</button>
     </div>
     <button class="btn-nav" id="btnNext" onclick="nav(1)">Next →</button>
   </div>
 
-  <!-- Lightbox Modal -->
+  <!-- Detailed Floating Lightbox (South 1 Replica) -->
   <div class="lightbox-modal" id="lightboxModal" onclick="closeLightbox(event)">
-    <div class="lb-body">
-      <button class="lb-close" onclick="closeLightbox(event)">✕</button>
-      <img id="lbImg" src="" onerror="handleImgErr(this)">
-      <div class="lb-nav-hint">‹ Swipe or use arrow keys ›</div>
+    <div class="lightbox-header">
+      <div class="lightbox-meta">
+        <span class="lightbox-badge" id="lbDesignCode">---</span>
+        <span class="lightbox-tag" id="lbCategoryTag">-</span>
+        <span class="lightbox-tag lightbox-tag-wt" id="lbWtTag">WT: -</span>
+        <span class="lightbox-tag" id="lbIndexTag">0 of 0</span>
+      </div>
+      <button class="lightbox-close-btn" onclick="closeLightbox(event)">✕</button>
+    </div>
+
+    <div class="lightbox-body" id="lbBody">
+      <div class="img-loader" id="lbLoader"><div class="spinner"></div><span>Loading full-size preview...</span></div>
+      <img id="lbImg" src="" onload="this.style.opacity='1'; document.getElementById('lbLoader').style.display='none';" onerror="handleImgErr(this, 'lbLoader', 'lbFallback')">
+      <div class="img-fallback" id="lbFallback" style="display:none; flex-direction:column; align-items:center; justify-content:center; width:100%; height:100%;">
+        <div style="font-size: 3rem;">🖼️</div><div style="font-weight: 700; color: #334155;">No Catalog Image Found</div>
+      </div>
+    </div>
+
+    <div class="lightbox-actions-bar">
+      <button class="btn-nav" id="lbPrevBtn" onclick="nav(-1)">← Prev</button>
+      <div class="btn-action-group">
+        <button class="btn-skip" style="background:#334155; color:#fff; border:none;" onclick="nav(1)">Skip</button>
+        <button class="btn-confirm" id="lbConfirmBtn" onclick="toggleSelect()">✔ Confirm Selection</button>
+      </div>
+      <button class="btn-nav" id="lbNextBtn" onclick="nav(1)">Next →</button>
     </div>
   </div>
 
-  <!-- Slide-Out Filter Drawer -->
+  <!-- Filter Drawer -->
   <div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()"></div>
   <div class="filter-drawer" id="filterDrawer">
-    <div class="drawer-header">
-      <h3>Advanced Filters</h3>
-      <button class="drawer-close" onclick="toggleDrawer()">×</button>
-    </div>
+    <div class="drawer-header"><h3>Advanced Filters</h3><button class="drawer-close" onclick="toggleDrawer()">×</button></div>
     <div class="drawer-body" id="drawerBody"></div>
     <div class="drawer-footer">
       <button onclick="resetFilters()">Reset All</button>
@@ -245,30 +282,22 @@
   <!-- Export Modal -->
   <div class="modal-overlay" id="exportModal" onclick="closeModal(event)">
     <div class="modal-card">
-      <h3 style="display:flex; justify-content:space-between;">Export Cart <button style="background:none; border:none; font-size:1.2rem; cursor:pointer;" onclick="document.getElementById('exportModal').classList.remove('active')">×</button></h3>
-      <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:15px;">You have <b id="expCount">0</b> designs selected.</p>
+      <h3 style="display:flex; justify-content:space-between;">Export Format <button style="background:none; border:none; font-size:1.2rem; cursor:pointer;" onclick="document.getElementById('exportModal').classList.remove('active')">×</button></h3>
       
       <div class="exp-btn" onclick="exportExcel()">
-        <div>
-          <b>📊 Download Master Excel</b>
-          <div style="font-size:0.75rem; color:var(--text-muted);">Includes your secret Recognised Remarks</div>
-        </div>
+        <div><b>📊 Download Master Excel (.xlsx)</b><div style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">Includes your Recognised Remarks column</div></div>
         <b style="color:var(--accent);">→</b>
       </div>
 
-      <div style="font-size:0.8rem; font-weight:700; margin-bottom:8px; margin-top:15px;">PDF Visual Data:</div>
       <div class="pdf-checks">
         <label><input type="checkbox" id="pdfChkVar" checked> Variants & Sizes</label>
-        <label><input type="checkbox" id="pdfChkWt" checked> Weights</label>
+        <label><input type="checkbox" id="pdfChkWt" checked> Weight Range</label>
         <label><input type="checkbox" id="pdfChkCat" checked> Category</label>
         <label><input type="checkbox" id="pdfChkAg" checked> AG Group</label>
       </div>
 
       <div class="exp-btn" style="background:var(--accent); border-color:var(--accent);" onclick="exportPDF()">
-        <div>
-          <b style="color:#fff;">📄 Generate 2x2 PDF</b>
-          <div style="font-size:0.75rem; color:#e0dcd3;">Visual catalog layout</div>
-        </div>
+        <div><b style="color:#fff;">📄 Generate 2x2 Visual PDF</b><div style="font-size:0.75rem; color:#e0dcd3; margin-top:2px;">Standard printable layout</div></div>
         <b style="color:#fff;">→</b>
       </div>
     </div>
@@ -280,8 +309,9 @@
     let selectedDesigns = new Set();
     let remarksMap = {}; 
     let currentIndex = 0;
+    let isLightboxOpen = false;
 
-    // Strict Data Standardization - No Mapping Errors
+    // Strict Data Standardization Dictionary
     const filters = {
       Category: { sel: new Set() },
       Theme: { sel: new Set() },
@@ -300,13 +330,12 @@
       try {
         let res = await fetch('data.xlsx');
         if (!res.ok) res = await fetch('data.xls');
-        if (!res.ok) throw new Error("File not found");
+        if (!res.ok) throw new Error("File missing");
         
         const ab = await res.arrayBuffer();
         const wb = XLSX.read(ab, { type: 'array' });
         const json = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
         
-        // Explicit clean mapping to avoid any missing keys during filter execution
         rawData = json.map(r => ({
           Variant: String(r['Variant code'] || '').trim(),
           Design: String(r['Design'] || '').trim(),
@@ -322,18 +351,18 @@
           StoneDetails: String(r['Stone details'] || '').trim(),
           Weight: parseFloat(r['Weight']) || 0,
           Value: parseFloat(r['Value']) || 0,
-          Original: r // Used for Excel export
+          Original: r 
         })).filter(r => r.Variant !== '');
 
         buildDrawer();
         applyFilters();
-        document.getElementById('loader').style.display = 'none';
+        document.getElementById('pageLoader').style.display = 'none';
       } catch (e) {
-        alert("Could not load data.xlsx or data.xls automatically. Please check GitHub repo files.");
+        alert("Failed to load catalog. Ensure data.xlsx exists in repository.");
       }
     };
 
-    // 2. Drawer Builders
+    // 2. Drawer Build
     function toggleDrawer() {
       document.getElementById('filterDrawer').classList.toggle('active');
       document.getElementById('drawerOverlay').classList.toggle('active');
@@ -359,21 +388,18 @@
     function toggleAcc(k) { document.getElementById(`body-${k}`).classList.toggle('open'); }
     function filterAcc(k, val) {
       const s = val.toLowerCase();
-      document.querySelectorAll(`#list-${k} .fg-item`).forEach(el => {
-        el.style.display = el.innerText.toLowerCase().includes(s) ? 'flex' : 'none';
-      });
+      document.querySelectorAll(`#list-${k} .fg-item`).forEach(el => el.style.display = el.innerText.toLowerCase().includes(s) ? 'flex' : 'none');
     }
 
-    // 3. Filter Engine (Simplified & robust mapping)
+    // 3. Filter Engine
     let fTimer;
-    function debounceFilter() { clearTimeout(fTimer); fTimer = setTimeout(applyFilters, 250); }
+    function debounceFilter() { clearTimeout(fTimer); fTimer = setTimeout(applyFilters, 200); }
 
     function applyFilters() {
       const q = document.getElementById('searchBox').value.toLowerCase();
       
       let validRows = rawData.filter(r => {
         if (q && !`${r.Variant} ${r.Design} ${r.AG} ${r.Category}`.toLowerCase().includes(q)) return false;
-        
         for (const k of Object.keys(filters)) {
           if (filters[k].sel.size > 0 && !filters[k].sel.has(r[k])) return false;
         }
@@ -388,9 +414,7 @@
       filteredGroups = Array.from(gMap.values());
       
       updateDrawerLists(validRows);
-      
-      let activeCount = Object.values(filters).reduce((acc, f) => acc + (f.sel.size > 0 ? 1 : 0), 0);
-      document.getElementById('active-filter-count').innerText = activeCount;
+      document.getElementById('active-filter-count').innerText = Object.values(filters).reduce((acc, f) => acc + (f.sel.size > 0 ? 1 : 0), 0);
       
       currentIndex = 0;
       updateUI();
@@ -410,7 +434,6 @@
           const chk = filters[k].sel.has(v) ? 'checked' : '';
           return `<label class="fg-item"><input type="checkbox" ${chk} onchange="handleChk('${k}','${v}',this.checked)"><span>${v} (${counts[v]})</span></label>`;
         }).join('');
-        
         document.getElementById(`count-${k}`).innerText = filters[k].sel.size > 0 ? `${filters[k].sel.size} sel` : '';
       });
     }
@@ -419,51 +442,29 @@
     function selAllAcc(k) { document.querySelectorAll(`#list-${k} input`).forEach(i => { if(!i.checked){ i.checked=true; filters[k].sel.add(i.nextElementSibling.innerText.split(' (')[0]); }}); applyFilters(); }
     function resetFilters() { document.getElementById('searchBox').value = ''; Object.keys(filters).forEach(k => filters[k].sel.clear()); applyFilters(); }
 
-    // 4. Main UI Updater
+    // 4. Update Main & Lightbox UIs
     function updateUI() {
       const tVars = filteredGroups.reduce((s, g) => s + g.rows.length, 0);
       document.getElementById('stat-designs').innerText = filteredGroups.length;
       document.getElementById('stat-vars').innerText = tVars;
       document.getElementById('stat-max').innerText = filteredGroups.length;
 
-      if (filteredGroups.length === 0) {
-        document.getElementById('dispDesign').innerText = "No Results";
-        document.getElementById('mainImg').src = "";
-        document.getElementById('trayBody').innerHTML = "";
-        document.getElementById('dispWtRange').innerText = "WT: -";
-        return;
-      }
+      if (filteredGroups.length === 0) return handleEmptyState();
 
       document.getElementById('stat-idx').innerText = currentIndex + 1;
       
       const g = filteredGroups[currentIndex];
       const f = g.rows[0]; 
       
-      const base = `https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=${g.design}`;
-      
-      const img = document.getElementById('mainImg');
-      img.dataset.retried = '0';
-      img.dataset.base = base;
-      img.src = `${base}.jpg`;
-
-      // Sync lightbox if it is open
-      if (document.getElementById('lightboxModal').classList.contains('active')) {
-        const lbImg = document.getElementById('lbImg');
-        lbImg.dataset.retried = '0';
-        lbImg.dataset.base = base;
-        lbImg.src = `${base}.jpg`;
-      }
-
-      document.getElementById('dispDesign').innerText = g.design;
-      document.getElementById('dispMeta').innerText = `${f.Category || '-'} | Theme: ${f.Theme || '-'}`;
-      
-      // Calculate and display weight range instantly
       const wts = g.rows.map(r => r.Weight);
       const minWt = Math.min(...wts).toFixed(3);
       const maxWt = Math.max(...wts).toFixed(3);
-      document.getElementById('dispWtRange').innerText = minWt === maxWt ? `WT: ${minWt}g` : `WT: ${minWt} - ${maxWt}g`;
-      
-      // Inject standard fields
+      const wtStr = minWt === maxWt ? `WT: ${minWt}g` : `WT: ${minWt} - ${maxWt}g`;
+
+      // Update Main Text Details
+      document.getElementById('dispDesign').innerText = g.design;
+      document.getElementById('dispWtRange').innerText = wtStr;
+      document.getElementById('dispMeta').innerText = `${f.Category || '-'} | Theme: ${f.Theme || '-'}`;
       document.getElementById('spCat').innerText = f.Category || '-';
       document.getElementById('spAg').innerText = f.AG || '-';
       document.getElementById('spCluster').innerText = f.Cluster || '-';
@@ -472,26 +473,71 @@
       document.getElementById('spFind').innerText = f.Findings || '-';
       document.getElementById('spAttr').innerText = f.Attribute || '-';
       document.getElementById('spAttr').title = f.Attribute || '-';
-
       document.getElementById('dispRemark').value = remarksMap[g.design] || '';
 
+      // Update Gliding Tray
       document.getElementById('trayCount').innerText = g.rows.length;
       document.getElementById('trayBody').innerHTML = g.rows.map(r => `
-        <tr><td><b>${r.Variant}</b></td><td>${r.Size}</td><td>${r.Karat}K</td><td>${r.Prolif}</td><td>${r.Weight.toFixed(3)}</td></tr>
+        <tr><td style="font-family:monospace; color:var(--accent); font-weight:700;">${r.Variant}</td>
+        <td>${r.Size}</td><td>${r.Karat}</td><td>${r.Prolif}</td><td><b>${r.Weight.toFixed(3)}</b></td></tr>
       `).join('');
+
+      // Trigger Main Image Load
+      loadDesignImage('mainImg', 'mainLoader', 'mainFallback', g.design);
+
+      // Trigger Lightbox Sync if open
+      if (isLightboxOpen) {
+        document.getElementById('lbDesignCode').innerText = g.design;
+        document.getElementById('lbCategoryTag').innerText = `${f.Category || '-'} • ${f.Karat}K`;
+        document.getElementById('lbWtTag').innerText = wtStr;
+        document.getElementById('lbIndexTag').innerText = `${currentIndex + 1} of ${filteredGroups.length}`;
+        loadDesignImage('lbImg', 'lbLoader', 'lbFallback', g.design);
+      }
 
       updateSelBtn();
       
-      document.getElementById('btnPrev').disabled = currentIndex === 0;
-      document.getElementById('btnNext').disabled = currentIndex === filteredGroups.length - 1;
+      const disablePrev = currentIndex === 0;
+      const disableNext = currentIndex === filteredGroups.length - 1;
+      document.getElementById('btnPrev').disabled = disablePrev;
+      document.getElementById('btnNext').disabled = disableNext;
+      document.getElementById('lbPrevBtn').disabled = disablePrev;
+      document.getElementById('lbNextBtn').disabled = disableNext;
     }
 
-    function handleImgErr(img) {
+    function handleEmptyState() {
+      document.getElementById('dispDesign').innerText = "No Results";
+      document.getElementById('mainImg').style.opacity = '0';
+      document.getElementById('trayBody').innerHTML = "";
+      document.getElementById('dispWtRange').innerText = "WT: -";
+    }
+
+    // Image Fetching Logic with Loader Control
+    function loadDesignImage(imgId, loaderId, fallbackId, designCode) {
+      const img = document.getElementById(imgId);
+      const loader = document.getElementById(loaderId);
+      const fallback = document.getElementById(fallbackId);
+      
+      img.style.opacity = '0';
+      img.style.display = 'block';
+      if(fallback) fallback.style.display = 'none';
+      loader.style.display = 'flex';
+      
+      img.dataset.retried = '0';
+      const base = `https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=${designCode}`;
+      img.dataset.base = base;
+      img.src = `${base}.jpg`;
+    }
+
+    function handleImgErr(img, loaderId, fallbackId) {
       if (img.dataset.retried !== '1') {
         img.dataset.retried = '1';
         img.src = `${img.dataset.base}.JPG`;
       } else {
-        img.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Crect width='100%25' height='100%25' fill='%23f9f9f9'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' font-family='sans-serif' font-size='14' fill='%2394a3b8'%3ENo Image%3C/text%3E%3C/svg%3E";
+        document.getElementById(loaderId).style.display = 'none';
+        img.style.display = 'none';
+        if(fallbackId && document.getElementById(fallbackId)) {
+          document.getElementById(fallbackId).style.display = fallbackId === 'lbFallback' ? 'flex' : 'block';
+        }
       }
     }
 
@@ -512,41 +558,40 @@
 
     function updateSelBtn() {
       if(!filteredGroups.length) return;
-      const d = filteredGroups[currentIndex].design;
-      const isSel = selectedDesigns.has(d);
-      const btn = document.getElementById('btnConfirm');
-      btn.innerText = isSel ? "✖ Remove" : "✔ Select";
-      btn.className = isSel ? "btn-confirmed" : "btn-confirm";
+      const isSel = selectedDesigns.has(filteredGroups[currentIndex].design);
+      
+      const btnM = document.getElementById('btnConfirm');
+      btnM.innerText = isSel ? "✖ Remove" : "✔ Confirm";
+      btnM.className = isSel ? "btn-confirmed" : "btn-confirm";
+      
+      const btnL = document.getElementById('lbConfirmBtn');
+      btnL.innerText = isSel ? "✖ Remove Selection" : "✔ Confirm Selection";
+      btnL.className = isSel ? "btn-confirmed" : "btn-confirm";
+      
       document.getElementById('dispSelBadge').style.display = isSel ? "block" : "none";
     }
 
-    function updateCart() { 
-      document.getElementById('cart-count').innerText = selectedDesigns.size; 
-      document.getElementById('expCount').innerText = selectedDesigns.size; 
-    }
+    function updateCart() { document.getElementById('cart-count').innerText = selectedDesigns.size; }
 
-    // South 1 Lightbox Integration
+    // Lightbox Controls
     function openLightbox() {
       if(filteredGroups.length === 0) return;
-      const lb = document.getElementById('lightboxModal');
-      lb.classList.add('active');
-      
-      const lbImg = document.getElementById('lbImg');
-      lbImg.dataset.retried = '0';
-      lbImg.dataset.base = `https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=${filteredGroups[currentIndex].design}`;
-      lbImg.src = `${lbImg.dataset.base}.jpg`;
+      isLightboxOpen = true;
+      document.getElementById('lightboxModal').classList.add('active');
+      updateUI();
     }
     
     function closeLightbox(e) {
-      if (e.target.id === 'lightboxModal' || e.target.classList.contains('lb-close')) {
+      if (e.target.id === 'lightboxModal' || e.target.classList.contains('lightbox-close-btn')) {
+        isLightboxOpen = false;
         document.getElementById('lightboxModal').classList.remove('active');
       }
     }
 
-    // Swiping Logic for Lightbox
+    // South 1 Swipe Navigation
     let touchX = 0;
-    document.getElementById('lightboxModal').addEventListener('touchstart', e => touchX = e.changedTouches[0].screenX, {passive:true});
-    document.getElementById('lightboxModal').addEventListener('touchend', e => {
+    document.getElementById('lbBody').addEventListener('touchstart', e => touchX = e.changedTouches[0].screenX, {passive:true});
+    document.getElementById('lbBody').addEventListener('touchend', e => {
       const endX = e.changedTouches[0].screenX;
       if (endX < touchX - 40) nav(1);
       if (endX > touchX + 40) nav(-1);
@@ -557,7 +602,7 @@
       if (e.key === 'ArrowRight') nav(1);
       if (e.key === 'ArrowLeft') nav(-1);
       if (e.key === ' ' || e.code === 'Space') { e.preventDefault(); toggleSelect(); }
-      if (e.key === 'Escape') document.getElementById('lightboxModal').classList.remove('active');
+      if (e.key === 'Escape') { isLightboxOpen = false; document.getElementById('lightboxModal').classList.remove('active'); }
     });
 
     // 6. Export Modal
@@ -609,7 +654,7 @@
         const pos = i % itemsPerPage;
         const x = startX + (pos % cols) * (cardW + gapX), y = startY + Math.floor(pos / cols) * (cardH + gapY);
 
-        pdf.setDrawColor(214, 210, 201); pdf.setLineWidth(0.4);
+        pdf.setDrawColor(203, 213, 225); pdf.setLineWidth(0.4);
         pdf.setFillColor(255, 255, 255);
         pdf.roundedRect(x, y, cardW, cardH, 3, 3, 'FD');
 
@@ -622,19 +667,19 @@
             const b64_2 = await fetchImg64(`${url}.JPG`);
             pdf.addImage(b64_2, 'JPEG', x + imgOffsetX, y + 4, imgS, imgS);
           } catch(e2) {
-            pdf.setFillColor(245, 243, 239); pdf.rect(x + imgOffsetX, y + 4, imgS, imgS, 'F');
-            pdf.setFontSize(8); pdf.setTextColor(115, 110, 101);
-            pdf.text("No Image", x + cardW / 2, y + 44, { align: 'center' });
+            pdf.setFillColor(248, 250, 252); pdf.rect(x + imgOffsetX, y + 4, imgS, imgS, 'F');
+            pdf.setFontSize(8); pdf.setTextColor(148, 163, 184);
+            pdf.text("Image Unavailable", x + cardW / 2, y + 44, { align: 'center' });
           }
         }
 
-        pdf.setDrawColor(234, 230, 223); pdf.line(x + 5, y + 86, x + cardW - 5, y + 86);
+        pdf.setDrawColor(241, 245, 249); pdf.line(x + 5, y + 86, x + cardW - 5, y + 86);
 
         let cY = y + 91;
-        pdf.setFontSize(10); pdf.setFont('helvetica', 'bold'); pdf.setTextColor(44, 42, 38);
+        pdf.setFontSize(10); pdf.setFont('helvetica', 'bold'); pdf.setTextColor(15, 23, 42);
         pdf.text(d, x + 6, cY); cY += 5;
 
-        pdf.setFontSize(8); pdf.setFont('helvetica', 'normal'); pdf.setTextColor(115, 110, 101);
+        pdf.setFontSize(8); pdf.setFont('helvetica', 'normal'); pdf.setTextColor(71, 85, 105);
         if(chkCat) { pdf.text(`Cat: ${first.Category||'-'}`, x + 6, cY); cY += 4.5; }
         if(chkAg) { pdf.text(`AG: ${(first.AG||'-').substring(0, 22)}`, x + 6, cY); cY += 4.5; }
         
@@ -646,12 +691,12 @@
 
         if(chkVar) {
           const vars = Array.from(new Set(group.rows.map(r => r.Variant))).slice(0, 4);
-          pdf.setFontSize(7);
+          pdf.setFontSize(7); pdf.setTextColor(100, 116, 139);
           pdf.text(`Vars: ${vars.join(', ')}${group.rows.length>4?'...':''}`, x + 6, cY);
         }
       }
 
-      pdf.save(`Master_Export_${new Date().toISOString().slice(0,10)}.pdf`);
+      pdf.save(`Design_Master_Visual_${new Date().toISOString().slice(0,10)}.pdf`);
       document.getElementById('exportModal').classList.remove('active');
     }
 
