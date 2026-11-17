@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Tanishq Master Catalog</title>
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+  
+  <!-- Data Engines -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <style>
+    :root {
+      --brand-maroon: #7A1B29;
+      --brand-maroon-dark: #5B141E;
+      --brand-gold: #C8A153;
+      --brand-gold-light: #DFBA73;
+      --bg-pearl: #FCFAF8;
+      --text-dark: #2D2D2D;
+      --text-muted: #7A7A7A;
+      --border-light: #EAE3D9;
+      --white: #FFFFFF;
+      --success: #1E4620;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: var(--bg-pearl); color: var(--text-dark); overflow-x: hidden; }
+    h1, h2, h3, .serif { font-family: 'Playfair Display', serif; }
+
+    /* Entry / Loading Screen */
+    #entry-screen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-pearl); display: flex; align-items: center; justify-content: center; z-index: 99999; }
+    .entry-card { text-align: center; background: var(--white); padding: 40px 50px; border-radius: 12px; box-shadow: 0 15px 35px rgba(122, 27, 41, 0.08); border: 1px solid var(--border-light); max-width: 450px; width: 90%; }
+    .entry-card h1 { color: var(--brand-maroon); font-size: 2.2rem; letter-spacing: 2px; margin-bottom: 8px; }
+    .entry-card p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 30px; }
+    
+    .spinner { width: 45px; height: 45px; border: 3px solid var(--border-light); border-top-color: var(--brand-maroon); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px auto; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    
+    .custom-file-upload { display: inline-block; padding: 14px 28px; background: var(--brand-maroon); color: var(--white); font-weight: 600; border-radius: 6px; cursor: pointer; transition: background 0.3s; font-size: 0.95rem; }
+    .custom-file-upload:hover { background: var(--brand-maroon-dark); }
+    .custom-file-upload input { display: none; }
+
+    /* App Layout */
+    #app-container { display: none; flex-direction: column; min-height: 100vh; }
+    
+    /* Header */
+    .app-header { background: var(--brand-maroon); color: var(--white); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+    .header-brand { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; letter-spacing: 1px; color: var(--brand-gold); }
+    .header-title { font-size: 0.85rem; font-weight: 500; opacity: 0.9; margin-left: 15px; border-left: 1px solid rgba(255,255,255,0.2); padding-left: 15px; display: none; }
+    @media(min-width: 768px) { .header-title { display: block; } }
+    .cart-btn { background: var(--brand-gold); color: var(--brand-maroon-dark); border: none; padding: 10px 20px; border-radius: 4px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; gap: 8px; }
+    .cart-btn:hover { background: var(--brand-gold-light); }
+
+    /* Filter Bar */
+    .filter-bar { background: var(--white); padding: 12px 24px; border-bottom: 1px solid var(--border-light); display: flex; flex-wrap: wrap; gap: 12px; align-items: center; position: sticky; top: 62px; z-index: 999; }
+    .search-input { padding: 10px 14px; border: 1px solid var(--border-light); border-radius: 6px; font-size: 0.85rem; outline: none; width: 220px; background: var(--bg-pearl); transition: border 0.3s; }
+    .search-input:focus { border-color: var(--brand-gold); }
+    
+    .weight-group { display: flex; align-items: center; gap: 6px; }
+    .weight-group input { width: 85px; padding: 10px; border: 1px solid var(--border-light); border-radius: 6px; font-size: 0.85rem; background: var(--bg-pearl); outline: none; }
+    .weight-group input:focus { border-color: var(--brand-gold); }
+    
+    .reset-btn { background: transparent; border: 1px solid var(--text-muted); color: var(--text-dark); padding: 9px 16px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; margin-left: auto; font-weight: 600; }
+    .reset-btn:hover { background: #f0f0f0; }
+
+    /* Custom Dropdowns */
+    .custom-dropdown { position: relative; user-select: none; }
+    .dd-btn { padding: 10px 14px; border: 1px solid var(--border-light); border-radius: 6px; font-size: 0.82rem; background: var(--white); cursor: pointer; display: flex; justify-content: space-between; align-items: center; min-width: 140px; font-weight: 500; }
+    .dd-btn:hover { border-color: var(--brand-gold); }
+    .dd-btn .caret { font-size: 0.65rem; color: var(--text-muted); margin-left: 8px; }
+    .dd-menu { display: none; position: absolute; top: calc(100% + 5px); left: 0; min-width: 240px; background: var(--white); border: 1px solid var(--border-light); border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); z-index: 1000; flex-direction: column; overflow: hidden; }
+    .dd-menu.show { display: flex; }
+    .dd-search input { width: 100%; border: none; border-bottom: 1px solid var(--border-light); padding: 12px; font-size: 0.8rem; outline: none; background: var(--bg-pearl); }
+    .dd-actions { display: flex; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid var(--border-light); font-size: 0.75rem; font-weight: 600; background: var(--white); }
+    .dd-actions span { cursor: pointer; color: var(--brand-maroon); }
+    .dd-actions span:hover { text-decoration: underline; }
+    .dd-list { max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; }
+    .dd-item { display: flex; align-items: flex-start; gap: 8px; padding: 8px 12px; font-size: 0.8rem; cursor: pointer; transition: background 0.2s; border-bottom: 1px solid #f7f7f7; }
+    .dd-item:hover { background: var(--bg-pearl); }
+    .dd-item input { margin-top: 2px; accent-color: var(--brand-maroon); cursor: pointer; }
+    .dd-count { color: var(--text-muted); font-size: 0.7rem; }
+
+    /* Main Grid Area */
+    .main-content { padding: 24px; flex: 1; display: flex; flex-direction: column; }
+    .grid-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 0.85rem; color: var(--text-muted); }
+    
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; margin-bottom: 30px; }
+    .product-card { background: var(--white); border: 1px solid var(--border-light); border-radius: 8px; overflow: hidden; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; position: relative; }
+    .product-card:hover { transform: translateY(-3px); box-shadow: 0 12px 24px rgba(0,0,0,0.08); border-color: var(--brand-gold); }
+    .product-card.selected { border: 2px solid var(--brand-gold); }
+    .card-badge { position: absolute; top: 10px; left: 10px; background: var(--brand-gold); color: var(--brand-maroon-dark); font-size: 0.7rem; font-weight: 700; padding: 4px 8px; border-radius: 4px; z-index: 2; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+    
+    .card-img-wrapper { width: 100%; aspect-ratio: 1; background: var(--bg-pearl); display: flex; align-items: center; justify-content: center; position: relative; border-bottom: 1px solid var(--border-light); }
+    .card-img-wrapper img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+    
+    .card-info { padding: 14px; text-align: center; }
+    .card-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--brand-maroon); margin-bottom: 4px; }
+    .card-meta { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 6px; }
+    .card-wt { font-size: 0.85rem; font-weight: 600; color: var(--text-dark); }
+
+    /* Pagination */
+    .pagination { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border-light); }
+    .page-btn { background: var(--white); border: 1px solid var(--border-light); padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: 600; transition: 0.2s; color: var(--brand-maroon); }
+    .page-btn:hover:not(:disabled) { border-color: var(--brand-gold); background: var(--bg-pearl); }
+    .page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .page-info { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); }
+
+    /* Detail Lightbox (Luxury Split View) */
+    #lightbox { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(30, 15, 18, 0.85); z-index: 10000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(5px); }
+    #lightbox.active { display: flex; }
+    .lb-content { width: 100%; max-width: 1000px; height: 90vh; max-height: 700px; background: var(--white); border-radius: 12px; display: flex; overflow: hidden; position: relative; box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
+    
+    .lb-close { position: absolute; top: 15px; right: 15px; background: var(--bg-pearl); border: 1px solid var(--border-light); width: 36px; height: 36px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; z-index: 10; color: var(--brand-maroon); display: flex; align-items: center; justify-content: center; }
+    .lb-close:hover { background: var(--brand-maroon); color: var(--white); }
+    
+    .lb-nav { position: absolute; top: 50%; transform: translateY(-50%); background: var(--white); border: 1px solid var(--border-light); width: 44px; height: 44px; border-radius: 50%; font-size: 1.5rem; cursor: pointer; z-index: 10; color: var(--brand-maroon); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: 0.2s; }
+    .lb-nav:hover:not(:disabled) { background: var(--brand-gold); color: var(--white); border-color: var(--brand-gold); }
+    .lb-nav:disabled { opacity: 0.3; cursor: not-allowed; }
+    .lb-prev { left: -22px; }
+    .lb-next { right: -22px; }
+
+    .lb-img-pane { flex: 1; background: var(--bg-pearl); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; border-right: 1px solid var(--border-light); }
+    .lb-img-pane img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; transition: transform 0.1s ease-out; }
+    .zoom-hint { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(255,255,255,0.8); padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; color: var(--brand-maroon); pointer-events: none; border: 1px solid var(--border-light); }
+    
+    .lb-details-pane { flex: 1; padding: 40px; display: flex; flex-direction: column; overflow-y: auto; background: var(--white); }
+    .lb-title { font-size: 2.2rem; color: var(--brand-maroon); margin-bottom: 6px; letter-spacing: 1px; }
+    .lb-subtitle { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid var(--border-light); }
+    
+    .lb-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
+    .spec-item { background: var(--bg-pearl); padding: 10px 14px; border-radius: 6px; border: 1px solid var(--border-light); }
+    .spec-label { font-size: 0.7rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; }
+    .spec-val { font-size: 0.9rem; font-weight: 600; color: var(--text-dark); word-break: break-word; }
+    
+    .lb-actions { margin-top: auto; display: flex; gap: 15px; }
+    .btn-action { flex: 1; padding: 14px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; cursor: pointer; border: none; transition: 0.2s; }
+    .btn-skip { background: var(--bg-pearl); color: var(--text-dark); border: 1px solid var(--border-light); }
+    .btn-skip:hover { background: #f0f0f0; }
+    .btn-select { background: var(--brand-maroon); color: var(--white); }
+    .btn-select:hover { background: var(--brand-maroon-dark); }
+    .btn-selected { background: var(--brand-gold); color: var(--brand-maroon-dark); }
+
+    /* Export Modal */
+    #export-modal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(30, 15, 18, 0.85); z-index: 20000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+    #export-modal.active { display: flex; }
+    .export-card { background: var(--white); border-radius: 12px; padding: 30px; width: 90%; max-width: 500px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); position: relative; }
+    .export-card h3 { color: var(--brand-maroon); font-size: 1.6rem; margin-bottom: 8px; }
+    .export-card p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px; }
+    
+    .export-btn-large { display: flex; align-items: center; justify-content: space-between; background: var(--bg-pearl); border: 1px solid var(--border-light); padding: 16px 20px; border-radius: 8px; cursor: pointer; text-align: left; margin-bottom: 12px; transition: 0.2s; }
+    .export-btn-large:hover { border-color: var(--brand-gold); background: #fdfaf5; transform: translateX(5px); }
+    .export-btn-large b { color: var(--brand-maroon); font-size: 1.05rem; }
+    .export-btn-large div { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
+    
+    .pdf-config { background: var(--bg-pearl); border: 1px solid var(--border-light); border-radius: 8px; padding: 16px; margin-bottom: 20px; }
+    .pdf-config-title { font-size: 0.8rem; font-weight: 700; color: var(--brand-maroon); text-transform: uppercase; margin-bottom: 10px; }
+    .pdf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .pdf-grid label { font-size: 0.8rem; color: var(--text-dark); display: flex; align-items: center; gap: 8px; cursor: pointer; }
+    .pdf-grid input { accent-color: var(--brand-maroon); }
+
+    @media (max-width: 900px) {
+      .lb-content { flex-direction: column; height: 95vh; }
+      .lb-img-pane { flex: none; height: 40%; border-right: none; border-bottom: 1px solid var(--border-light); }
+      .lb-details-pane { padding: 20px; }
+      .lb-nav { display: none; } /* Hide outer arrows on mobile, use swipe or buttons */
+      .lb-grid { grid-template-columns: 1fr; gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Entry / Loading Overlay -->
+  <div id="entry-screen">
+    <div class="entry-card">
+      <h1>TANISHQ</h1>
+      <p>All-India Variant Master Directory</p>
+      
+      <div id="loading-ui">
+        <div class="spinner"></div>
+        <p style="color:var(--brand-maroon); font-weight:600;">Processing Catalog Engine...</p>
+        <p style="font-size:0.75rem; margin-top:4px;">Directly reading 17-11-2026.xlsx</p>
+      </div>
+      
+      <div id="upload-ui" style="display: none;">
+        <p style="color:#d97706; margin-bottom: 15px; font-weight: 500;">Browser security blocked automatic fetch.</p>
+        <label class="custom-file-upload">
+          <input type="file" id="fileInput" accept=".xlsx, .xls" onchange="handleManualUpload(event)">
+          Select 17-11-2026.xlsx
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main App -->
+  <div id="app-container">
+    <header class="app-header">
+      <div style="display:flex; align-items:center;">
+        <div class="header-brand">TANISHQ</div>
+        <div class="header-title">Master Variant Catalog</div>
+      </div>
+      <button class="cart-btn" onclick="openExportModal()">
+        Selection (<span id="cart-count">0</span>)
+      </button>
+    </header>
+
+    <div class="filter-bar">
+      <input type="text" class="search-input" id="searchInput" placeholder="Search SKU, Design, AG..." oninput="debounceFilter()">
+      
+      <div id="filters-container" style="display: flex; gap: 12px; flex-wrap: wrap;"></div>
+      
+      <div class="weight-group">
+        <input type="number" id="wtMin" step="0.01" placeholder="Min WT" oninput="debounceFilter()">
+        <span style="color:var(--text-muted);">-</span>
+        <input type="number" id="wtMax" step="0.01" placeholder="Max WT" oninput="debounceFilter()">
+      </div>
+      
+      <button class="reset-btn" onclick="resetFilters()">Reset All</button>
+    </div>
+
+    <div class="main-content">
+      <div class="grid-header">
+        <div>Showing <b id="stat-showing" style="color:var(--brand-maroon);">0</b> variants</div>
+      </div>
+      
+      <div class="product-grid" id="product-grid"></div>
+      
+      <div class="pagination">
+        <button class="page-btn" id="btn-prev-page" onclick="changePage(-1)">← Previous</button>
+        <span class="page-info" id="page-info">Page 1 of 1</span>
+        <button class="page-btn" id="btn-next-page" onclick="changePage(1)">Next →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detail Lightbox -->
+  <div id="lightbox" onclick="handleLbBackdrop(event)">
+    <div class="lb-content">
+      <button class="lb-close" onclick="closeLightbox()">✕</button>
+      <button class="lb-nav lb-prev" id="lb-btn-prev" onclick="navLightbox(-1)">‹</button>
+      
+      <div class="lb-img-pane" onmousemove="handleImgZoom(event)" onmouseleave="resetImgZoom()">
+        <img id="lb-img" src="" alt="Variant Preview" onerror="handleLbImgError(this)">
+        <div class="zoom-hint">🔍 Hover to Zoom</div>
+      </div>
+      
+      <div class="lb-details-pane">
+        <h2 class="lb-title" id="lb-title">---</h2>
+        <div class="lb-subtitle" id="lb-subtitle">---</div>
+        
+        <div class="lb-grid" id="lb-specs"></div>
+        
+        <div class="lb-actions">
+          <button class="btn-action btn-skip" onclick="navLightbox(1)">Skip</button>
+          <button class="btn-action btn-select" id="lb-btn-select" onclick="toggleLbSelection()">✔ Select for Download</button>
+        </div>
+      </div>
+      
+      <button class="lb-nav lb-next" id="lb-btn-next" onclick="navLightbox(1)">›</button>
+    </div>
+  </div>
+
+  <!-- Export Modal -->
+  <div id="export-modal" onclick="handleExportBackdrop(event)">
+    <div class="export-card">
+      <button class="lb-close" onclick="closeExportModal()" style="top:15px; right:15px; position:absolute;">✕</button>
+      <h3>Export Selection</h3>
+      <p>You have <b id="export-modal-count" style="color:var(--brand-maroon);">0</b> items ready for export.</p>
+      
+      <div class="export-btn-large" onclick="exportExcel()">
+        <div>
+          <b>📊 Download Master Excel</b>
+          <div>Raw data spreadsheet with all columns</div>
+        </div>
+        <span style="color:var(--brand-gold); font-size:1.5rem;">→</span>
+      </div>
+
+      <div class="pdf-config">
+        <div class="pdf-config-title">PDF Visual Card Data</div>
+        <div class="pdf-grid">
+          <label><input type="checkbox" id="pdfChkVariant" checked> SKU / Variant</label>
+          <label><input type="checkbox" id="pdfChkWt" checked> Weight (g)</label>
+          <label><input type="checkbox" id="pdfChkCat" checked> Category</label>
+          <label><input type="checkbox" id="pdfChkAg" checked> AG Group</label>
+          <label><input type="checkbox" id="pdfChkTheme"> Theme</label>
+          <label><input type="checkbox" id="pdfChkKarat" checked> Karat / Prolif</label>
+        </div>
+      </div>
+
+      <div class="export-btn-large" id="pdfExportActionBtn" onclick="exportPDF()" style="background:var(--brand-maroon); border-color:var(--brand-maroon-dark);">
+        <div>
+          <b style="color:var(--white);">📄 Generate 2x2 Visual PDF</b>
+          <div style="color:rgba(255,255,255,0.7);">High-quality printable catalog</div>
+        </div>
+        <span style="color:var(--brand-gold); font-size:1.5rem;">→</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // System Variables
+    let rawData = [];
+    let filteredData = [];
+    const selectedMap = new Map();
+    const itemsPerPage = 60;
+    let currentPage = 1;
+    let currentLbIndex = 0;
+    
+    // Tanishq No-Image Fallback SVG (Elegant)
+    const placeholderSvg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Crect width='100%25' height='100%25' fill='%23FCFAF8'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-size='18' font-style='italic' fill='%23C8A153'%3ENo Catalog Image%3C/text%3E%3C/svg%3E";
+
+    // Filter Configurations
+    const filterFields = {
+      cat: { label: 'Category', col: 'cat', selected: new Set() },
+      theme: { label: 'Theme', col: 'theme', selected: new Set() },
+      cluster: { label: 'Cluster', col: 'cluster', selected: new Set() },
+      karat: { label: 'Karat', col: 'karat', selected: new Set() },
+      prolif: { label: 'Prolif', col: 'prolif', selected: new Set() },
+      size: { label: 'Size', col: 'size', selected: new Set() }
+    };
+
+    // 1. Initialization & Data Fetching
+    window.onload = () => {
+      fetch('17-11-2026.xlsx')
+        .then(res => { if (!res.ok) throw new Error("Local file fetch failed"); return res.arrayBuffer(); })
+        .then(ab => setTimeout(() => processExcel(ab), 50)) // Yield to show spinner
+        .catch(err => {
+          document.getElementById('loading-ui').style.display = 'none';
+          document.getElementById('upload-ui').style.display = 'block';
+        });
+    };
+
+    function handleManualUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      document.getElementById('upload-ui').style.display = 'none';
+      document.getElementById('loading-ui').style.display = 'block';
+      const reader = new FileReader();
+      reader.onload = (evt) => setTimeout(() => processExcel(evt.target.result), 50);
+      reader.readAsArrayBuffer(file);
+    }
+
+    function processExcel(ab) {
+      try {
+        const wb = XLSX.read(ab, { type: 'array' });
+        const ws = wb.Sheets[wb.SheetNames[0]];
+        const json = XLSX.utils.sheet_to_json(ws);
+        
+        rawData = json.map(row => ({
+          variant: String(row['Variant code'] || '').trim(),
+          theme: String(row['Theme'] || '').trim(),
+          design: String(row['Design'] || '').trim(),
+          karat: String(row['Karat'] || '').trim(),
+          size: String(row['Size'] || '').trim(),
+          findings: String(row['Findings'] || '').trim(),
+          customMod: String(row['Custom Mod'] || '').trim(),
+          prolif: String(row['Prolif'] || '').trim(),
+          stone: String(row['Stone details'] || '').trim(),
+          cat: String(row['Category'] || '').trim(),
+          cluster: String(row['Cluster'] || '').trim(),
+          ag: String(row['AG'] || '').trim(),
+          wt: parseFloat(row['Weight']) || 0,
+          val: parseFloat(row['Value']) || 0,
+          complexity: String(row['Complexity'] || '').trim(),
+          mc: String(row['MC (%)'] || '').trim()
+        })).filter(r => r.variant !== ''); // Ensure valid rows
+
+        document.getElementById('entry-screen').style.display = 'none';
+        document.getElementById('app-container').style.display = 'flex';
+        
+        buildDropdowns();
+        applyFilters();
+      } catch (e) {
+        alert("Failed to parse catalog. Ensure it is a valid XLSX file.");
+        document.getElementById('loading-ui').style.display = 'none';
+        document.getElementById('upload-ui').style.display = 'block';
+      }
+    }
+
+    // 2. Dropdown UI Builders
+    function buildDropdowns() {
+      const container = document.getElementById('filters-container');
+      container.innerHTML = Object.keys(filterFields).map(key => `
+        <div class="custom-dropdown" id="dd-${key}">
+           <div class="dd-btn" onclick="toggleDD('${key}', event)">
+               <span id="dd-label-${key}">${filterFields[key].label}</span> <span class="caret">▼</span>
+           </div>
+           <div class="dd-menu" id="dd-menu-${key}" onclick="event.stopPropagation()">
+               <div class="dd-search"><input type="text" placeholder="Search..." oninput="filterDDList('${key}', this.value)"></div>
+               <div class="dd-actions">
+                   <span onclick="toggleSelectAll('${key}')">Select All</span>
+                   <span onclick="clearSelection('${key}')">Clear</span>
+               </div>
+               <div class="dd-list" id="dd-list-${key}"></div>
+           </div>
+        </div>
+      `).join('');
+    }
+
+    window.addEventListener('click', () => {
+      document.querySelectorAll('.dd-menu').forEach(m => m.classList.remove('show'));
+    });
+
+    function toggleDD(key, event) {
+      event.stopPropagation();
+      const menu = document.getElementById(`dd-menu-${key}`);
+      const isShown = menu.classList.contains('show');
+      document.querySelectorAll('.dd-menu').forEach(m => m.classList.remove('show'));
+      if (!isShown) menu.classList.add('show');
+    }
+
+    function filterDDList(key, searchVal) {
+      const s = searchVal.toLowerCase();
+      document.querySelectorAll(`#dd-list-${key} .dd-item`).forEach(lbl => {
+        lbl.style.display = lbl.innerText.toLowerCase().includes(s) ? 'flex' : 'none';
+      });
+    }
+
+    // 3. Faceted Filter Engine
+    let filterTimeout;
+    function debounceFilter() {
+      clearTimeout(filterTimeout);
+      filterTimeout = setTimeout(applyFilters, 250);
+    }
+
+    function getContextualRows(excludeKey = null) {
+      const rawInput = (document.getElementById('searchInput').value || '').trim().toLowerCase();
+      const wtMin = parseFloat(document.getElementById('wtMin').value);
+      const wtMax = parseFloat(document.getElementById('wtMax').value);
+
+      return rawData.filter(r => {
+        if (rawInput) {
+          const text = `${r.variant} ${r.design} ${r.ag}`.toLowerCase();
+          if (!text.includes(rawInput)) return false;
+        }
+        if (!isNaN(wtMin) && r.wt < wtMin) return false;
+        if (!isNaN(wtMax) && r.wt > wtMax) return false;
+
+        for (const key of Object.keys(filterFields)) {
+          if (key === excludeKey) continue;
+          const sel = filterFields[key].selected;
+          if (sel.size > 0 && !sel.has(r[filterFields[key].col])) return false;
+        }
+        return true;
+      });
+    }
+
+    function applyFilters() {
+      filteredData = getContextualRows(null);
+      
+      // Update Dropdowns
+      Object.keys(filterFields).forEach(key => {
+        const rows = getContextualRows(key);
+        const counts = {};
+        rows.forEach(r => {
+          const v = r[filterFields[key].col] || '(Blank)';
+          counts[v] = (counts[v] || 0) + 1;
+        });
+
+        filterFields[key].selected.forEach(sel => { if (!counts[sel]) counts[sel] = 0; });
+        
+        const sortedKeys = Object.keys(counts).sort();
+        const listDiv = document.getElementById(`dd-list-${key}`);
+        const currentSearch = (document.querySelector(`#dd-menu-${key} .dd-search input`)?.value || '').toLowerCase();
+        
+        listDiv.innerHTML = sortedKeys.map(val => {
+          if (currentSearch && !val.toLowerCase().includes(currentSearch)) return '';
+          const isChecked = filterFields[key].selected.has(val);
+          return `
+            <label class="dd-item">
+                <input type="checkbox" value="${val}" ${isChecked ? 'checked' : ''} onchange="handleCheckbox('${key}', '${val}', this.checked)">
+                <span>${val} <span class="dd-count">(${counts[val]})</span></span>
+            </label>
+          `;
+        }).join('');
+
+        const selSize = filterFields[key].selected.size;
+        document.getElementById(`dd-label-${key}`).innerText = selSize > 0 ? `${filterFields[key].label} (${selSize})` : filterFields[key].label;
+      });
+
+      currentPage = 1;
+      renderGrid();
+    }
+
+    function handleCheckbox(key, val, isChecked) {
+      if (isChecked) filterFields[key].selected.add(val);
+      else filterFields[key].selected.delete(val);
+      applyFilters();
+    }
+
+    function toggleSelectAll(key) {
+      const rows = getContextualRows(key);
+      const allVals = Array.from(new Set(rows.map(r => r[filterFields[key].col] || '(Blank)')));
+      const isAllSelected = allVals.length > 0 && allVals.every(v => filterFields[key].selected.has(v));
+      
+      if (isAllSelected) filterFields[key].selected.clear();
+      else allVals.forEach(v => filterFields[key].selected.add(v));
+      applyFilters();
+    }
+
+    function clearSelection(key) {
+      filterFields[key].selected.clear();
+      applyFilters();
+    }
+
+    function resetFilters() {
+      Object.keys(filterFields).forEach(key => filterFields[key].selected.clear());
+      document.getElementById('searchInput').value = '';
+      document.getElementById('wtMin').value = '';
+      document.getElementById('wtMax').value = '';
+      applyFilters();
+    }
+
+    // 4. Grid Rendering & Pagination
+    function renderGrid() {
+      const start = (currentPage - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      const pageData = filteredData.slice(start, end);
+      
+      document.getElementById('stat-showing').innerText = filteredData.length.toLocaleString('en-IN');
+      
+      const grid = document.getElementById('product-grid');
+      grid.innerHTML = pageData.map((item, index) => {
+        const globalIndex = start + index;
+        const isSelected = selectedMap.has(item.variant);
+        return `
+          <div class="product-card ${isSelected ? 'selected' : ''}" onclick="openLightbox(${globalIndex})">
+              ${isSelected ? '<div class="card-badge">✓ SELECTED</div>' : ''}
+              <div class="card-img-wrapper">
+                  <img loading="lazy" src="https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=${item.design}.jpg" 
+                       onerror="handleImgError(this, '${item.design}')">
+              </div>
+              <div class="card-info">
+                  <div class="card-title">${item.variant}</div>
+                  <div class="card-meta">${item.cat || '-'} | ${item.karat ? item.karat + 'K' : '-'}</div>
+                  <div class="card-wt">Wt: ${item.wt.toFixed(3)} g</div>
+              </div>
+          </div>
+        `;
+      }).join('');
+      
+      updatePagination();
+    }
+
+    function handleImgError(img, design) {
+      if (img.dataset.retried !== '1') {
+        img.dataset.retried = '1';
+        img.src = `https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=${design}.JPG`;
+      } else {
+        img.src = placeholderSvg;
+      }
+    }
+
+    function updatePagination() {
+      const totalPages = Math.ceil(filteredData.length / itemsPerPage) || 1;
+      document.getElementById('page-info').innerText = `Page ${currentPage} of ${totalPages}`;
+      document.getElementById('btn-prev-page').disabled = currentPage === 1;
+      document.getElementById('btn-next-page').disabled = currentPage === totalPages;
+    }
+
+    function changePage(delta) {
+      const totalPages = Math.ceil(filteredData.length / itemsPerPage) || 1;
+      const newPage = currentPage + delta;
+      if (newPage >= 1 && newPage <= totalPages) {
+        currentPage = newPage;
+        renderGrid();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    // 5. Luxury Lightbox (Viewer)
+    function openLightbox(index) {
+      currentLbIndex = index;
+      const item = filteredData[index];
+      
+      const img = document.getElementById('lb-img');
+      img.dataset.retried = '0';
+      img.dataset.design = item.design;
+      img.src = `https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=${item.design}.jpg`;
+      
+      document.getElementById('lb-title').innerText = item.variant;
+      document.getElementById('lb-subtitle').innerText = `${item.cat || '-'}  •  Theme: ${item.theme || '-'}`;
+      
+      const specs = [
+        { l: 'AG Group', v: item.ag },
+        { l: 'Cluster', v: item.cluster },
+        { l: 'Weight', v: item.wt.toFixed(3) + ' g' },
+        { l: 'Value', v: '₹' + item.val.toLocaleString('en-IN') },
+        { l: 'Karat', v: item.karat },
+        { l: 'Size', v: item.size },
+        { l: 'Prolif', v: item.prolif },
+        { l: 'Stone Details', v: item.stone },
+        { l: 'Findings', v: item.findings },
+        { l: 'Complexity', v: item.complexity },
+        { l: 'MC (%)', v: item.mc }
+      ];
+      
+      document.getElementById('lb-specs').innerHTML = specs.map(s => `
+        <div class="spec-item"><div class="spec-label">${s.l}</div><div class="spec-val">${s.v || '-'}</div></div>
+      `).join('');
+      
+      updateLbSelectionBtn();
+      
+      document.getElementById('lb-btn-prev').disabled = currentLbIndex === 0;
+      document.getElementById('lb-btn-next').disabled = currentLbIndex === filteredData.length - 1;
+      
+      document.getElementById('lightbox').classList.add('active');
+    }
+
+    function handleLbImgError(img) {
+      const design = img.dataset.design;
+      if (img.dataset.retried !== '1') {
+        img.dataset.retried = '1';
+        img.src = `https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=${design}.JPG`;
+      } else {
+        img.src = placeholderSvg;
+      }
+    }
+
+    function handleImgZoom(e) {
+      const img = document.getElementById('lb-img');
+      if(img.src.includes('data:image')) return; // Don't zoom placeholder
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      img.style.transformOrigin = `${x}% ${y}%`;
+      img.style.transform = 'scale(1.8)';
+    }
+
+    function resetImgZoom() {
+      const img = document.getElementById('lb-img');
+      img.style.transformOrigin = 'center center';
+      img.style.transform = 'scale(1)';
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('active');
+    }
+
+    function handleLbBackdrop(e) {
+      if (e.target.id === 'lightbox') closeLightbox();
+    }
+
+    function navLightbox(dir) {
+      const newIdx = currentLbIndex + dir;
+      if (newIdx >= 0 && newIdx < filteredData.length) {
+        resetImgZoom();
+        openLightbox(newIdx);
+      }
+    }
+
+    function toggleLbSelection() {
+      const item = filteredData[currentLbIndex];
+      if (selectedMap.has(item.variant)) selectedMap.delete(item.variant);
+      else selectedMap.set(item.variant, item);
+      updateLbSelectionBtn();
+      updateCartCount();
+      renderGrid(); // Refresh grid badges silently
+    }
+
+    function updateLbSelectionBtn() {
+      const item = filteredData[currentLbIndex];
+      const btn = document.getElementById('lb-btn-select');
+      const isSel = selectedMap.has(item.variant);
+      btn.innerText = isSel ? "✖ Remove Selection" : "✔ Select for Download";
+      btn.className = isSel ? "btn-action btn-selected" : "btn-action btn-select";
+    }
+
+    function updateCartCount() {
+      document.getElementById('cart-count').innerText = selectedMap.size;
+      document.getElementById('export-modal-count').innerText = selectedMap.size;
+    }
+
+    // Lightbox Keyboard Nav
+    window.addEventListener('keydown', (e) => {
+      if (!document.getElementById('lightbox').classList.contains('active')) return;
+      if (e.key === 'ArrowRight') navLightbox(1);
+      if (e.key === 'ArrowLeft') navLightbox(-1);
+      if (e.key === ' ' || e.code === 'Space') { e.preventDefault(); toggleLbSelection(); }
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+    // 6. Export Functionality
+    function openExportModal() {
+      if (selectedMap.size === 0) return alert("Please select at least one variant to export.");
+      document.getElementById('export-modal').classList.add('active');
+    }
+
+    function closeExportModal() {
+      document.getElementById('export-modal').classList.remove('active');
+    }
+
+    function handleExportBackdrop(e) {
+      if (e.target.id === 'export-modal') closeExportModal();
+    }
+
+    function exportExcel() {
+      const rows = Array.from(selectedMap.values()).map(item => ({
+        'Variant Code': item.variant,
+        'Design': item.design,
+        'Category': item.cat,
+        'Cluster': item.cluster,
+        'AG': item.ag,
+        'Theme': item.theme,
+        'Karat': item.karat,
+        'Size': item.size,
+        'Prolif': item.prolif,
+        'Weight (g)': item.wt,
+        'Value (₹)': item.val,
+        'Stone Details': item.stone,
+        'Findings': item.findings,
+        'Complexity': item.complexity,
+        'MC (%)': item.mc
+      }));
+      
+      const ws = XLSX.utils.json_to_sheet(rows);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Selected Variants");
+      XLSX.writeFile(wb, `Tanishq_Master_Export_${new Date().toISOString().slice(0,10)}.xlsx`);
+      closeExportModal();
+    }
+
+    async function exportPDF() {
+      const actionBtn = document.getElementById('pdfExportActionBtn');
+      actionBtn.style.opacity = '0.5';
+      actionBtn.style.pointerEvents = 'none';
+      
+      const incVariant = document.getElementById('pdfChkVariant').checked;
+      const incWt = document.getElementById('pdfChkWt').checked;
+      const incCat = document.getElementById('pdfChkCat').checked;
+      const incAg = document.getElementById('pdfChkAg').checked;
+      const incTheme = document.getElementById('pdfChkTheme').checked;
+      const incKarat = document.getElementById('pdfChkKarat').checked;
+
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      
+      const cols = 2, rowsPerPage = 2, itemsPerPage = 4;
+      const cardWidth = 91, cardHeight = 128;
+      const startX = 10, startY = 14, gapX = 8, gapY = 10;
+      const imgSize = 80;
+      const imgOffsetX = (cardWidth - imgSize) / 2;
+
+      let itemIndex = 0;
+      const uniqueVariants = Array.from(selectedMap.values());
+
+      for (const item of uniqueVariants) {
+        if (itemIndex > 0 && itemIndex % itemsPerPage === 0) pdf.addPage();
+
+        const pagePos = itemIndex % itemsPerPage;
+        const col = pagePos % cols, row = Math.floor(pagePos / cols);
+        const x = startX + col * (cardWidth + gapX), y = startY + row * (cardHeight + gapY);
+
+        // Gold Border Card
+        pdf.setDrawColor(200, 161, 83);
+        pdf.setLineWidth(0.4);
+        pdf.setFillColor(255, 255, 255);
+        pdf.roundedRect(x, y, cardWidth, cardHeight, 3, 3, 'FD');
+
+        const baseUrl = `https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=${item.design}`;
+        try {
+          const base64Img = await fetchImageAsBase64(`${baseUrl}.jpg`);
+          pdf.addImage(base64Img, 'JPEG', x + imgOffsetX, y + 4, imgSize, imgSize);
+        } catch (e1) {
+          try {
+            const base64Img2 = await fetchImageAsBase64(`${baseUrl}.JPG`);
+            pdf.addImage(base64Img2, 'JPEG', x + imgOffsetX, y + 4, imgSize, imgSize);
+          } catch (e2) {
+            pdf.setFillColor(252, 250, 248);
+            pdf.rect(x + imgOffsetX, y + 4, imgSize, imgSize, 'F');
+            pdf.setFontSize(8);
+            pdf.setTextColor(200, 161, 83);
+            pdf.text("Image Unavailable", x + cardWidth / 2, y + 44, { align: 'center' });
+          }
+        }
+
+        // Divider
+        pdf.setDrawColor(234, 227, 217);
+        pdf.line(x + 5, y + 86, x + cardWidth - 5, y + 86);
+
+        // Metadata
+        let currentTextY = y + 91;
+        if (incVariant) {
+          pdf.setFontSize(10);
+          pdf.setFont('helvetica', 'bold');
+          pdf.setTextColor(122, 27, 41); // Maroon
+          pdf.text(item.variant, x + 6, currentTextY);
+          currentTextY += 5.5;
+        }
+
+        pdf.setFontSize(8);
+        pdf.setFont('helvetica', 'normal');
+        pdf.setTextColor(45, 45, 45);
+
+        let col1Y = currentTextY;
+        if (incCat) { pdf.text(`Cat: ${item.cat || '-'}`, x + 6, col1Y); col1Y += 4.5; }
+        if (incAg) { pdf.text(`AG: ${(item.ag || '-').substring(0, 22)}`, x + 6, col1Y); col1Y += 4.5; }
+        if (incTheme) { pdf.text(`Theme: ${item.theme || '-'}`, x + 6, col1Y); col1Y += 4.5; }
+
+        let col2Y = currentTextY;
+        const col2X = x + 48;
+        if (incWt) { pdf.text(`WT: ${item.wt.toFixed(3)}g`, col2X, col2Y); col2Y += 4.5; }
+        if (incKarat) { pdf.text(`K: ${item.karat || '-'}K | P: ${item.prolif || '-'}`, col2X, col2Y); col2Y += 4.5; }
+
+        itemIndex++;
+      }
+
+      pdf.save(`Tanishq_Visual_Catalog_${new Date().toISOString().slice(0,10)}.pdf`);
+      actionBtn.style.opacity = '1';
+      actionBtn.style.pointerEvents = 'auto';
+      closeExportModal();
+    }
+
+    function fetchImageAsBase64(url) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        let timeoutId;
+        img.crossOrigin = 'Anonymous';
+        img.onload = () => {
+          clearTimeout(timeoutId);
+          try {
+            const canvas = document.createElement('canvas');
+            let w = img.naturalWidth || 400, h = img.naturalHeight || 400;
+            if (w > 600 || h > 600) { const ratio = Math.min(600 / w, 600 / h); w *= ratio; h *= ratio; }
+            canvas.width = w; canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, w, h);
+            ctx.drawImage(img, 0, 0, w, h);
+            resolve(canvas.toDataURL('image/jpeg', 0.80));
+          } catch (e) { reject(e); }
+        };
+        img.onerror = () => { clearTimeout(timeoutId); reject(new Error('Fetch failed')); };
+        timeoutId = setTimeout(() => { img.src = ''; reject(new Error('Timeout')); }, 12000);
+        img.src = url;
+      });
+    }
+  </script>
+</body>
+</html>
