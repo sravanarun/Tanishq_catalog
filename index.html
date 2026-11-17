@@ -13,14 +13,14 @@
     :root {
       --bg: #EAE6DF;           /* Warm bone/alabaster background */
       --panel-bg: #F5F3EF;     /* Slightly lighter linen for panels */
-      --card-bg: #FFFFFF;      /* Pure white only for image background to make jewelry pop */
-      --text-main: #2C2A26;    /* Charcoal/Dark warm grey */
-      --text-muted: #736E65;   /* Muted taupe */
-      --border: #D6D2C9;       /* Soft border */
-      --accent: #827560;       /* Sophisticated muted bronze/taupe */
+      --card-bg: #FFFFFF;      /* Pure white for image background */
+      --text-main: #2C2A26;    
+      --text-muted: #736E65;   
+      --border: #D6D2C9;       
+      --accent: #827560;       
       --accent-hover: #665B49;
-      --success: #546B50;      /* Muted sage green for confirm */
-      --danger: #965B5B;       /* Muted brick red */
+      --success: #546B50;      
+      --danger: #965B5B;       
       --radius: 10px;
     }
 
@@ -40,7 +40,11 @@
     .btn-accent { background: var(--accent); color: #fff; border-color: var(--accent); }
     .btn-accent:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
 
-    /* Slide-out Filter Drawer (Professional e-commerce style) */
+    /* Stats Bar */
+    .stats-bar { width: 100%; max-width: 1100px; display: flex; justify-content: space-between; align-items: center; background: var(--panel-bg); padding: 10px 16px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 15px; font-size: 0.85rem; color: var(--text-muted); flex-wrap: wrap; gap: 8px; }
+    .stats-bar b { color: var(--text-main); }
+
+    /* Filter Drawer */
     .drawer-overlay { display: none; position: fixed; inset: 0; background: rgba(44, 42, 38, 0.4); z-index: 9999; backdrop-filter: blur(2px); }
     .drawer-overlay.active { display: block; }
     .filter-drawer { position: fixed; top: 0; right: -380px; width: 340px; max-width: 90vw; height: 100vh; background: var(--panel-bg); box-shadow: -5px 0 25px rgba(0,0,0,0.1); z-index: 10000; transition: right 0.3s ease; display: flex; flex-direction: column; }
@@ -51,8 +55,6 @@
     .drawer-close { background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer; padding: 0; }
     
     .drawer-body { padding: 15px 20px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 15px; }
-    
-    /* Accordion Filters inside Drawer */
     .filter-group { border: 1px solid var(--border); border-radius: 8px; background: #fff; overflow: hidden; }
     .fg-header { padding: 12px 15px; font-size: 0.85rem; font-weight: 700; color: var(--text-main); background: #fff; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
     .fg-header:hover { background: #fcfcfc; }
@@ -67,52 +69,41 @@
     .drawer-footer { padding: 15px 20px; border-top: 1px solid var(--border); background: #fff; display: flex; gap: 10px; }
     .drawer-footer button { flex: 1; padding: 10px; border-radius: 6px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: var(--panel-bg); color: var(--text-main); }
 
-    /* Stats Bar */
-    .stats-bar { width: 100%; max-width: 1100px; display: flex; justify-content: space-between; align-items: center; background: var(--panel-bg); padding: 10px 16px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 15px; font-size: 0.85rem; color: var(--text-muted); flex-wrap: wrap; gap: 8px; }
-    .stats-bar b { color: var(--text-main); }
-
-    /* Main Layout (South 1 Style) */
+    /* Main Layout */
     .main-card { width: 100%; max-width: 1100px; background: var(--panel-bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; gap: 20px; align-items: flex-start; }
     
-    /* Left Image Viewer */
-    .image-viewer { 
-      width: 450px; height: 450px; min-width: 450px; 
-      background: var(--card-bg); border-radius: var(--radius); 
-      border: 1px solid var(--border); 
-      display: flex; align-items: center; justify-content: center; 
-      position: relative; overflow: hidden; cursor: crosshair; 
-    }
-    .image-viewer img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; transition: transform 0.1s; }
-    .zoom-hint { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); background: rgba(255,255,255,0.85); color: var(--text-main); padding: 4px 10px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; pointer-events: none; border: 1px solid var(--border); }
+    /* Left Column (Sticky) */
+    .left-col { width: 450px; min-width: 450px; position: sticky; top: 15px; display: flex; flex-direction: column; gap: 10px; }
+    
+    .image-viewer { width: 100%; height: 450px; background: var(--card-bg); border-radius: var(--radius); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; cursor: pointer; }
+    .image-viewer img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+    .zoom-hint { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); background: rgba(44, 42, 38, 0.8); color: #fff; padding: 5px 12px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; pointer-events: none; border: 1px solid var(--border); backdrop-filter: blur(4px); }
     
     /* Right Details Panel */
     .details-panel { flex: 1; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
     .d-header { display: flex; justify-content: space-between; align-items: flex-start; }
-    .d-title { font-size: 1.6rem; font-weight: 800; color: var(--text-main); font-family: monospace; letter-spacing: -0.5px; margin-bottom: 4px; }
+    .d-title { font-size: 1.8rem; font-weight: 800; color: var(--text-main); font-family: monospace; letter-spacing: -0.5px; margin-bottom: 2px; }
+    .wt-range-badge { font-size: 0.85rem; font-weight: 700; color: var(--accent); background: #fff; padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border); display: inline-block; margin-bottom: 6px; }
     .d-meta { font-size: 0.85rem; color: var(--text-muted); }
     
     .badge-sel { background: var(--accent); color: white; padding: 5px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; display: none; }
     
-    /* Specs Grid */
     .specs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
     .spec-box { background: #fff; padding: 8px 10px; border-radius: 6px; border: 1px solid var(--border); }
     .spec-lbl { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
     .spec-val { font-size: 0.85rem; font-weight: 600; color: var(--text-main); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    /* Secret Remarks Input */
-    .remarks-input { width: 100%; background: #fff; border: 1px dashed var(--accent); padding: 10px 12px; border-radius: 6px; font-size: 0.85rem; color: var(--text-main); outline: none; }
+    .remarks-input { width: 100%; background: #fff; border: 1px dashed var(--accent); padding: 12px; border-radius: 6px; font-size: 0.85rem; color: var(--text-main); outline: none; transition: 0.2s; }
     .remarks-input::placeholder { color: #A8A196; font-style: italic; }
-    .remarks-input:focus { border-style: solid; }
+    .remarks-input:focus { border-style: solid; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
 
-    /* Variant Tray */
     .tray { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 10px; flex: 1; display: flex; flex-direction: column; }
     .tray-title { font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 8px; }
-    .tray-scroll { overflow-y: auto; max-height: 180px; }
     .tray-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; text-align: left; }
-    .tray-table th { color: var(--text-muted); padding: 6px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: #fff; }
+    .tray-table th { color: var(--text-muted); padding: 6px; border-bottom: 1px solid var(--border); }
     .tray-table td { padding: 6px; border-bottom: 1px solid #f9f9f9; color: var(--text-main); }
 
-    /* Sticky Bottom Actions */
+    /* Bottom Nav Bar */
     .actions-bar { position: sticky; bottom: 0; left: 0; width: 100%; max-width: 1100px; background: rgba(245, 243, 239, 0.95); backdrop-filter: blur(8px); border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; margin-top: 15px; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); z-index: 500; }
     .btn-nav { background: #fff; color: var(--text-main); border: 1px solid var(--border); padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.9rem; transition: 0.2s; }
     .btn-nav:hover:not(:disabled) { border-color: var(--accent); }
@@ -120,8 +111,16 @@
     
     .btn-action-group { display: flex; gap: 10px; }
     .btn-skip { background: #fff; color: var(--text-muted); border: 1px solid var(--border); padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; }
-    .btn-confirm { background: var(--success); color: white; border: none; padding: 10px 24px; border-radius: 8px; font-weight: 700; font-size: 0.9rem; cursor: pointer; box-shadow: 0 4px 10px rgba(84, 107, 80, 0.2); }
+    .btn-confirm { background: var(--success); color: white; border: none; padding: 10px 24px; border-radius: 8px; font-weight: 700; font-size: 0.9rem; cursor: pointer; }
     .btn-confirmed { background: var(--danger); color: white; border: none; padding: 10px 24px; border-radius: 8px; font-weight: 700; font-size: 0.9rem; cursor: pointer; }
+
+    /* Lightbox Modal (South 1 floating style) */
+    .lightbox-modal { display: none; position: fixed; inset: 0; background: rgba(20, 18, 16, 0.95); z-index: 100000; align-items: center; justify-content: center; backdrop-filter: blur(8px); user-select: none; }
+    .lightbox-modal.active { display: flex; }
+    .lb-body { width: 100%; max-width: 900px; height: 85vh; background: #fff; border-radius: 14px; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .lb-body img { width: 100%; height: 100%; object-fit: contain; }
+    .lb-close { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5); color: #fff; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 1.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; }
+    .lb-nav-hint { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.6); color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; pointer-events: none; }
 
     /* Export Modal */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(44, 42, 38, 0.6); z-index: 20000; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
@@ -130,7 +129,6 @@
     .modal-card h3 { margin: 0 0 10px 0; color: var(--text-main); font-size: 1.3rem; }
     .exp-btn { display: flex; justify-content: space-between; align-items: center; background: #fff; border: 1px solid var(--border); padding: 14px 16px; border-radius: 8px; margin-bottom: 12px; cursor: pointer; transition: 0.2s; }
     .exp-btn:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-    .exp-btn b { color: var(--text-main); }
     
     .pdf-checks { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: #fff; border: 1px solid var(--border); padding: 12px; border-radius: 8px; margin-bottom: 15px; }
     .pdf-checks label { font-size: 0.8rem; color: var(--text-main); display: flex; align-items: center; gap: 6px; cursor: pointer; }
@@ -140,9 +138,10 @@
     .spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 15px; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* Mobile Adaptations */
     @media (max-width: 900px) {
       .main-card { flex-direction: column; align-items: center; padding: 12px; }
-      .image-viewer { width: 100%; max-width: 450px; height: auto; aspect-ratio: 1; min-width: 0; }
+      .left-col { width: 100%; max-width: 450px; position: relative; top: 0; } /* Removes sticky on mobile to allow natural scrolling */
       .specs-grid { grid-template-columns: repeat(2, 1fr); }
       .details-panel { width: 100%; }
       .btn-nav { padding: 10px 14px; }
@@ -173,15 +172,18 @@
   </div>
 
   <div class="main-card">
-    <div class="image-viewer" onmousemove="zoomImg(event)" onmouseleave="resetZoom()" id="imgWrapper">
-      <img id="mainImg" src="" onerror="handleImgErr(this)">
-      <div class="zoom-hint">🔍 Hover / Tap to Zoom</div>
+    <div class="left-col">
+      <div class="image-viewer" onclick="openLightbox()">
+        <img id="mainImg" src="" onerror="handleImgErr(this)">
+        <div class="zoom-hint">🔍 Tap to open floating window</div>
+      </div>
     </div>
 
     <div class="details-panel">
       <div class="d-header">
         <div>
           <div class="d-title" id="dispDesign">---</div>
+          <div class="wt-range-badge" id="dispWtRange">WT: -</div>
           <div class="d-meta" id="dispMeta">---</div>
         </div>
         <div class="badge-sel" id="dispSelBadge">✓ SELECTED</div>
@@ -200,12 +202,10 @@
 
       <div class="tray">
         <div class="tray-title">Filtered Variants (<span id="trayCount">0</span>)</div>
-        <div class="tray-scroll">
-          <table class="tray-table">
-            <thead><tr><th>Variant</th><th>Size</th><th>Karat</th><th>Prolif</th><th>Wt (g)</th></tr></thead>
-            <tbody id="trayBody"></tbody>
-          </table>
-        </div>
+        <table class="tray-table">
+          <thead><tr><th>Variant</th><th>Size</th><th>Karat</th><th>Prolif</th><th>Wt (g)</th></tr></thead>
+          <tbody id="trayBody"></tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -219,6 +219,15 @@
     <button class="btn-nav" id="btnNext" onclick="nav(1)">Next →</button>
   </div>
 
+  <!-- Lightbox Modal -->
+  <div class="lightbox-modal" id="lightboxModal" onclick="closeLightbox(event)">
+    <div class="lb-body">
+      <button class="lb-close" onclick="closeLightbox(event)">✕</button>
+      <img id="lbImg" src="" onerror="handleImgErr(this)">
+      <div class="lb-nav-hint">‹ Swipe or use arrow keys ›</div>
+    </div>
+  </div>
+
   <!-- Slide-Out Filter Drawer -->
   <div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()"></div>
   <div class="filter-drawer" id="filterDrawer">
@@ -226,9 +235,7 @@
       <h3>Advanced Filters</h3>
       <button class="drawer-close" onclick="toggleDrawer()">×</button>
     </div>
-    <div class="drawer-body" id="drawerBody">
-      <!-- Filter accordions injected via JS -->
-    </div>
+    <div class="drawer-body" id="drawerBody"></div>
     <div class="drawer-footer">
       <button onclick="resetFilters()">Reset All</button>
       <button style="background:var(--accent); color:#fff; border-color:var(--accent);" onclick="toggleDrawer()">Apply Filters</button>
@@ -274,18 +281,18 @@
     let remarksMap = {}; 
     let currentIndex = 0;
 
-    // Expanded Filters List
+    // Strict Data Standardization - No Mapping Errors
     const filters = {
-      Category: { col: 'Category', sel: new Set() },
-      Theme: { col: 'Theme', sel: new Set() },
-      Cluster: { col: 'Cluster', sel: new Set() },
-      AG: { col: 'AG', sel: new Set() },
-      Size: { col: 'Size', sel: new Set() },
-      Karat: { col: 'Karat', sel: new Set() },
-      Prolif: { col: 'Prolif', sel: new Set() },
-      Findings: { col: 'Findings', sel: new Set() },
-      Attribute: { col: 'Attribute', sel: new Set() },
-      StoneDetails: { col: 'Stone details', sel: new Set() }
+      Category: { sel: new Set() },
+      Theme: { sel: new Set() },
+      Cluster: { sel: new Set() },
+      AG: { sel: new Set() },
+      Size: { sel: new Set() },
+      Karat: { sel: new Set() },
+      Prolif: { sel: new Set() },
+      Findings: { sel: new Set() },
+      Attribute: { sel: new Set() },
+      StoneDetails: { sel: new Set() }
     };
 
     // 1. Fetch & Initialize
@@ -293,29 +300,30 @@
       try {
         let res = await fetch('data.xlsx');
         if (!res.ok) res = await fetch('data.xls');
-        if (!res.ok) throw new Error("File not found on server.");
+        if (!res.ok) throw new Error("File not found");
         
         const ab = await res.arrayBuffer();
         const wb = XLSX.read(ab, { type: 'array' });
         const json = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
         
+        // Explicit clean mapping to avoid any missing keys during filter execution
         rawData = json.map(r => ({
-          variant: String(r['Variant code'] || '').trim(),
-          theme: String(r['Theme'] || '').trim(),
-          design: String(r['Design'] || '').trim(),
-          karat: String(r['Karat'] || '').trim(),
-          size: String(r['Size'] || '').trim(),
-          prolif: String(r['Prolif'] || '').trim(),
-          cat: String(r['Category'] || '').trim(),
-          cluster: String(r['Cluster'] || '').trim(),
-          ag: String(r['AG'] || '').trim(),
-          wt: parseFloat(r['Weight']) || 0,
-          val: parseFloat(r['Value']) || 0,
-          findings: String(r['Findings'] || '').trim(),
-          attr: String(r['Attribute'] || '').trim(),
-          stone: String(r['Stone details'] || '').trim(),
-          original: r // keep original for excel export
-        })).filter(r => r.variant !== '');
+          Variant: String(r['Variant code'] || '').trim(),
+          Design: String(r['Design'] || '').trim(),
+          Category: String(r['Category'] || '').trim(),
+          Theme: String(r['Theme'] || '').trim(),
+          Cluster: String(r['Cluster'] || '').trim(),
+          AG: String(r['AG'] || '').trim(),
+          Size: String(r['Size'] || '').trim(),
+          Karat: String(r['Karat'] || '').trim(),
+          Prolif: String(r['Prolif'] || '').trim(),
+          Findings: String(r['Findings'] || '').trim(),
+          Attribute: String(r['Attribute'] || '').trim(),
+          StoneDetails: String(r['Stone details'] || '').trim(),
+          Weight: parseFloat(r['Weight']) || 0,
+          Value: parseFloat(r['Value']) || 0,
+          Original: r // Used for Excel export
+        })).filter(r => r.Variant !== '');
 
         buildDrawer();
         applyFilters();
@@ -337,7 +345,7 @@
         <div class="filter-group">
           <div class="fg-header" onclick="toggleAcc('${k}')">
             <span>${k === 'StoneDetails' ? 'Stone Details' : k}</span>
-            <span class="count" id="count-${k}">0 selected</span>
+            <span class="count" id="count-${k}"></span>
           </div>
           <div class="fg-body" id="body-${k}">
             <input type="text" class="fg-search" placeholder="Search..." oninput="filterAcc('${k}', this.value)">
@@ -356,7 +364,7 @@
       });
     }
 
-    // 3. Filter Engine
+    // 3. Filter Engine (Simplified & robust mapping)
     let fTimer;
     function debounceFilter() { clearTimeout(fTimer); fTimer = setTimeout(applyFilters, 250); }
 
@@ -364,22 +372,18 @@
       const q = document.getElementById('searchBox').value.toLowerCase();
       
       let validRows = rawData.filter(r => {
-        if (q && !`${r.variant} ${r.design} ${r.ag} ${r.cat}`.toLowerCase().includes(q)) return false;
+        if (q && !`${r.Variant} ${r.Design} ${r.AG} ${r.Category}`.toLowerCase().includes(q)) return false;
+        
         for (const k of Object.keys(filters)) {
-          if (filters[k].sel.size > 0 && !filters[k].sel.has(r[filters[k].col === 'Stone details' ? 'stone' : filters[k].col === 'Attribute' ? 'attr' : filters[k].col === 'Findings' ? 'findings' : filters[k].col.toLowerCase()])) {
-            // Helper for mapping complex keys back to the lowercase row object keys we created
-            const rKey = filters[k].col === 'Stone details' ? 'stone' : filters[k].col === 'Attribute' ? 'attr' : filters[k].col === 'Findings' ? 'findings' : filters[k].col.toLowerCase();
-            if(!filters[k].sel.has(r[rKey])) return false;
-          }
+          if (filters[k].sel.size > 0 && !filters[k].sel.has(r[k])) return false;
         }
         return true;
       });
 
-      // Group By Design
       const gMap = new Map();
       validRows.forEach(r => {
-        if (!gMap.has(r.design)) gMap.set(r.design, { design: r.design, rows: [] });
-        gMap.get(r.design).rows.push(r);
+        if (!gMap.has(r.Design)) gMap.set(r.Design, { design: r.Design, rows: [] });
+        gMap.get(r.Design).rows.push(r);
       });
       filteredGroups = Array.from(gMap.values());
       
@@ -395,9 +399,7 @@
     function updateDrawerLists(validRows) {
       Object.keys(filters).forEach(k => {
         const counts = {};
-        const rKey = filters[k].col === 'Stone details' ? 'stone' : filters[k].col === 'Attribute' ? 'attr' : filters[k].col === 'Findings' ? 'findings' : filters[k].col.toLowerCase();
-        
-        validRows.forEach(r => { const v = r[rKey] || '-'; counts[v] = (counts[v]||0)+1; });
+        validRows.forEach(r => { const v = r[k] || '-'; counts[v] = (counts[v]||0)+1; });
         filters[k].sel.forEach(v => { if(!counts[v]) counts[v] = 0; });
         
         const list = document.getElementById(`list-${k}`);
@@ -417,7 +419,7 @@
     function selAllAcc(k) { document.querySelectorAll(`#list-${k} input`).forEach(i => { if(!i.checked){ i.checked=true; filters[k].sel.add(i.nextElementSibling.innerText.split(' (')[0]); }}); applyFilters(); }
     function resetFilters() { document.getElementById('searchBox').value = ''; Object.keys(filters).forEach(k => filters[k].sel.clear()); applyFilters(); }
 
-    // 4. Update Main UI (South 1 layout)
+    // 4. Main UI Updater
     function updateUI() {
       const tVars = filteredGroups.reduce((s, g) => s + g.rows.length, 0);
       document.getElementById('stat-designs').innerText = filteredGroups.length;
@@ -428,37 +430,54 @@
         document.getElementById('dispDesign').innerText = "No Results";
         document.getElementById('mainImg').src = "";
         document.getElementById('trayBody').innerHTML = "";
+        document.getElementById('dispWtRange').innerText = "WT: -";
         return;
       }
 
       document.getElementById('stat-idx').innerText = currentIndex + 1;
       
       const g = filteredGroups[currentIndex];
-      const f = g.rows[0]; // first row for shared metrics
+      const f = g.rows[0]; 
+      
+      const base = `https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=${g.design}`;
       
       const img = document.getElementById('mainImg');
       img.dataset.retried = '0';
-      const base = `https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=${g.design}`;
       img.dataset.base = base;
       img.src = `${base}.jpg`;
 
+      // Sync lightbox if it is open
+      if (document.getElementById('lightboxModal').classList.contains('active')) {
+        const lbImg = document.getElementById('lbImg');
+        lbImg.dataset.retried = '0';
+        lbImg.dataset.base = base;
+        lbImg.src = `${base}.jpg`;
+      }
+
       document.getElementById('dispDesign').innerText = g.design;
-      document.getElementById('dispMeta').innerText = `${f.cat || '-'} | Theme: ${f.theme || '-'}`;
+      document.getElementById('dispMeta').innerText = `${f.Category || '-'} | Theme: ${f.Theme || '-'}`;
       
-      document.getElementById('spCat').innerText = f.cat || '-';
-      document.getElementById('spAg').innerText = f.ag || '-';
-      document.getElementById('spCluster').innerText = f.cluster || '-';
-      document.getElementById('spStone').innerText = f.stone || '-';
-      document.getElementById('spStone').title = f.stone || '-';
-      document.getElementById('spFind').innerText = f.findings || '-';
-      document.getElementById('spAttr').innerText = f.attr || '-';
-      document.getElementById('spAttr').title = f.attr || '-';
+      // Calculate and display weight range instantly
+      const wts = g.rows.map(r => r.Weight);
+      const minWt = Math.min(...wts).toFixed(3);
+      const maxWt = Math.max(...wts).toFixed(3);
+      document.getElementById('dispWtRange').innerText = minWt === maxWt ? `WT: ${minWt}g` : `WT: ${minWt} - ${maxWt}g`;
+      
+      // Inject standard fields
+      document.getElementById('spCat').innerText = f.Category || '-';
+      document.getElementById('spAg').innerText = f.AG || '-';
+      document.getElementById('spCluster').innerText = f.Cluster || '-';
+      document.getElementById('spStone').innerText = f.StoneDetails || '-';
+      document.getElementById('spStone').title = f.StoneDetails || '-';
+      document.getElementById('spFind').innerText = f.Findings || '-';
+      document.getElementById('spAttr').innerText = f.Attribute || '-';
+      document.getElementById('spAttr').title = f.Attribute || '-';
 
       document.getElementById('dispRemark').value = remarksMap[g.design] || '';
 
       document.getElementById('trayCount').innerText = g.rows.length;
       document.getElementById('trayBody').innerHTML = g.rows.map(r => `
-        <tr><td><b>${r.variant}</b></td><td>${r.size}</td><td>${r.karat}K</td><td>${r.prolif}</td><td>${r.wt.toFixed(3)}</td></tr>
+        <tr><td><b>${r.Variant}</b></td><td>${r.Size}</td><td>${r.Karat}K</td><td>${r.Prolif}</td><td>${r.Weight.toFixed(3)}</td></tr>
       `).join('');
 
       updateSelBtn();
@@ -476,29 +495,10 @@
       }
     }
 
-    // Zoom & Swipe
-    function zoomImg(e) {
-      const img = document.getElementById('mainImg');
-      if(img.src.includes('data:image')) return;
-      const rect = e.currentTarget.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) * 100, y = ((e.clientY - rect.top) / rect.height) * 100;
-      img.style.transformOrigin = `${x}% ${y}%`;
-      img.style.transform = 'scale(1.8)';
-    }
-    function resetZoom() { const img = document.getElementById('mainImg'); img.style.transformOrigin = 'center'; img.style.transform = 'scale(1)'; }
-    
-    let touchX = 0;
-    document.getElementById('imgWrapper').addEventListener('touchstart', e => touchX = e.changedTouches[0].screenX, {passive:true});
-    document.getElementById('imgWrapper').addEventListener('touchend', e => {
-      const endX = e.changedTouches[0].screenX;
-      if (endX < touchX - 40) nav(1);
-      if (endX > touchX + 40) nav(-1);
-    }, {passive:true});
-
-    // 5. Actions & Keyboard
+    // 5. Actions, Navigation & Swiping
     function nav(dir) {
       const n = currentIndex + dir;
-      if (n >= 0 && n < filteredGroups.length) { resetZoom(); currentIndex = n; updateUI(); }
+      if (n >= 0 && n < filteredGroups.length) { currentIndex = n; updateUI(); }
     }
 
     function saveRemark(val) { remarksMap[filteredGroups[currentIndex].design] = val; }
@@ -525,11 +525,39 @@
       document.getElementById('expCount').innerText = selectedDesigns.size; 
     }
 
+    // South 1 Lightbox Integration
+    function openLightbox() {
+      if(filteredGroups.length === 0) return;
+      const lb = document.getElementById('lightboxModal');
+      lb.classList.add('active');
+      
+      const lbImg = document.getElementById('lbImg');
+      lbImg.dataset.retried = '0';
+      lbImg.dataset.base = `https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=${filteredGroups[currentIndex].design}`;
+      lbImg.src = `${lbImg.dataset.base}.jpg`;
+    }
+    
+    function closeLightbox(e) {
+      if (e.target.id === 'lightboxModal' || e.target.classList.contains('lb-close')) {
+        document.getElementById('lightboxModal').classList.remove('active');
+      }
+    }
+
+    // Swiping Logic for Lightbox
+    let touchX = 0;
+    document.getElementById('lightboxModal').addEventListener('touchstart', e => touchX = e.changedTouches[0].screenX, {passive:true});
+    document.getElementById('lightboxModal').addEventListener('touchend', e => {
+      const endX = e.changedTouches[0].screenX;
+      if (endX < touchX - 40) nav(1);
+      if (endX > touchX + 40) nav(-1);
+    }, {passive:true});
+
     window.addEventListener('keydown', e => {
       if (e.target.tagName === 'INPUT') return;
       if (e.key === 'ArrowRight') nav(1);
       if (e.key === 'ArrowLeft') nav(-1);
       if (e.key === ' ' || e.code === 'Space') { e.preventDefault(); toggleSelect(); }
+      if (e.key === 'Escape') document.getElementById('lightboxModal').classList.remove('active');
     });
 
     // 6. Export Modal
@@ -542,9 +570,9 @@
     function exportExcel() {
       const exportRows = [];
       rawData.forEach(r => {
-        if (selectedDesigns.has(r.design)) {
-          const rowData = { ...r.original };
-          rowData['Recognised Remarks'] = remarksMap[r.design] || '';
+        if (selectedDesigns.has(r.Design)) {
+          const rowData = { ...r.Original };
+          rowData['Recognised Remarks'] = remarksMap[r.Design] || '';
           exportRows.push(rowData);
         }
       });
@@ -575,7 +603,7 @@
         if (i > 0 && i % itemsPerPage === 0) pdf.addPage();
         
         const d = designsArr[i];
-        let group = filteredGroups.find(g => g.design === d) || { design: d, rows: rawData.filter(x => x.design === d) };
+        let group = filteredGroups.find(g => g.design === d) || { design: d, rows: rawData.filter(x => x.Design === d) };
         const first = group.rows[0];
 
         const pos = i % itemsPerPage;
@@ -607,17 +635,17 @@
         pdf.text(d, x + 6, cY); cY += 5;
 
         pdf.setFontSize(8); pdf.setFont('helvetica', 'normal'); pdf.setTextColor(115, 110, 101);
-        if(chkCat) { pdf.text(`Cat: ${first.cat||'-'}`, x + 6, cY); cY += 4.5; }
-        if(chkAg) { pdf.text(`AG: ${(first.ag||'-').substring(0, 22)}`, x + 6, cY); cY += 4.5; }
+        if(chkCat) { pdf.text(`Cat: ${first.Category||'-'}`, x + 6, cY); cY += 4.5; }
+        if(chkAg) { pdf.text(`AG: ${(first.AG||'-').substring(0, 22)}`, x + 6, cY); cY += 4.5; }
         
         if(chkWt) {
-          const wts = group.rows.map(r => r.wt);
+          const wts = group.rows.map(r => r.Weight);
           const min = Math.min(...wts).toFixed(3), max = Math.max(...wts).toFixed(3);
           pdf.text(`WT: ${min===max ? min+'g' : min+'-'+max+'g'}`, x + 6, cY); cY += 4.5;
         }
 
         if(chkVar) {
-          const vars = Array.from(new Set(group.rows.map(r => r.variant))).slice(0, 4);
+          const vars = Array.from(new Set(group.rows.map(r => r.Variant))).slice(0, 4);
           pdf.setFontSize(7);
           pdf.text(`Vars: ${vars.join(', ')}${group.rows.length>4?'...':''}`, x + 6, cY);
         }
