@@ -88,15 +88,22 @@
 
     /* Right Details Panel */
     .details-panel { flex: 1; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
-    .d-header { display: flex; justify-content: space-between; align-items: flex-start; }
-    .d-title { font-size: 1.6rem; font-weight: 800; color: var(--text-main); font-family: monospace; margin-bottom: 4px; }
+    .d-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+    .d-title-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; flex-wrap: wrap; }
+    .d-title { font-size: 1.6rem; font-weight: 800; color: var(--text-main); font-family: monospace; line-height: 1.1; }
+    .info-btn { width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--border); background: #fff; color: var(--accent); font-size: 0.75rem; font-weight: 800; font-style: italic; font-family: Georgia, serif; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; padding: 0; transition: 0.15s; flex-shrink: 0; }
+    .info-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
     .wt-range-badge { font-size: 0.82rem; font-weight: 700; color: var(--accent); background: #fff; padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border); display: inline-block; margin-bottom: 6px; }
     .d-meta { font-size: 0.85rem; color: var(--text-muted); }
-    
-    .badge-sel { background: var(--success); color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; display: none; }
+
+    .d-header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; flex-shrink: 0; }
+    .avail-tags { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+    .avail-tag { background: #F4EAD5; color: #7C5A21; border: 1px solid #DFC79A; padding: 2px 7px; border-radius: 999px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase; line-height: 1.3; }
+    .badge-sel { background: var(--success); color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 700; display: none; white-space: nowrap; }
     
     .specs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
     .spec-box { background: #fff; padding: 7px 9px; border-radius: 6px; border: 1px solid var(--border); }
+    .spec-box.span-2 { grid-column: span 2; }
     .spec-lbl { font-size: 0.62rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
     .spec-val { font-size: 0.85rem; font-weight: 600; color: var(--text-main); margin-top: 2px; word-wrap: break-word; white-space: normal; }
 
@@ -105,11 +112,17 @@
 
     /* Gliding Tray */
     .tray { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 10px; display: flex; flex-direction: column; }
-    .tray-title { font-size: 0.75rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px; }
-    .tray-scroll { max-height: 155px; overflow-y: auto; overscroll-behavior: contain; }
+    .tray-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .tray-title { font-size: 0.75rem; font-weight: 700; color: var(--text-main); }
+    .tray-sel-hint { font-size: 0.7rem; color: var(--success); font-weight: 700; }
+    .tray-scroll { max-height: 175px; overflow-y: auto; overscroll-behavior: contain; }
     .tray-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; text-align: left; }
     .tray-table th { color: var(--text-muted); padding: 5px 6px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: #fff; font-size: 0.68rem; z-index: 2; }
-    .tray-table td { padding: 5px 6px; border-bottom: 1px solid #f9f9f9; color: var(--text-main); }
+    .tray-table td { padding: 5px 6px; border-bottom: 1px solid #f2f0ec; color: var(--text-main); }
+    .tray-table tbody tr { cursor: pointer; transition: background 0.12s; }
+    .tray-table tbody tr:hover { background: #FAF8F5; }
+    .tray-table tbody tr.row-selected { background: #EEF4EC; }
+    .var-chk { width: 15px; height: 15px; accent-color: var(--success); cursor: pointer; vertical-align: middle; margin: 0; }
 
     /* Bottom Actions */
     .actions-bar { position: sticky; bottom: 0; left: 0; width: 100%; max-width: 1200px; background: rgba(245, 243, 239, 0.95); backdrop-filter: blur(8px); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; margin-top: 10px; box-shadow: 0 -8px 25px rgba(0,0,0,0.08); z-index: 500; }
@@ -140,14 +153,21 @@
     /* Loader */
     #pageLoader { position: fixed; inset: 0; background: var(--bg); z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 
-    /* Export Modal */
+    /* Modals (Export + Info Popup) */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(44, 42, 38, 0.6); z-index: 200000; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
     .modal-overlay.active { display: flex; }
     .modal-card { background: var(--panel-bg); border: 1px solid var(--border); border-radius: 12px; padding: 22px; width: 90%; max-width: 480px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
     .modal-card h3 { margin: 0 0 6px 0; color: var(--text-main); font-size: 1.15rem; }
+    .exp-summary { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 14px; }
     .exp-btn { display: flex; justify-content: space-between; align-items: center; background: #fff; border: 1px solid var(--border); padding: 12px 14px; border-radius: 8px; margin-bottom: 12px; cursor: pointer; transition: 0.2s; }
     .pdf-checks { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: #fff; border: 1px solid var(--border); padding: 12px; border-radius: 8px; margin-bottom: 15px; }
     .pdf-checks label { font-size: 0.76rem; color: var(--text-main); display: flex; align-items: center; gap: 6px; cursor: pointer; }
+
+    /* Info Popup Card */
+    .info-modal-card { max-width: 380px; padding: 18px 20px; }
+    .info-row { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; margin-top: 10px; }
+    .info-row-lbl { font-size: 0.66rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+    .info-row-val { font-size: 0.88rem; font-weight: 600; color: var(--text-main); word-break: break-word; line-height: 1.4; }
 
     @media (max-width: 980px) {
       body { padding: 8px 8px 75px 8px; }
@@ -156,7 +176,7 @@
       .image-viewer { width: 100%; height: auto; aspect-ratio: 1 / 1; border-radius: 8px; border: 1px solid var(--border); }
       .details-panel { width: 100%; background: #fff; padding: 12px; border-radius: 8px; border: 1px solid var(--border); }
       .specs-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
-      .spec-box:nth-child(2) { grid-column: span 2; }
+      .spec-box.span-2 { grid-column: span 2; }
       .btn-nav, .btn-confirm, .btn-skip, .btn-confirmed { padding: 10px 12px; font-size: 0.8rem; }
       .lightbox-body { height: calc(100vh - 180px); border: none; border-radius: 8px; }
       .lightbox-actions-bar { padding: 8px; }
@@ -201,11 +221,17 @@
     <div class="details-panel">
       <div class="d-header">
         <div>
-          <div class="d-title" id="dispDesign">---</div>
+          <div class="d-title-row">
+            <div class="d-title" id="dispDesign">---</div>
+            <button type="button" class="info-btn" id="infoBtn" title="Additional Details" onclick="openInfoModal()">i</button>
+          </div>
           <div class="wt-range-badge" id="dispWtRange">WT: -</div>
           <div class="d-meta" id="dispMeta">---</div>
         </div>
-        <div class="badge-sel" id="dispSelBadge">✓ CONFIRMED</div>
+        <div class="d-header-right">
+          <div class="avail-tags" id="dispAvailTags"></div>
+          <div class="badge-sel" id="dispSelBadge">✓ CONFIRMED</div>
+        </div>
       </div>
 
       <div class="specs-grid">
@@ -213,17 +239,26 @@
         <div class="spec-box"><div class="spec-lbl">AG Group</div><div class="spec-val" id="spAg">-</div></div>
         <div class="spec-box"><div class="spec-lbl">MC (%)</div><div class="spec-val" id="spMc" style="color:var(--danger);">-</div></div>
         <div class="spec-box"><div class="spec-lbl">Cluster</div><div class="spec-val" id="spCluster">-</div></div>
-        <div class="spec-box"><div class="spec-lbl">Stone Details</div><div class="spec-val" id="spStone" title="">-</div></div>
-        <div class="spec-box"><div class="spec-lbl">Findings / Attr</div><div class="spec-val" id="spFind">-</div></div>
+        <div class="spec-box span-2"><div class="spec-lbl">Findings / Attr</div><div class="spec-val" id="spFind">-</div></div>
       </div>
 
       <input type="text" class="remarks-input" id="dispRemark" placeholder="✎ Add Recognised Remark (Saves to Excel)..." oninput="saveRemark(this.value)">
 
       <div class="tray">
-        <div class="tray-title">Filtered Variants (<span id="trayCount">0</span>)</div>
+        <div class="tray-header">
+          <div class="tray-title">Filtered Variants (<span id="trayCount">0</span>)</div>
+          <div class="tray-sel-hint" id="traySelHint"></div>
+        </div>
         <div class="tray-scroll">
           <table class="tray-table">
-            <thead><tr><th>Variant</th><th>Size</th><th>Karat</th><th>Wt (g)</th><th>Value (₹)</th></tr></thead>
+            <thead>
+              <tr>
+                <th style="width:28px; text-align:center;">
+                  <input type="checkbox" class="var-chk" id="chkAllVars" title="Select all variants of this design" onchange="toggleSelectAllInDesign(this.checked)">
+                </th>
+                <th>Variant</th><th>Size</th><th>Karat</th><th>Wt (g)</th><th>Value (₹)</th>
+              </tr>
+            </thead>
             <tbody id="trayBody"></tbody>
           </table>
         </div>
@@ -283,13 +318,27 @@
     </div>
   </div>
 
+  <!-- Additional Details (Info) Popup -->
+  <div class="modal-overlay" id="infoModal" onclick="closeInfoModal(event)">
+    <div class="modal-card info-modal-card">
+      <h3 style="display:flex; justify-content:space-between; align-items:center;">
+        <span>Additional Details</span>
+        <button style="background:none; border:none; font-size:1.3rem; cursor:pointer; color:var(--text-muted);" onclick="document.getElementById('infoModal').classList.remove('active')">×</button>
+      </h3>
+      <div id="infoModalBody">
+        <!-- Populated dynamically; easy to add more hidden fields later -->
+      </div>
+    </div>
+  </div>
+
   <!-- Export Modal -->
   <div class="modal-overlay" id="exportModal" onclick="closeModal(event)">
     <div class="modal-card">
       <h3 style="display:flex; justify-content:space-between;">Export Format <button style="background:none; border:none; font-size:1.2rem; cursor:pointer;" onclick="document.getElementById('exportModal').classList.remove('active')">×</button></h3>
+      <div class="exp-summary" id="exportSummary">0 designs • 0 variants selected</div>
       
       <div class="exp-btn" onclick="exportExcel()">
-        <div><b>📊 Download Master Excel (.xlsx)</b><div style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">Includes your Recognised Remarks column</div></div>
+        <div><b>📊 Download Master Excel (.xlsx)</b><div style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">Exports selected variants with Recognised Remarks</div></div>
         <b style="color:var(--accent);">→</b>
       </div>
 
@@ -310,12 +359,13 @@
   <script>
     let rawData = [];
     let filteredGroups = []; 
-    let selectedDesigns = new Set();
+    let selectedVariants = new Set(); // Stores individually selected Variant codes
     let remarksMap = {}; 
     let currentIndex = 0;
     let isLightboxOpen = false;
 
     const filters = {
+      Availability: { sel: new Set() },
       Category: { sel: new Set() }, Theme: { sel: new Set() }, Cluster: { sel: new Set() },
       AG: { sel: new Set() }, Size: { sel: new Set() }, Karat: { sel: new Set() },
       Prolif: { sel: new Set() }, Findings: { sel: new Set() }, Attribute: { sel: new Set() },
@@ -323,8 +373,21 @@
     };
 
     const TANISHQ_CDN = "https://www.tanishq.co.in/on/demandware.static/-/Sites-Tanishq-product-catalog/default/images/hi-res/";
-    const SIZABLE_CATS = new Set(["Finger Ring", "Bangle", "Chains", "Bracelet"]);
     const designImgCache = {};
+
+    // Helper to read a column case-insensitively (e.g., 'Availability' or 'availability')
+    function getColCI(row, targetName) {
+      if (row[targetName] !== undefined) return row[targetName];
+      const lower = targetName.toLowerCase();
+      for (const k of Object.keys(row)) {
+        if (k.trim().toLowerCase() === lower) return row[k];
+      }
+      return '';
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
 
     window.onload = async () => {
       try {
@@ -338,22 +401,23 @@
         const json = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
         
         rawData = json.map(r => ({
-          Variant: String(r['Variant code'] || '').trim(),
-          Design: String(r['Design'] || '').trim(),
-          Category: String(r['Category'] || '').trim(),
-          Theme: String(r['Theme'] || '').trim(),
-          Cluster: String(r['Cluster'] || '').trim(),
-          AG: String(r['AG'] || '').trim(),
-          Size: String(r['Size'] || '').trim(),
-          Karat: String(r['Karat'] || '').trim(),
-          Prolif: String(r['Prolif'] || '').trim(),
-          Findings: String(r['Findings'] || '').trim(),
-          Attribute: String(r['Attribute'] || '').trim(),
-          StoneDetails: String(r['Stone details'] || '').trim(),
-          Weight: parseFloat(r['Weight']) || 0,
-          Value: parseFloat(r['Value']) || 0,
-          MCStr: String(r['MC (%)'] || '').trim(),
-          MCNum: parseFloat(r['MC (%)']) || 0,
+          Variant: String(getColCI(r, 'Variant code') || '').trim(),
+          Design: String(getColCI(r, 'Design') || '').trim(),
+          Availability: String(getColCI(r, 'Availability') || '').trim(),
+          Category: String(getColCI(r, 'Category') || '').trim(),
+          Theme: String(getColCI(r, 'Theme') || '').trim(),
+          Cluster: String(getColCI(r, 'Cluster') || '').trim(),
+          AG: String(getColCI(r, 'AG') || '').trim(),
+          Size: String(getColCI(r, 'Size') || '').trim(),
+          Karat: String(getColCI(r, 'Karat') || '').trim(),
+          Prolif: String(getColCI(r, 'Prolif') || '').trim(),
+          Findings: String(getColCI(r, 'Findings') || '').trim(),
+          Attribute: String(getColCI(r, 'Attribute') || '').trim(),
+          StoneDetails: String(getColCI(r, 'Stone details') || '').trim(),
+          Weight: parseFloat(getColCI(r, 'Weight')) || 0,
+          Value: parseFloat(getColCI(r, 'Value')) || 0,
+          MCStr: String(getColCI(r, 'MC (%)') || '').trim(),
+          MCNum: parseFloat(getColCI(r, 'MC (%)')) || 0,
           Original: r 
         })).filter(r => r.Variant !== '');
 
@@ -473,9 +537,9 @@
       const opMc = document.getElementById('op-mc').value, v1Mc = document.getElementById('v1-mc').value, v2Mc = document.getElementById('v2-mc').value;
 
       let validRows = rawData.filter(r => {
-        if (q && !`${r.Variant} ${r.Design} ${r.AG} ${r.Category}`.toLowerCase().includes(q)) return false;
+        if (q && !`${r.Variant} ${r.Design} ${r.AG} ${r.Category} ${r.Availability}`.toLowerCase().includes(q)) return false;
         for (const k of Object.keys(filters)) {
-          if (filters[k].sel.size > 0 && !filters[k].sel.has(r[k])) return false;
+          if (filters[k].sel.size > 0 && !filters[k].sel.has(r[k] || '-')) return false;
         }
         
         if (!checkNum(r.Weight, opWt, v1Wt, v2Wt)) return false;
@@ -511,7 +575,8 @@
         list.innerHTML = Object.keys(counts).sort().map(v => {
           if (search && !v.toLowerCase().includes(search)) return '';
           const chk = filters[k].sel.has(v) ? 'checked' : '';
-          return `<label class="fg-item"><input type="checkbox" ${chk} onchange="handleChk('${k}','${v}',this.checked)"><span>${v} (${counts[v]})</span></label>`;
+          const safeV = v.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+          return `<label class="fg-item"><input type="checkbox" ${chk} onchange="handleChk('${k}','${safeV}',this.checked)"><span>${escapeHtml(v)} (${counts[v]})</span></label>`;
         }).join('');
         document.getElementById(`count-${k}`).innerText = filters[k].sel.size > 0 ? `${filters[k].sel.size} sel` : '';
       });
@@ -557,21 +622,42 @@
       document.getElementById('spCat').innerText = f.Category || '-';
       document.getElementById('spAg').innerText = f.AG || '-';
       document.getElementById('spCluster').innerText = f.Cluster || '-';
-      document.getElementById('spStone').innerText = f.StoneDetails || '-';
-      document.getElementById('spStone').title = f.StoneDetails || '-';
       document.getElementById('spMc').innerText = f.MCStr || '-';
       
       const combinedFindAttr = [f.Findings, f.Attribute].filter(Boolean).join(' / ');
       document.getElementById('spFind').innerText = combinedFindAttr || '-';
       document.getElementById('dispRemark').value = remarksMap[g.design] || '';
 
-      document.getElementById('trayCount').innerText = g.rows.length;
-      document.getElementById('trayBody').innerHTML = g.rows.map(r => `
-        <tr><td style="font-family:monospace; color:var(--accent); font-weight:700;">${r.Variant}</td>
-        <td>${r.Size}</td><td>${r.Karat}K</td><td><b>${r.Weight.toFixed(3)}</b></td><td>₹${r.Value.toLocaleString('en-IN')}</td></tr>
-      `).join('');
+      // Availability subtle tag(s) at top-right (hidden for "Universe" or blank)
+      const nonUniverseTags = Array.from(new Set(
+        g.rows
+          .map(r => (r.Availability || '').trim())
+          .filter(v => v && v.toLowerCase() !== 'universe')
+      ));
+      document.getElementById('dispAvailTags').innerHTML = nonUniverseTags
+        .map(tag => `<span class="avail-tag">${escapeHtml(tag)}</span>`)
+        .join('');
 
-      // Live hi-res public CDN -> internal fallback loader
+      // Variants tray with individual selection checkboxes
+      document.getElementById('trayCount').innerText = g.rows.length;
+      document.getElementById('trayBody').innerHTML = g.rows.map(r => {
+        const isChk = selectedVariants.has(r.Variant);
+        const safeVar = r.Variant.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+        return `
+          <tr class="${isChk ? 'row-selected' : ''}" onclick="toggleVariant('${safeVar}')">
+            <td style="text-align:center;" onclick="event.stopPropagation()">
+              <input type="checkbox" class="var-chk" ${isChk ? 'checked' : ''} onchange="toggleVariant('${safeVar}', this.checked)">
+            </td>
+            <td style="font-family:monospace; color:var(--accent); font-weight:700;">${escapeHtml(r.Variant)}</td>
+            <td>${escapeHtml(r.Size)}</td>
+            <td>${escapeHtml(r.Karat)}K</td>
+            <td><b>${r.Weight.toFixed(3)}</b></td>
+            <td>₹${r.Value.toLocaleString('en-IN')}</td>
+          </tr>
+        `;
+      }).join('');
+
+      // Clean 3-rule image loader: 14-digit -> 13-digit (10th char removed) -> Jewbridge fallback
       loadDesignImage('mainImg', 'mainLoader', 'mainFallback', g);
 
       if (isLightboxOpen) {
@@ -594,28 +680,28 @@
 
     function handleEmptyState() {
       document.getElementById('dispDesign').innerText = "No Results";
+      document.getElementById('dispAvailTags').innerHTML = "";
+      document.getElementById('dispSelBadge').style.display = "none";
       document.getElementById('mainImg').style.opacity = '0';
       document.getElementById('trayBody').innerHTML = "";
+      document.getElementById('trayCount').innerText = "0";
+      document.getElementById('traySelHint').innerText = "";
       document.getElementById('dispWtRange').innerText = "WT: -";
     }
 
+    /* ================= CLEAN 3-RULE IMAGE LOADER =================
+       1. 14-digit exact variant URL
+       2. 13-digit URL (10th character / size letter removed)
+       3. Immediate fallback to existing Jewbridge catalog image (.jpg -> .JPG)
+    ============================================================== */
     function buildImageQueue(group) {
       const design = group.design;
-      const f = group.rows[0];
-      const vc = f.Variant;
-      const isSizable = SIZABLE_CATS.has(f.Category);
+      const vc = group.rows[0].Variant;
       const vc13 = vc.length === 14 ? (vc.slice(0, 9) + vc.slice(10)) : null;
 
-      const urls = [];
-      if (isSizable) {
-        if (vc13) urls.push(`${TANISHQ_CDN}${vc13}_1.jpg`);
-        urls.push(`${TANISHQ_CDN}${vc}_1.jpg`);
-      } else {
-        urls.push(`${TANISHQ_CDN}${vc}_1.jpg`);
-        if (vc13) urls.push(`${TANISHQ_CDN}${vc13}_1.jpg`);
-      }
+      const urls = [`${TANISHQ_CDN}${vc}_1.jpg`];
+      if (vc13) urls.push(`${TANISHQ_CDN}${vc13}_1.jpg`);
 
-      // Internal catalogue fallbacks
       const jwBase = `https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=${design}`;
       urls.push(`${jwBase}.jpg`, `${jwBase}.JPG`);
 
@@ -636,12 +722,12 @@
       img.dataset.design = design;
 
       img.onload = () => {
+        if (img.dataset.design !== design) return;
         designImgCache[design] = img.src;
         img.style.opacity = '1';
         loader.style.display = 'none';
       };
 
-      // Reuse working URL instantly if already resolved
       if (designImgCache[design]) {
         img._urlQueue = [designImgCache[design]];
         img._urlIdx = 0;
@@ -671,6 +757,33 @@
       }
     }
 
+    /* ================= INFO POPUP (HIDDEN DETAILS) ================= */
+    function openInfoModal() {
+      if (!filteredGroups.length) return;
+      const g = filteredGroups[currentIndex];
+      const stoneVals = Array.from(new Set(g.rows.map(r => r.StoneDetails).filter(Boolean)));
+      const stoneText = stoneVals.length ? stoneVals.join(' | ') : 'Not specified';
+
+      // Structured so future hidden fields can be appended cleanly here
+      const hiddenFields = [
+        { label: 'Stone Details', value: stoneText }
+      ];
+
+      document.getElementById('infoModalBody').innerHTML = hiddenFields.map(item => `
+        <div class="info-row">
+          <div class="info-row-lbl">${escapeHtml(item.label)}</div>
+          <div class="info-row-val">${escapeHtml(item.value)}</div>
+        </div>
+      `).join('');
+
+      document.getElementById('infoModal').classList.add('active');
+    }
+
+    function closeInfoModal(e) {
+      if (e.target.id === 'infoModal') document.getElementById('infoModal').classList.remove('active');
+    }
+
+    /* ================= SELECTION (WHOLE DESIGN + INDIVIDUAL VARIANTS) ================= */
     function nav(dir) {
       const n = currentIndex + dir;
       if (n >= 0 && n < filteredGroups.length) { currentIndex = n; updateUI(); }
@@ -678,29 +791,95 @@
 
     function saveRemark(val) { remarksMap[filteredGroups[currentIndex].design] = val; }
 
+    function toggleVariant(variantCode, forceState) {
+      const shouldSelect = typeof forceState === 'boolean' ? forceState : !selectedVariants.has(variantCode);
+      if (shouldSelect) selectedVariants.add(variantCode);
+      else selectedVariants.delete(variantCode);
+      syncTrayCheckboxes();
+      updateSelBtn();
+      updateCart();
+    }
+
+    function toggleSelectAllInDesign(selectAll) {
+      if (!filteredGroups.length) return;
+      const g = filteredGroups[currentIndex];
+      g.rows.forEach(r => {
+        if (selectAll) selectedVariants.add(r.Variant);
+        else selectedVariants.delete(r.Variant);
+      });
+      syncTrayCheckboxes();
+      updateSelBtn();
+      updateCart();
+    }
+
+    // Main Confirm / Remove button: selects ALL variants of current design, or removes ALL if already fully selected
     function toggleSelect() {
-      if(!filteredGroups.length) return;
-      const d = filteredGroups[currentIndex].design;
-      selectedDesigns.has(d) ? selectedDesigns.delete(d) : selectedDesigns.add(d);
-      updateSelBtn(); updateCart();
+      if (!filteredGroups.length) return;
+      const g = filteredGroups[currentIndex];
+      const allSelected = g.rows.every(r => selectedVariants.has(r.Variant));
+      toggleSelectAllInDesign(!allSelected);
+    }
+
+    function syncTrayCheckboxes() {
+      if (!filteredGroups.length) return;
+      const g = filteredGroups[currentIndex];
+      const rows = document.querySelectorAll('#trayBody tr');
+      g.rows.forEach((r, idx) => {
+        const isSel = selectedVariants.has(r.Variant);
+        if (rows[idx]) {
+          rows[idx].classList.toggle('row-selected', isSel);
+          const chk = rows[idx].querySelector('input[type="checkbox"]');
+          if (chk) chk.checked = isSel;
+        }
+      });
     }
 
     function updateSelBtn() {
-      if(!filteredGroups.length) return;
-      const isSel = selectedDesigns.has(filteredGroups[currentIndex].design);
-      
+      if (!filteredGroups.length) return;
+      const g = filteredGroups[currentIndex];
+      const total = g.rows.length;
+      const selCount = g.rows.filter(r => selectedVariants.has(r.Variant)).length;
+      const allSelected = total > 0 && selCount === total;
+      const someSelected = selCount > 0 && selCount < total;
+
+      const chkAll = document.getElementById('chkAllVars');
+      if (chkAll) {
+        chkAll.checked = allSelected;
+        chkAll.indeterminate = someSelected;
+      }
+
+      document.getElementById('traySelHint').innerText = selCount > 0 ? `${selCount} of ${total} picked` : '';
+
       const btnM = document.getElementById('btnConfirm');
-      btnM.innerText = isSel ? "✖ Remove" : "✔ Confirm";
-      btnM.className = isSel ? "btn-confirmed" : "btn-confirm";
-      
       const btnL = document.getElementById('lbConfirmBtn');
-      btnL.innerText = isSel ? "✖ Remove Selection" : "✔ Confirm Selection";
-      btnL.className = isSel ? "btn-confirmed" : "btn-confirm";
-      
-      document.getElementById('dispSelBadge').style.display = isSel ? "block" : "none";
+      const badge = document.getElementById('dispSelBadge');
+
+      if (allSelected) {
+        btnM.innerText = "✖ Remove";
+        btnM.className = "btn-confirmed";
+        btnL.innerText = "✖ Remove Selection";
+        btnL.className = "btn-confirmed";
+        badge.innerText = "✓ CONFIRMED";
+        badge.style.display = "block";
+      } else if (someSelected) {
+        btnM.innerText = `✔ Confirm All (${selCount}/${total})`;
+        btnM.className = "btn-confirm";
+        btnL.innerText = `✔ Confirm All (${selCount}/${total})`;
+        btnL.className = "btn-confirm";
+        badge.innerText = `✓ ${selCount}/${total} PICKED`;
+        badge.style.display = "block";
+      } else {
+        btnM.innerText = "✔ Confirm";
+        btnM.className = "btn-confirm";
+        btnL.innerText = "✔ Confirm Selection";
+        btnL.className = "btn-confirm";
+        badge.style.display = "none";
+      }
     }
 
-    function updateCart() { document.getElementById('cart-count').innerText = selectedDesigns.size; }
+    function updateCart() {
+      document.getElementById('cart-count').innerText = selectedVariants.size;
+    }
 
     function openLightbox() {
       if(filteredGroups.length === 0) return;
@@ -734,12 +913,17 @@
       if (e.key === 'Escape') { 
         isLightboxOpen = false; 
         document.body.classList.remove('no-scroll');
-        document.getElementById('lightboxModal').classList.remove('active'); 
+        document.getElementById('lightboxModal').classList.remove('active');
+        document.getElementById('infoModal').classList.remove('active');
+        document.getElementById('exportModal').classList.remove('active');
       }
     });
 
     function openExport() {
-      if (selectedDesigns.size === 0) return alert("Select at least one design to export.");
+      if (selectedVariants.size === 0) return alert("Select at least one design or variant to export.");
+      const designSet = new Set();
+      rawData.forEach(r => { if (selectedVariants.has(r.Variant)) designSet.add(r.Design); });
+      document.getElementById('exportSummary').innerText = `${designSet.size} design${designSet.size === 1 ? '' : 's'} • ${selectedVariants.size} variant${selectedVariants.size === 1 ? '' : 's'} selected`;
       document.getElementById('exportModal').classList.add('active');
     }
     function closeModal(e) { if(e.target.id === 'exportModal') e.target.classList.remove('active'); }
@@ -747,7 +931,7 @@
     function exportExcel() {
       const exportRows = [];
       rawData.forEach(r => {
-        if (selectedDesigns.has(r.Design)) {
+        if (selectedVariants.has(r.Variant)) {
           const rowData = { ...r.Original };
           rowData['Recognised Remarks'] = remarksMap[r.Design] || '';
           exportRows.push(rowData);
@@ -774,13 +958,21 @@
       const startX = 10, startY = 14, gapX = 8, gapY = 10;
       const imgS = 80; const imgOffsetX = (cardW - imgS) / 2;
 
-      const designsArr = Array.from(selectedDesigns);
+      // Group only the selected variants by Design
+      const selGroupMap = new Map();
+      rawData.forEach(r => {
+        if (selectedVariants.has(r.Variant)) {
+          if (!selGroupMap.has(r.Design)) selGroupMap.set(r.Design, { design: r.Design, rows: [] });
+          selGroupMap.get(r.Design).rows.push(r);
+        }
+      });
+      const selectedGroups = Array.from(selGroupMap.values());
       
-      for (let i = 0; i < designsArr.length; i++) {
+      for (let i = 0; i < selectedGroups.length; i++) {
         if (i > 0 && i % itemsPerPage === 0) pdf.addPage();
         
-        const d = designsArr[i];
-        let group = filteredGroups.find(g => g.design === d) || { design: d, rows: rawData.filter(x => x.Design === d) };
+        const group = selectedGroups[i];
+        const d = group.design;
         const first = group.rows[0];
 
         const pos = i % itemsPerPage;
