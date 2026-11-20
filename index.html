@@ -25,8 +25,8 @@
 
     * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
     
+    html.no-scroll, body.no-scroll { overflow: hidden !important; touch-action: none; }
     body { background: var(--bg); color: var(--text-main); margin: 0; padding: 12px 14px 85px 14px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-    body.no-scroll { overflow: hidden; touch-action: none; }
 
     .header { width: 100%; max-width: 1200px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
     .header h2 { margin: 0; font-size: 1.35rem; color: var(--text-main); font-weight: 700; letter-spacing: -0.5px; }
@@ -40,37 +40,63 @@
 
     .stats-bar { width: 100%; max-width: 1200px; display: flex; justify-content: space-between; align-items: center; background: var(--panel-bg); padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); margin-bottom: 10px; font-size: 0.82rem; color: var(--text-muted); flex-wrap: wrap; gap: 8px; }
     .stats-bar b { color: var(--text-main); }
+    .stats-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .bulk-actions { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .btn-mini { background: #fff; color: var(--text-main); border: 1px solid var(--border); padding: 4px 10px; border-radius: 5px; font-size: 0.74rem; font-weight: 700; cursor: pointer; transition: 0.15s; white-space: nowrap; }
+    .btn-mini:hover:not(:disabled) { border-color: var(--accent); background: #FAF8F5; }
+    .btn-mini-select { color: var(--success); border-color: #B9C8B6; background: #F4F8F3; }
+    .btn-mini-select:hover:not(:disabled) { background: var(--success); color: #fff; border-color: var(--success); }
+    .btn-mini-clear { color: var(--danger); border-color: #D7BABA; background: #FAF3F3; }
+    .btn-mini-clear:hover:not(:disabled) { background: var(--danger); color: #fff; border-color: var(--danger); }
+    .btn-mini:disabled { opacity: 0.4; cursor: not-allowed; }
 
-    /* Filter Drawer */
+    /* Filter Drawer (Fixed flex-crushing & background scroll) */
     .drawer-overlay { display: none; position: fixed; inset: 0; background: rgba(44, 42, 38, 0.5); z-index: 9999; backdrop-filter: blur(2px); }
     .drawer-overlay.active { display: block; }
-    .filter-drawer { position: fixed; top: 0; right: -380px; width: 340px; max-width: 90vw; height: 100vh; background: var(--panel-bg); box-shadow: -5px 0 25px rgba(0,0,0,0.2); z-index: 10000; transition: right 0.3s ease; display: flex; flex-direction: column; }
+    .filter-drawer { position: fixed; top: 0; right: -420px; width: 390px; max-width: 92vw; height: 100vh; height: 100dvh; background: var(--panel-bg); box-shadow: -5px 0 25px rgba(0,0,0,0.2); z-index: 10000; transition: right 0.25s ease; display: flex; flex-direction: column; overscroll-behavior: contain; }
     .filter-drawer.active { right: 0; }
     
-    .drawer-header { padding: 14px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #fff; }
+    .drawer-header { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #fff; flex-shrink: 0; }
     .drawer-header h3 { margin: 0; font-size: 1.05rem; color: var(--text-main); }
-    .drawer-close { background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer; padding: 0; }
+    .drawer-close { background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer; padding: 0; line-height: 1; }
     
-    .drawer-body { padding: 15px 20px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 10px; overscroll-behavior: contain; }
+    .drawer-body { padding: 14px 16px; overflow-y: auto; flex: 1; min-height: 0; display: block; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
     
-    .num-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; padding: 8px; background: var(--panel-bg); border-radius: 6px; border: 1px solid var(--border); }
+    .num-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; padding: 8px; background: var(--panel-bg); border-radius: 6px; border: 1px solid var(--border); }
+    .num-row:last-child { margin-bottom: 0; }
     .num-lbl { font-size: 0.75rem; font-weight: 700; color: var(--text-main); }
     .num-inputs { display: flex; gap: 6px; align-items: center; }
-    .num-inputs select, .num-inputs input { border: 1px solid var(--border); padding: 6px; border-radius: 4px; font-size: 0.75rem; outline: none; }
-    .num-inputs select { width: 90px; }
+    .num-inputs select, .num-inputs input { border: 1px solid var(--border); padding: 6px; border-radius: 4px; font-size: 0.75rem; outline: none; background: #fff; }
+    .num-inputs select { width: 92px; }
     .num-inputs input { flex: 1; min-width: 0; }
     
-    .filter-group { border: 1px solid var(--border); border-radius: 6px; background: #fff; overflow: hidden; }
-    .fg-header { padding: 10px 14px; font-size: 0.8rem; font-weight: 700; color: var(--text-main); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-    .fg-header .count { color: var(--accent); font-size: 0.75rem; }
-    .fg-body { display: none; padding: 0 14px 14px 14px; border-top: 1px solid var(--border); max-height: 220px; overflow-y: auto; }
+    .filter-group { border: 1px solid var(--border); border-radius: 7px; background: #fff; margin-bottom: 10px; overflow: hidden; }
+    .fg-header { padding: 11px 14px; font-size: 0.82rem; font-weight: 700; color: var(--text-main); cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; background: #fff; }
+    .fg-header:hover { background: #FAF8F5; }
+    .fg-header-right { display: flex; align-items: center; gap: 8px; }
+    .fg-header .count { color: #fff; background: var(--accent); padding: 1px 7px; border-radius: 999px; font-size: 0.68rem; font-weight: 700; display: none; }
+    .fg-header .count.has-sel { display: inline-block; }
+    .fg-chevron { font-size: 0.72rem; color: var(--text-muted); transition: transform 0.18s ease; }
+    .filter-group.is-open .fg-chevron { transform: rotate(180deg); }
+
+    .fg-body { display: none; border-top: 1px solid var(--border); background: #fff; }
     .fg-body.open { display: block; }
-    .fg-search { width: 100%; padding: 6px 10px; border: 1px solid var(--border); border-radius: 4px; font-size: 0.75rem; margin-top: 10px; margin-bottom: 8px; outline: none; }
-    .fg-item { display: flex; align-items: center; gap: 8px; padding: 5px 0; font-size: 0.8rem; color: var(--text-main); cursor: pointer; }
-    .fg-item input { accent-color: var(--accent); }
+    .fg-controls { padding: 10px 12px 6px 12px; background: #FAF8F5; border-bottom: 1px solid #ECE8E1; }
+    .fg-search { width: 100%; padding: 6px 10px; border: 1px solid var(--border); border-radius: 4px; font-size: 0.76rem; outline: none; background: #fff; }
+    .fg-search:focus { border-color: var(--accent); }
+    .fg-quick-links { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; font-size: 0.72rem; font-weight: 700; }
+    .fg-quick-links span { cursor: pointer; }
+    .fg-link-all { color: var(--accent); }
+    .fg-link-clear { color: var(--danger); }
+
+    .fg-list { max-height: 220px; overflow-y: auto; padding: 6px 12px 10px 12px; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+    .fg-item { display: flex; align-items: flex-start; gap: 8px; padding: 6px 2px; font-size: 0.78rem; color: var(--text-main); cursor: pointer; border-bottom: 1px solid #F4F1EC; line-height: 1.3; }
+    .fg-item:last-child { border-bottom: none; }
+    .fg-item input { accent-color: var(--accent); margin-top: 2px; flex-shrink: 0; width: 15px; height: 15px; cursor: pointer; }
+    .fg-item span { word-break: break-word; }
     
-    .drawer-footer { padding: 12px 20px; border-top: 1px solid var(--border); background: #fff; display: flex; gap: 10px; }
-    .drawer-footer button { flex: 1; padding: 10px; border-radius: 6px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: var(--panel-bg); color: var(--text-main); }
+    .drawer-footer { padding: 12px 16px; border-top: 1px solid var(--border); background: #fff; display: flex; gap: 10px; flex-shrink: 0; }
+    .drawer-footer button { flex: 1; padding: 10px; border-radius: 6px; font-weight: 700; cursor: pointer; border: 1px solid var(--border); background: var(--panel-bg); color: var(--text-main); font-size: 0.82rem; }
 
     /* Main Layout */
     .main-card { width: 100%; max-width: 1200px; background: var(--panel-bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; gap: 20px; align-items: flex-start; }
@@ -202,7 +228,13 @@
 
   <div class="stats-bar">
     <div>Filtered Designs: <b id="stat-designs">0</b> <span style="font-weight:400;">(Total Variants: <span id="stat-vars">0</span>)</span></div>
-    <div>Viewing: <b id="stat-idx">0</b> of <span id="stat-max">0</span></div>
+    <div class="stats-right">
+      <div class="bulk-actions">
+        <button type="button" class="btn-mini btn-mini-select" id="btnSelectFiltered" onclick="selectAllFiltered()" title="Select all variants in current filter">✓ Select Filtered</button>
+        <button type="button" class="btn-mini btn-mini-clear" id="btnClearSelected" onclick="clearAllSelected()" title="Clear all selected designs and variants" disabled>✕ Clear Selected</button>
+      </div>
+      <div>Viewing: <b id="stat-idx">0</b> of <span id="stat-max">0</span></div>
+    </div>
   </div>
 
   <div class="main-card">
@@ -375,7 +407,6 @@
     const TANISHQ_CDN = "https://www.tanishq.co.in/on/demandware.static/-/Sites-Tanishq-product-catalog/default/images/hi-res/";
     const designImgCache = {};
 
-    // Helper to read a column case-insensitively (e.g., 'Availability' or 'availability')
     function getColCI(row, targetName) {
       if (row[targetName] !== undefined) return row[targetName];
       const lower = targetName.toLowerCase();
@@ -387,6 +418,11 @@
 
     function escapeHtml(str) {
       return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function setScrollLock(locked) {
+      document.documentElement.classList.toggle('no-scroll', locked);
+      document.body.classList.toggle('no-scroll', locked);
     }
 
     window.onload = async () => {
@@ -430,9 +466,12 @@
     };
 
     function toggleDrawer() {
-      document.getElementById('filterDrawer').classList.toggle('active');
-      document.getElementById('drawerOverlay').classList.toggle('active');
-      document.body.classList.toggle('no-scroll');
+      const drawer = document.getElementById('filterDrawer');
+      const overlay = document.getElementById('drawerOverlay');
+      const willOpen = !drawer.classList.contains('active');
+      drawer.classList.toggle('active', willOpen);
+      overlay.classList.toggle('active', willOpen);
+      setScrollLock(willOpen || isLightboxOpen);
     }
 
     function toggleNumUI(key) {
@@ -448,11 +487,14 @@
       const b = document.getElementById('drawerBody');
       
       let html = `
-        <div class="filter-group" style="margin-bottom:10px; border-color:var(--accent);">
+        <div class="filter-group" id="fg-Num" style="border-color:var(--accent);">
           <div class="fg-header" onclick="toggleAcc('Num')">
             <span style="color:var(--accent);">Numerical Rules</span>
+            <div class="fg-header-right">
+              <span class="fg-chevron">▾</span>
+            </div>
           </div>
-          <div class="fg-body" id="body-Num" style="padding-top:10px;">
+          <div class="fg-body" id="body-Num" style="padding:10px 12px;">
             <div class="num-row">
               <div class="num-lbl">Weight (WT)</div>
               <div class="num-inputs">
@@ -488,15 +530,23 @@
       `;
 
       html += Object.keys(filters).map(k => `
-        <div class="filter-group">
+        <div class="filter-group" id="fg-${k}">
           <div class="fg-header" onclick="toggleAcc('${k}')">
             <span>${k === 'StoneDetails' ? 'Stone Details' : k}</span>
-            <span class="count" id="count-${k}"></span>
+            <div class="fg-header-right">
+              <span class="count" id="count-${k}"></span>
+              <span class="fg-chevron">▾</span>
+            </div>
           </div>
           <div class="fg-body" id="body-${k}">
-            <input type="text" class="fg-search" placeholder="Search..." oninput="filterAcc('${k}', this.value)">
-            <div style="font-size:0.75rem; color:var(--accent); cursor:pointer; margin-bottom:5px;" onclick="selAllAcc('${k}')">Select All</div>
-            <div id="list-${k}"></div>
+            <div class="fg-controls">
+              <input type="text" class="fg-search" id="search-${k}" placeholder="Search ${k === 'StoneDetails' ? 'Stone Details' : k}..." oninput="filterAcc('${k}', this.value)">
+              <div class="fg-quick-links">
+                <span class="fg-link-all" onclick="selAllAcc('${k}')">Select All</span>
+                <span class="fg-link-clear" onclick="clearAcc('${k}')">Clear</span>
+              </div>
+            </div>
+            <div class="fg-list" id="list-${k}"></div>
           </div>
         </div>
       `).join('');
@@ -504,10 +554,19 @@
       b.innerHTML = html;
     }
 
-    function toggleAcc(k) { document.getElementById(`body-${k}`).classList.toggle('open'); }
+    function toggleAcc(k) {
+      const body = document.getElementById(`body-${k}`);
+      const group = document.getElementById(`fg-${k}`);
+      const willOpen = !body.classList.contains('open');
+      body.classList.toggle('open', willOpen);
+      if (group) group.classList.toggle('is-open', willOpen);
+    }
+
     function filterAcc(k, val) {
       const s = val.toLowerCase();
-      document.querySelectorAll(`#list-${k} .fg-item`).forEach(el => el.style.display = el.innerText.toLowerCase().includes(s) ? 'flex' : 'none');
+      document.querySelectorAll(`#list-${k} .fg-item`).forEach(el => {
+        el.style.display = el.innerText.toLowerCase().includes(s) ? 'flex' : 'none';
+      });
     }
 
     function checkNum(val, op, v1, v2) {
@@ -570,24 +629,51 @@
         filters[k].sel.forEach(v => { if(!counts[v]) counts[v] = 0; });
         
         const list = document.getElementById(`list-${k}`);
-        const search = document.querySelector(`#body-${k} input`).value.toLowerCase();
+        const searchInput = document.getElementById(`search-${k}`);
+        const search = searchInput ? searchInput.value.toLowerCase() : '';
         
         list.innerHTML = Object.keys(counts).sort().map(v => {
-          if (search && !v.toLowerCase().includes(search)) return '';
           const chk = filters[k].sel.has(v) ? 'checked' : '';
-          const safeV = v.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
-          return `<label class="fg-item"><input type="checkbox" ${chk} onchange="handleChk('${k}','${safeV}',this.checked)"><span>${escapeHtml(v)} (${counts[v]})</span></label>`;
+          const hiddenStyle = (search && !v.toLowerCase().includes(search)) ? ' style="display:none;"' : '';
+          return `<label class="fg-item"${hiddenStyle}><input type="checkbox" data-val="${escapeHtml(v)}" ${chk} onchange="handleChk('${k}', this.dataset.val, this.checked)"><span>${escapeHtml(v)} (${counts[v]})</span></label>`;
         }).join('');
-        document.getElementById(`count-${k}`).innerText = filters[k].sel.size > 0 ? `${filters[k].sel.size} sel` : '';
+
+        const cntEl = document.getElementById(`count-${k}`);
+        if (filters[k].sel.size > 0) {
+          cntEl.innerText = `${filters[k].sel.size}`;
+          cntEl.classList.add('has-sel');
+        } else {
+          cntEl.innerText = '';
+          cntEl.classList.remove('has-sel');
+        }
       });
     }
 
     function handleChk(k, v, isChk) { isChk ? filters[k].sel.add(v) : filters[k].sel.delete(v); applyFilters(); }
-    function selAllAcc(k) { document.querySelectorAll(`#list-${k} input`).forEach(i => { if(!i.checked){ i.checked=true; filters[k].sel.add(i.nextElementSibling.innerText.split(' (')[0]); }}); applyFilters(); }
+    function selAllAcc(k) {
+      document.querySelectorAll(`#list-${k} .fg-item`).forEach(label => {
+        if (label.style.display === 'none') return;
+        const inp = label.querySelector('input');
+        if (inp && !inp.checked) {
+          inp.checked = true;
+          filters[k].sel.add(inp.dataset.val);
+        }
+      });
+      applyFilters();
+    }
+    function clearAcc(k) {
+      if (filters[k].sel.size === 0) return;
+      filters[k].sel.clear();
+      applyFilters();
+    }
     
     function resetFilters() { 
       document.getElementById('searchBox').value = ''; 
-      Object.keys(filters).forEach(k => filters[k].sel.clear()); 
+      Object.keys(filters).forEach(k => {
+        filters[k].sel.clear();
+        const s = document.getElementById(`search-${k}`);
+        if (s) s.value = '';
+      }); 
       
       ['wt','val','mc'].forEach(k => {
         document.getElementById(`op-${k}`).value = 'any';
@@ -603,6 +689,8 @@
       document.getElementById('stat-designs').innerText = filteredGroups.length;
       document.getElementById('stat-vars').innerText = tVars;
       document.getElementById('stat-max').innerText = filteredGroups.length;
+      document.getElementById('btnSelectFiltered').disabled = filteredGroups.length === 0;
+      updateCart();
 
       if (filteredGroups.length === 0) return handleEmptyState();
 
@@ -687,6 +775,7 @@
       document.getElementById('trayCount').innerText = "0";
       document.getElementById('traySelHint').innerText = "";
       document.getElementById('dispWtRange').innerText = "WT: -";
+      document.getElementById('stat-idx').innerText = "0";
     }
 
     /* ================= CLEAN 3-RULE IMAGE LOADER =================
@@ -764,7 +853,6 @@
       const stoneVals = Array.from(new Set(g.rows.map(r => r.StoneDetails).filter(Boolean)));
       const stoneText = stoneVals.length ? stoneVals.join(' | ') : 'Not specified';
 
-      // Structured so future hidden fields can be appended cleanly here
       const hiddenFields = [
         { label: 'Stone Details', value: stoneText }
       ];
@@ -783,13 +871,38 @@
       if (e.target.id === 'infoModal') document.getElementById('infoModal').classList.remove('active');
     }
 
-    /* ================= SELECTION (WHOLE DESIGN + INDIVIDUAL VARIANTS) ================= */
+    /* ================= SELECTION (BULK + WHOLE DESIGN + INDIVIDUAL VARIANTS) ================= */
     function nav(dir) {
       const n = currentIndex + dir;
       if (n >= 0 && n < filteredGroups.length) { currentIndex = n; updateUI(); }
     }
 
     function saveRemark(val) { remarksMap[filteredGroups[currentIndex].design] = val; }
+
+    function selectAllFiltered() {
+      if (!filteredGroups.length) return;
+      let added = 0;
+      filteredGroups.forEach(g => {
+        g.rows.forEach(r => {
+          if (!selectedVariants.has(r.Variant)) {
+            selectedVariants.add(r.Variant);
+            added++;
+          }
+        });
+      });
+      syncTrayCheckboxes();
+      updateSelBtn();
+      updateCart();
+    }
+
+    function clearAllSelected() {
+      if (selectedVariants.size === 0) return;
+      if (!confirm(`Clear all ${selectedVariants.size} selected variants?`)) return;
+      selectedVariants.clear();
+      syncTrayCheckboxes();
+      updateSelBtn();
+      updateCart();
+    }
 
     function toggleVariant(variantCode, forceState) {
       const shouldSelect = typeof forceState === 'boolean' ? forceState : !selectedVariants.has(variantCode);
@@ -812,7 +925,6 @@
       updateCart();
     }
 
-    // Main Confirm / Remove button: selects ALL variants of current design, or removes ALL if already fully selected
     function toggleSelect() {
       if (!filteredGroups.length) return;
       const g = filteredGroups[currentIndex];
@@ -878,13 +990,19 @@
     }
 
     function updateCart() {
-      document.getElementById('cart-count').innerText = selectedVariants.size;
+      const count = selectedVariants.size;
+      document.getElementById('cart-count').innerText = count;
+      const clrBtn = document.getElementById('btnClearSelected');
+      if (clrBtn) {
+        clrBtn.disabled = count === 0;
+        clrBtn.innerText = count > 0 ? `✕ Clear Selected (${count})` : '✕ Clear Selected';
+      }
     }
 
     function openLightbox() {
       if(filteredGroups.length === 0) return;
       isLightboxOpen = true;
-      document.body.classList.add('no-scroll');
+      setScrollLock(true);
       document.getElementById('lightboxModal').classList.add('active');
       updateUI();
     }
@@ -892,7 +1010,8 @@
     function closeLightbox(e) {
       if (e.target.id === 'lightboxModal' || e.target.classList.contains('lightbox-close-btn')) {
         isLightboxOpen = false;
-        document.body.classList.remove('no-scroll');
+        const drawerOpen = document.getElementById('filterDrawer').classList.contains('active');
+        setScrollLock(drawerOpen);
         document.getElementById('lightboxModal').classList.remove('active');
       }
     }
@@ -912,10 +1031,14 @@
       if (e.key === ' ' || e.code === 'Space') { e.preventDefault(); toggleSelect(); }
       if (e.key === 'Escape') { 
         isLightboxOpen = false; 
-        document.body.classList.remove('no-scroll');
         document.getElementById('lightboxModal').classList.remove('active');
         document.getElementById('infoModal').classList.remove('active');
         document.getElementById('exportModal').classList.remove('active');
+        if (document.getElementById('filterDrawer').classList.contains('active')) {
+          toggleDrawer();
+        } else {
+          setScrollLock(false);
+        }
       }
     });
 
@@ -958,7 +1081,6 @@
       const startX = 10, startY = 14, gapX = 8, gapY = 10;
       const imgS = 80; const imgOffsetX = (cardW - imgS) / 2;
 
-      // Group only the selected variants by Design
       const selGroupMap = new Map();
       rawData.forEach(r => {
         if (selectedVariants.has(r.Variant)) {
